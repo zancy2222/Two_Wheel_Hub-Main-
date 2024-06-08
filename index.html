@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVMOTO TUNING</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .hero-section {
+            background: url('BgDesigns/For\ Background\ and\ Others/443849701_841111451378124_7517247483733513302_n.jpg') no-repeat center center/cover;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        footer a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .navbar {
+            background: transparent !important;
+        }
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: #ffffff !important;
+        }
+
+        .navbar-dark .navbar-nav .nav-link:hover {
+            color: #ddd !important;
+        }
+
+        .btn-transparent {
+            background: transparent;
+            color: #fff;
+            border: 2px solid #fff;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .btn-transparent:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .bg-primary {
+            background-color: rgba(0, 74, 173, 0.8) !important;
+        }
+
+        .bg-secondary {
+            background-color: rgba(0, 157, 223, 0.8) !important;
+        }
+
+        .bg-dark {
+            background-color: rgba(0, 0, 0, 0.8) !important;
+        }
+
+        footer {
+            background: url('BgDesigns/For\ Background\ and\ Others/370817946_713322690812521_5748400232317551944_n.jpg') no-repeat center center/cover;
+            position: relative;
+            color: #fff;
+            padding-top: 60px;
+            padding-bottom: 60px;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1;
+        }
+
+        footer .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        footer h5 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        footer p, footer a {
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        footer .social-icons a {
+            font-size: 1.25rem;
+            display: inline-block;
+            margin-right: 10px;
+            color: #fff;
+            transition: color 0.3s;
+        }
+
+        footer .social-icons a:hover {
+            color: #ddd;
+        }
+
+        footer hr {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .product-section {
+            padding: 40px 0;
+            position: relative;
+        }
+
+        .product-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3); /* Default background overlay */
+            z-index: 1;
+        }
+
+        .product-section .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hot-deals {
+            background: url('BgDesigns/For\ Background\ and\ Others/327161854_873639870544923_4093373006724722312_n.jpg') no-repeat center center/cover;
+        }
+
+        .sales {
+            background: #009DDF;
+        }
+
+        .most-bought {
+            background: url('BgDesigns/For\ Background\ and\ Others/443844741_839702684852334_8323560988634869960_n.jpg') no-repeat center center/cover;
+        }
+
+        .products {
+            background: #009DDF;
+        }
+
+        .product-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: auto;
+        }
+
+        .product-info {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .product-info h5 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .product-info .price {
+            font-size: 1.1rem;
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+
+        .product-info .rating {
+            color: #f1c40f;
+            margin-bottom: 10px;
+        }
+
+        .product-info .add-to-cart {
+            background: #004AAD;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .product-info .add-to-cart:hover {
+            background: #004AAD;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-primary text-white p-3">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span><i class="fas fa-phone"></i> +1 111 111 1111</span> | 
+                    <span><i class="far fa-clock"></i> Mon to Fri: 9:00AM - 5:00PM</span>
+                </div>
+                <div>
+                    <button class="btn btn-transparent ml-3">Make an Appointment</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">AVMOTO TUNING</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Cart</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Sign Up</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section text-center d-flex align-items-center justify-content-center">
+        <div class="container">
+            <div class="hero-content">
+                <!-- Hero content goes here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Hot Deals Section -->
+    <section class="product-section hot-deals">
+        <div class="container">
+            <h2 class="section-title">Hot Deals</h2>
+            <div class="row">
+                <!-- Product Card -->
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 1">
+                        <div class="product-info">
+                            <h5>Product 1</h5>
+                            <div class="price">$19.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 1">
+                        <div class="product-info">
+                            <h5>Product 1</h5>
+                            <div class="price">$19.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 1">
+                        <div class="product-info">
+                            <h5>Product 1</h5>
+                            <div class="price">$19.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 1">
+                        <div class="product-info">
+                            <h5>Product 1</h5>
+                            <div class="price">$19.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 1">
+                        <div class="product-info">
+                            <h5>Product 1</h5>
+                            <div class="price">$19.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 1">
+                        <div class="product-info">
+                            <h5>Product 1</h5>
+                            <div class="price">$19.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 1">
+                        <div class="product-info">
+                            <h5>Product 1</h5>
+                            <div class="price">$19.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 1">
+                        <div class="product-info">
+                            <h5>Product 1</h5>
+                            <div class="price">$19.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Repeat for more products... -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Sales Section -->
+    <section class="product-section sales">
+        <div class="container">
+            <h2 class="section-title">Sales</h2>
+            <div class="row">
+                <!-- Product Card -->
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 2">
+                        <div class="product-info">
+                            <h5>Product 2</h5>
+                            <div class="price">$15.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 2">
+                        <div class="product-info">
+                            <h5>Product 2</h5>
+                            <div class="price">$15.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 2">
+                        <div class="product-info">
+                            <h5>Product 2</h5>
+                            <div class="price">$15.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 2">
+                        <div class="product-info">
+                            <h5>Product 2</h5>
+                            <div class="price">$15.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 2">
+                        <div class="product-info">
+                            <h5>Product 2</h5>
+                            <div class="price">$15.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 2">
+                        <div class="product-info">
+                            <h5>Product 2</h5>
+                            <div class="price">$15.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 2">
+                        <div class="product-info">
+                            <h5>Product 2</h5>
+                            <div class="price">$15.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 2">
+                        <div class="product-info">
+                            <h5>Product 2</h5>
+                            <div class="price">$15.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Repeat for more products... -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Most Bought Section -->
+    <section class="product-section most-bought">
+        <div class="container">
+            <h2 class="section-title">Most Bought</h2>
+            <div class="row">
+                <!-- Product Card -->
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 3">
+                        <div class="product-info">
+                            <h5>Product 3</h5>
+                            <div class="price">$22.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 3">
+                        <div class="product-info">
+                            <h5>Product 3</h5>
+                            <div class="price">$22.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 3">
+                        <div class="product-info">
+                            <h5>Product 3</h5>
+                            <div class="price">$22.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 3">
+                        <div class="product-info">
+                            <h5>Product 3</h5>
+                            <div class="price">$22.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Repeat for more products... -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="product-section products">
+        <div class="container">
+            <h2 class="section-title">Products</h2>
+            <div class="row">
+                <!-- Product Card -->
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 4">
+                        <div class="product-info">
+                            <h5>Product 4</h5>
+                            <div class="price">$18.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product Card -->
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 4">
+                        <div class="product-info">
+                            <h5>Product 4</h5>
+                            <div class="price">$18.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 4">
+                        <div class="product-info">
+                            <h5>Product 4</h5>
+                            <div class="price">$18.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product Card -->
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 4">
+                        <div class="product-info">
+                            <h5>Product 4</h5>
+                            <div class="price">$18.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 4">
+                        <div class="product-info">
+                            <h5>Product 4</h5>
+                            <div class="price">$18.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product Card -->
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 4">
+                        <div class="product-info">
+                            <h5>Product 4</h5>
+                            <div class="price">$18.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 4">
+                        <div class="product-info">
+                            <h5>Product 4</h5>
+                            <div class="price">$18.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product Card -->
+                <div class="col-md-4 col-lg-3">
+                    <div class="product-card">
+                        <img src="Products/10.png" alt="Product 4">
+                        <div class="product-info">
+                            <h5>Product 4</h5>
+                            <div class="price">$18.99</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Repeat for more products... -->
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-secondary text-white py-4">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>About Us</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla felis odio, tincidunt ac ultrices nec, tempor vel justo.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Shop</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contact Us</h5>
+                    <p>1234 Address Street, City, State, 56789</p>
+                    <p>Email: <a href="mailto:info@motorcyclelove.com">info@motorcyclelove.com</a></p>
+                    <p>Phone: +1 111 111 1111</p>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2024 AVMOTO TUNING. All Rights Reserved.</p>
+                </div>
+                <div class="col-md-6">
+                    <div class="social-icons">
+                        <a href="#" class="text-white mr-2"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-white mr-2"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white mr-2"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
