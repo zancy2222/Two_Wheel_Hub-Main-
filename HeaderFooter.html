@@ -6,155 +6,9 @@
     <title>Custom Header</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
     <style>
-        :root {
-            --primary-color: #004AAD;
-            --secondary-color: #009DDF;
-            --danger-color: #D9534F;
-            --white-color: #FFFFFF;
-            --grey-color: #737476;
-            --light-grey-color: #F8F9FA;
-            --black-color: #000000;
-            --font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            --transition-speed: 0.3s;
-        }
 
-        /* Custom navbar styles */
-        .navbar-light.bg-white {
-            background-color: var(--white-color);
-            border-bottom: 1px solid var(--grey-color);
-        }
-
-        .navbar-light .navbar-nav .nav-link {
-            color: var(--black-color);
-            font-weight: bold;
-            padding: 0.5rem 1rem;
-            transition: color 0.3s;
-        }
-
-        .navbar-light .navbar-nav .nav-link:hover {
-            color: var(--secondary-color);
-        }
-
-        .form-inline .input-group .form-control {
-            border: 1px solid var(--grey-color);
-            border-radius: 20px 0 0 20px;
-            padding: 0.5rem 1rem;
-        }
-
-        .form-inline .input-group .btn-search {
-            border-radius: 0 20px 20px 0;
-            border: 1px solid var(--grey-color);
-            background-color: var(--grey-color);
-            color: var(--white-color);
-        }
-
-        .navbar-icons .nav-link {
-            color: var(--secondary-color);
-            font-size: 1.5rem;
-            margin-left: 15px;
-            transition: color 0.3s;
-        }
-
-        .navbar-icons .nav-link:hover {
-            color: var(--primary-color);
-        }
-
-        .navbar-light.bg-light {
-            background-color: var(--white-color);
-            border-bottom: 1px solid var(--grey-color);
-        }
-
-        .navbar-light .navbar-nav .nav-link.active {
-            color: var(--primary-color);
-        }
-
-        .navbar-light .navbar-nav .nav-link {
-            color: var(--black-color);
-            font-weight: bold;
-            padding: 0.5rem 1rem;
-            transition: color 0.3s;
-        }
-
-        .navbar-light .navbar-nav .nav-link:hover {
-            color: var(--secondary-color);
-        }
-
-        .navbar .navbar-nav {
-            font-size: 1rem;
-        }
-
-        .navbar .form-inline {
-            flex-grow: 1;
-        }
-
-        .navbar .input-group {
-            width: 100%;
-        }
-
-        .container.mt-5 .btn:hover {
-            background-color: var(--secondary-color);
-        }
-        .footer {
-            background-color: var(--secondary-color);
-            color: var(--primary-color);
-            padding: 40px 0;
-        }
-        .footer .footer-column {
-            margin-bottom: 30px;
-        }
-        .footer .footer-column h5 {
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .footer .footer-column ul {
-            list-style: none;
-            padding: 0;
-        }
-        .footer .footer-column ul li {
-            margin-bottom: 10px;
-        }
-        .footer .footer-column ul li a {
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-        .footer .footer-column ul li a:hover {
-            text-decoration: underline;
-        }
-        .footer .footer-column .social-icons a {
-            font-size: 20px;
-            margin-right: 15px;
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-        .footer .footer-column .social-icons a:hover {
-            color: #dddddd;
-        }
-        .footer .newsletter input[type="email"] {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-        .footer .newsletter button {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            background-color: var(--primary-color);
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .footer .newsletter button:hover {
-            background-color: #555555;
-        }
-        .footer-bottom {
-            text-align: center;
-            padding: 10px 0;
-            border-top: 1px solid var(--primary-color);
-            margin-top: 20px;
-        }
 
     </style>
 </head>
@@ -172,8 +26,8 @@
                     </div>
                 </div>
             </form>
-            <div class="navbar-icons">
-                <a class="nav-link" href="#"><i class="fa fa-shopping-cart"></i></a>
+                       <div class="navbar-icons">
+                <a class="nav-link" href="#"><i class="fa fa-shopping-cart"></i><span class="cart-count">0</span></a>
             </div>
         </div>
     </nav>
@@ -275,5 +129,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
