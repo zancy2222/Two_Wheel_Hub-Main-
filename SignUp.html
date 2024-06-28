@@ -3,50 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop</title>
+    <title>Sign Up - E-commerce Website</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-
-        .category-card {
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: none;
+        .signup-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: var(--light-grey-color);
             border-radius: 10px;
-            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .category-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        .signup-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary-color);
         }
 
-        .category-img {
-            height: 250px;
-            object-fit: cover;
-        }
-
-        .category-card-body {
-            padding: 20px;
-            background-color: var(--white-color);
-        }
-
-        .category-card-title {
-            font-size: 1.5rem;
+        .form-group label {
             font-weight: bold;
-            margin-bottom: 15px;
+            color: var(--black-color);
         }
 
-        .category-card-btn {
+        .btn-primary {
             background-color: var(--primary-color);
-            color: var(--white-color);
-            padding: 10px 20px;
-            border-radius: 5px;
+            border: none;
             transition: background-color var(--transition-speed);
         }
 
-        .category-card-btn:hover {
+        .btn-primary:hover {
             background-color: var(--secondary-color);
+        }
+
+        .form-control {
+            border-radius: 5px;
+        }
+
+        .benefits-section {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .benefits-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .benefit-item {
+            margin-bottom: 20px;
+        }
+
+        .benefit-item i {
+            font-size: 2rem;
+            color: var(--secondary-color);
+        }
+
+        .benefit-item p {
+            margin-top: 10px;
+            color: var(--black-color);
         }
     </style>
 </head>
@@ -81,7 +98,7 @@
                         <a class="nav-link" href="Home.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="Shop.html">Shop</a>
+                        <a class="nav-link" href="#">Shop</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="Contact.html">Contact Us</a>
@@ -96,59 +113,53 @@
                         <a class="nav-link" href="BookingAppointment.html">Booking Appointment</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="SignUp.html">Sign Up</a>
+                        <a class="nav-link active" href="SignUp.html">Sign Up</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="https://via.placeholder.com/400x250?text=Suspension+Oils" class="card-img-top category-img" alt="Suspension Oils">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Suspension Oils</h5>
-                        <a href="SuspensionOils.html" class="btn category-card-btn">View</a>
-                    </div>
+    <!-- Sign Up Form -->
+    <div class="container signup-container">
+        <h2>Create Your Account</h2>
+        <form>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="firstName">First Name</label>
+                    <input type="text" class="form-control" id="firstName" placeholder="Enter your first name" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" placeholder="Enter your last name" required>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="https://via.placeholder.com/400x250?text=Rear+Shock" class="card-img-top category-img" alt="Rear Shock">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Rear Shock</h5>
-                        <a href="#" class="btn category-card-btn">View</a>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="https://via.placeholder.com/400x250?text=Accessories" class="card-img-top category-img" alt="Accessories">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Accessories</h5>
-                        <a href="#" class="btn category-card-btn">View</a>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="https://via.placeholder.com/400x250?text=Tires" class="card-img-top category-img" alt="Tires">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Tires</h5>
-                        <a href="#" class="btn category-card-btn">View</a>
-                    </div>
+            <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+        </form>
+
+        <!-- Benefits Section -->
+        <div class="benefits-section">
+            <h3>Why Create an Account?</h3>
+            <div class="row">
+                <div class="col-md-4 benefit-item">
+                    <i class="fas fa-truck"></i>
+                    <p>Fast and Free Shipping</p>
                 </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="https://via.placeholder.com/400x250?text=Others" class="card-img-top category-img" alt="Others">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Others</h5>
-                        <a href="#" class="btn category-card-btn">View</a>
-                    </div>
+                <div class="col-md-4 benefit-item">
+                    <i class="fas fa-bell"></i>
+                    <p>Exclusive Promotions</p>
+                </div>
+                <div class="col-md-4 benefit-item">
+                    <i class="fas fa-heart"></i>
+                    <p>Personalized Recommendations</p>
                 </div>
             </div>
         </div>
@@ -161,8 +172,8 @@
                 <div class="col-md-3 footer-column">
                     <h5>OFFICE ADDRESS</h5>
                     <p>Unit B, 2/F Topy II Building,<br>
-                    No.3 Economia St.,<br>
-                    Bagumbayan, Quezon City</p>
+                       No.3 Economia St.,<br>
+                       Bagumbayan, Quezon City</p>
                     <p>
                         Telephone: <br>
                         + (632) 8470-4745 (loc: 162 or 168)<br>
@@ -218,6 +229,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
