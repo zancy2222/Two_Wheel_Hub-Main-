@@ -3,37 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Appointment</title>
+    <title>Login - E-commerce Website</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        .booking-form {
-            background-color: var(--light-grey-color);
+        .login-container {
+            max-width: 900px;
+            margin: 50px auto;
             padding: 30px;
+            background-color: var(--light-grey-color);
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        .booking-form .form-group label {
+
+        .login-container .row {
+            align-items: center;
+        }
+
+        .login-container img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .login-container h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: var(--black-color);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+            transition: background-color var(--transition-speed);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .form-control {
+            border-radius: 5px;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .login-link a {
+            color: var(--primary-color);
+            text-decoration: none;
             font-weight: bold;
         }
-        .booking-form .form-group select,
-        .booking-form .form-group input,
-        .booking-form .form-group textarea {
-            border: 1px solid var(--grey-color);
-            border-radius: 5px;
-            padding: 5px;
-        }
-        .booking-form .btn {
-            background-color: var(--primary-color);
-            color: var(--white-color);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .booking-form .btn:hover {
-            background-color: var(--secondary-color);
+
+        .login-link a:hover {
+            color: var(--secondary-color);
         }
     </style>
 </head>
@@ -51,7 +81,7 @@
                     </div>
                 </div>
             </form>
-                       <div class="navbar-icons">
+            <div class="navbar-icons">
                 <a class="nav-link" href="#"><i class="fa fa-shopping-cart"></i><span class="cart-count">0</span></a>
             </div>
         </div>
@@ -68,76 +98,50 @@
                         <a class="nav-link" href="Home.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Shop.html">Shop</a>
+                        <a class="nav-link" href="#">Shop</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="Contact.html">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">About Us</a>
+                        <a class="nav-link" href="#">About Us</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Blog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="BookingAppointment.html">Booking Appointment</a>
+                        <a class="nav-link" href="BookingAppointment.html">Booking Appointment</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Login.html">Log in</a>
+                        <a class="nav-link active" href="Login.html">Login</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Booking Appointment Form -->
-    <div class="container mt-5">
-        <h2 class="text-center">Book an Appointment</h2>
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <form class="booking-form">
+    <!-- Login Form -->
+    <div class="container login-container">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="img/AV Moto Logo.png" alt="Login Image">
+            </div>
+            <div class="col-md-6">
+                <h2>Welcome Back!</h2>
+                <form>
                     <div class="form-group">
-                        <label for="service-category">Service Category</label>
-                        <select class="form-control" id="service-category" required>
-                            <option value="">Select a category</option>
-                            <option value="front-suspension">Front Suspension</option>
-                            <option value="steering">Steering</option>
-                            <option value="cvt">CVT</option>
-                            <option value="wheels">Wheels</option>
-                            <option value="rear-shock">Rear Shock</option>
-                            <option value="suspension-profiling">Suspension Profiling</option>
-                            <option value="breaking-system">Breaking System</option>
-                            <option value="electrical">Electrical</option>
-                        </select>
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
                     </div>
                     <div class="form-group">
-                        <label for="service">Service</label>
-                        <select class="form-control" id="service" required>
-                            <option value="">Select a service</option>
-                        </select>
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
                     </div>
-                    <div class="form-group">
-                        <label for="date">Preferred Date</label>
-                        <input type="date" class="form-control" id="date" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="time">Preferred Time</label>
-                        <input type="time" class="form-control" id="time" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" class="form-control" id="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" class="form-control" id="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" class="form-control" id="phone" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Book Now</button>
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
                 </form>
+                <div class="login-link">
+                    <p>Don't have an account? <a href="SignUp.html">Sign Up</a></p>
+                </div>
             </div>
         </div>
     </div>
@@ -205,33 +209,6 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        document.getElementById('service-category').addEventListener('change', function() {
-            var category = this.value;
-            var serviceSelect = document.getElementById('service');
-            serviceSelect.innerHTML = ''; // Clear previous options
-
-            var services = {
-                'front-suspension': ['Small bike front suspension tuning', 'Big bike front suspension tuning'],
-                'steering': ['Ball race replacement', 'Steering alignment'],
-                'cvt': ['Cleaning', 'Tuning', 'Upgrades', 'Gearbox Bearing Replacement'],
-                'wheels': ['Installation', 'Static Balance', 'Computerized Balance'],
-                'rear-shock': ['Installation', 'Tuning', 'Repair'],
-                'suspension-profiling': ['Big bike', 'Small bike', 'Vespa'],
-                'breaking-system': ['Cleaning and Bleeding'],
-                'electrical': ['Horn and Aux light']
-            };
-
-            if (services[category]) {
-                services[category].forEach(function(service) {
-                    var option = document.createElement('option');
-                    option.value = service.toLowerCase().replace(/ /g, '-');
-                    option.text = service;
-                    serviceSelect.appendChild(option);
-                });
-            }
-        });
-    </script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="script.js"></script>
 </body>
