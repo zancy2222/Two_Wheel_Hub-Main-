@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="chat.css">
     <style>
 
         .category-card {
@@ -111,7 +112,7 @@
                     <img src="https://via.placeholder.com/400x250?text=Suspension+Oils" class="card-img-top category-img" alt="Suspension Oils">
                     <div class="card-body category-card-body">
                         <h5 class="card-title category-card-title">Suspension Oils</h5>
-                        <a href="SuspensionOils.html" class="btn category-card-btn">View</a>
+                        <a href="SuspensionOilsMain.html" class="btn category-card-btn">View</a>
                     </div>
                 </div>
             </div>
@@ -120,7 +121,7 @@
                     <img src="https://via.placeholder.com/400x250?text=Rear+Shock" class="card-img-top category-img" alt="Rear Shock">
                     <div class="card-body category-card-body">
                         <h5 class="card-title category-card-title">Rear Shock</h5>
-                        <a href="RearShock.html" class="btn category-card-btn">View</a>
+                        <a href="RearShockMain.html" class="btn category-card-btn">View</a>
                     </div>
                 </div>
             </div>
@@ -129,7 +130,7 @@
                     <img src="https://via.placeholder.com/400x250?text=Accessories" class="card-img-top category-img" alt="Accessories">
                     <div class="card-body category-card-body">
                         <h5 class="card-title category-card-title">Accessories</h5>
-                        <a href="Accessories.html" class="btn category-card-btn">View</a>
+                        <a href="AccessoriesMain.html" class="btn category-card-btn">View</a>
                     </div>
                 </div>
             </div>
@@ -138,7 +139,7 @@
                     <img src="https://via.placeholder.com/400x250?text=Tires" class="card-img-top category-img" alt="Tires">
                     <div class="card-body category-card-body">
                         <h5 class="card-title category-card-title">Tires</h5>
-                        <a href="Tires.html" class="btn category-card-btn">View</a>
+                        <a href="TiresMain.html" class="btn category-card-btn">View</a>
                     </div>
                 </div>
             </div>
@@ -147,13 +148,34 @@
                     <img src="https://via.placeholder.com/400x250?text=Others" class="card-img-top category-img" alt="Others">
                     <div class="card-body category-card-body">
                         <h5 class="card-title category-card-title">Others</h5>
-                        <a href="Others.html" class="btn category-card-btn">View</a>
+                        <a href="OthersMain.html" class="btn category-card-btn">View</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!-- Chat Icon -->
+    <div class="chat-icon" onclick="toggleChat()">
+        <i class="fas fa-comments"></i>
+    </div>
 
+    <!-- Chat Window -->
+    <div class="chat-window" id="chat-window">
+        <div class="chat-header">Chat with us</div>
+        <div class="chat-body" id="chat-body">
+            <!-- Example messages -->
+            <div class="chat-message chat-message-received">
+                Hello! How can I help you today?
+            </div>
+            <div class="chat-message chat-message-sent">
+                Hi, I'd like to inquire about booking an appointment.
+            </div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chat-input" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
     <!-- Footer -->
     <footer class="footer">
         <div class="container">

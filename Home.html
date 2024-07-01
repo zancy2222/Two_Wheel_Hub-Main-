@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="chat.css">
     <style>
 
         /* Custom carousel styles */
@@ -480,6 +481,29 @@
     </div>
   </div>
 
+  
+    <!-- Chat Icon -->
+    <div class="chat-icon" onclick="toggleChat()">
+      <i class="fas fa-comments"></i>
+  </div>
+
+  <!-- Chat Window -->
+  <div class="chat-window" id="chat-window">
+      <div class="chat-header">Chat with us</div>
+      <div class="chat-body" id="chat-body">
+          <!-- Example messages -->
+          <div class="chat-message chat-message-received">
+              Hello! How can I help you today?
+          </div>
+          <div class="chat-message chat-message-sent">
+              Hi, I'd like to inquire about booking an appointment.
+          </div>
+      </div>
+      <div class="chat-footer">
+          <input type="text" id="chat-input" placeholder="Type a message...">
+          <button onclick="sendMessage()">Send</button>
+      </div>
+  </div>
 
  <!-- Footer -->
  <footer class="footer">
