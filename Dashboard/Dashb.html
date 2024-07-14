@@ -7,6 +7,57 @@
     <!-- Boxicons CDN Link -->
     <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      .home-section {
+        padding: 20px;
+        text-align: center;
+    }
+    .home-section .text {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+    .card {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 250px;
+        padding: 20px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: transform 0.3s;
+    }
+    .card:hover {
+        transform: translateY(-10px);
+    }
+    .card-icon {
+        font-size: 40px;
+        margin-bottom: 15px;
+        color: #890606;
+    }
+    .card-title {
+        font-size: 18px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+    .card-text {
+        font-size: 14px;
+        color: #666;
+    }
+    .card-number {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333;
+    }
+    </style>
   </head>
   <body>
     <div class="sidebar">
@@ -84,9 +135,43 @@
         </li>
       </ul>
     </div>
-    <section class="home-section">
+    <section class="home-section mt-5">
       <div class="text">Dashboard</div>
-    </section>
+      <div class="card-container">
+          <div class="card">
+              <i class='bx bx-box card-icon'></i>
+              <div class="card-number">120</div>
+              <div>
+                  <h5 class="card-title">Products</h5>
+                  <p class="card-text">Manage your products.</p>
+              </div>
+          </div>
+          <div class="card">
+              <i class='bx bx-calendar card-icon'></i>
+              <div class="card-number">45</div>
+              <div>
+                  <h5 class="card-title">Appointments</h5>
+                  <p class="card-text">View and manage appointments.</p>
+              </div>
+          </div>
+          <div class="card">
+              <i class='bx bx-user card-icon'></i>
+              <div class="card-number">320</div>
+              <div>
+                  <h5 class="card-title">Total User</h5>
+                  <p class="card-text">View total users.</p>
+              </div>
+          </div>
+          <div class="card">
+              <i class='bx bx-category card-icon'></i>
+              <div class="card-number">10</div>
+              <div>
+                  <h5 class="card-title">Categories</h5>
+                  <p class="card-text">Manage categories.</p>
+              </div>
+          </div>
+      </div>
+  </section>
 
     <script src="script.js"></script>
   </body>
