@@ -1,54 +1,44 @@
+<?php
+include 'partials/session.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop</title>
+    <title>Booking Appointment</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="chat.css">
     <style>
-
-        .category-card {
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: none;
+        .booking-form {
+            background-color: var(--light-grey-color);
+            padding: 30px;
             border-radius: 10px;
-            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
-        .category-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .category-img {
-            height: 250px;
-            object-fit: cover;
-        }
-
-        .category-card-body {
-            padding: 20px;
-            background-color: var(--white-color);
-        }
-
-        .category-card-title {
-            font-size: 1.5rem;
+        .booking-form .form-group label {
             font-weight: bold;
-            margin-bottom: 15px;
         }
-
-        .category-card-btn {
+        .booking-form .form-group select,
+        .booking-form .form-group input {
+            border: 1px solid var(--grey-color);
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .booking-form .btn {
             background-color: var(--primary-color);
             color: var(--white-color);
+            border: none;
             padding: 10px 20px;
             border-radius: 5px;
-            transition: background-color var(--transition-speed);
+            cursor: pointer;
         }
-
-        .category-card-btn:hover {
+        .booking-form .btn:hover {
             background-color: var(--secondary-color);
         }
+
     </style>
 </head>
 <body>
@@ -79,13 +69,13 @@
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="Home.html">Home</a>
+                        <a class="nav-link" href="Home.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="Shop.html">Shop</a>
+                    <a class="nav-link " href="ShopMain.php">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Contact.html">Contact Us</a>
+                        <a class="nav-link" href="Contact.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About Us</a>
@@ -94,66 +84,56 @@
                         <a class="nav-link" href="#">Blog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="BookingAppointment.html">Booking Appointment</a>
+                    <a class="nav-link active" href="BookingAppointmentMain.php">Booking Appointment</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Login.html">Log in</a>
+                        <a class="nav-link" href="Login.php">Login</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
+    <!-- Booking Appointment Form -->
     <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="https://via.placeholder.com/400x250?text=Suspension+Oils" class="card-img-top category-img" alt="Suspension Oils">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Suspension Oils</h5>
-                        <a href="SuspensionOilsMain.html" class="btn category-card-btn">View</a>
-                    </div>
-                </div>
+        <h2 class="text-center">Book an Appointment</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+            <form class="booking-form" action="partials/process_booking.php" method="post">
+            <div class="form-group">
+                <label for="service-category">Service Category</label>
+                <select class="form-control" id="service-category" name="service_category" required>
+                    <option value="">Select a category</option>
+                    <option value="front-suspension">Front Suspension</option>
+                    <option value="steering">Steering</option>
+                    <option value="cvt">CVT</option>
+                    <option value="wheels">Wheels</option>
+                    <option value="rear-shock">Rear Shock</option>
+                    <option value="suspension-profiling">Suspension Profiling</option>
+                    <option value="breaking-system">Breaking System</option>
+                    <option value="electrical">Electrical</option>
+                </select>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="https://via.placeholder.com/400x250?text=Rear+Shock" class="card-img-top category-img" alt="Rear Shock">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Rear Shock</h5>
-                        <a href="RearShockMain.html" class="btn category-card-btn">View</a>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="service">Service</label>
+                <select class="form-control" id="service" name="service" required>
+                    <option value="">Select a service</option>
+                </select>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="https://via.placeholder.com/400x250?text=Accessories" class="card-img-top category-img" alt="Accessories">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Accessories</h5>
-                        <a href="AccessoriesMain.html" class="btn category-card-btn">View</a>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="date">Preferred Date</label>
+                <input type="date" class="form-control" id="date" name="preferred_date" required>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="https://via.placeholder.com/400x250?text=Tires" class="card-img-top category-img" alt="Tires">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Tires</h5>
-                        <a href="TiresMain.html" class="btn category-card-btn">View</a>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="time">Preferred Time</label>
+                <input type="time" class="form-control" id="time" name="preferred_time" required>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="https://via.placeholder.com/400x250?text=Others" class="card-img-top category-img" alt="Others">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Others</h5>
-                        <a href="OthersMain.html" class="btn category-card-btn">View</a>
-                    </div>
-                </div>
+            <button type="submit" class="btn btn-primary btn-block">Reserve</button>
+        </form>
             </div>
         </div>
     </div>
+
     <!-- Chat Icon -->
     <div class="chat-icon" onclick="toggleChat()">
         <i class="fas fa-comments"></i>
@@ -176,6 +156,7 @@
             <button onclick="sendMessage()">Send</button>
         </div>
     </div>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -183,8 +164,8 @@
                 <div class="col-md-3 footer-column">
                     <h5>OFFICE ADDRESS</h5>
                     <p>Unit B, 2/F Topy II Building,<br>
-                    No.3 Economia St.,<br>
-                    Bagumbayan, Quezon City</p>
+                       No.3 Economia St.,<br>
+                       Bagumbayan, Quezon City</p>
                     <p>
                         Telephone: <br>
                         + (632) 8470-4745 (loc: 162 or 168)<br>
@@ -239,7 +220,55 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="script.js"></script>
+    <script>
+ document.getElementById('service-category').addEventListener('change', function() {
+            var category = this.value;
+            var serviceSelect = document.getElementById('service');
+            serviceSelect.innerHTML = ''; // Clear previous options
+
+            var services = {
+                'front-suspension': ['Standard front suspension tuning', 'Link-type front suspension tuning'],
+                'steering': ['Steering Overhaul', 'Big bike steering Overhaul'],
+                'cvt': ['Small bike CVT Tune up', 'Big bike CVT Tune up', 'Small bike CVT Drivetrain Overhaul', 'Big bike CVT Drivetrain Overhaul'],
+                'wheels': ['Small bike wheel set and tune', 'Big bike wheel set and tune'],
+                'rear-shock': ['Small bike Rear shock tune up', 'Big bike Rear shock tune up'],
+                'suspension-profiling': ['Suspension profiling - New', 'Suspension profiling - Existing'],
+                'breaking-system': ['Small bike Break Overhaul', 'Big bike Break Overhaul'],
+                'electrical': ['Electrical Trouble shooting', 'Big bike Electrical Trouble shooting']
+            };
+
+            if (services[category]) {
+                services[category].forEach(function(service) {
+                    var option = document.createElement('option');
+                    option.value = service.toLowerCase().replace(/\s+/g, '-');
+                    option.textContent = service;
+                    serviceSelect.appendChild(option);
+                });
+            }
+        });
+
+        function toggleChat() {
+            var chatWindow = document.getElementById('chat-window');
+            if (chatWindow.style.display === 'none' || chatWindow.style.display === '') {
+                chatWindow.style.display = 'block';
+            } else {
+                chatWindow.style.display = 'none';
+            }
+        }
+
+        function sendMessage() {
+            var chatBody = document.getElementById('chat-body');
+            var chatInput = document.getElementById('chat-input');
+            var message = chatInput.value.trim();
+            if (message) {
+                var messageDiv = document.createElement('div');
+                messageDiv.textContent = message;
+                messageDiv.className = 'chat-message chat-message-sent';
+                chatBody.appendChild(messageDiv);
+                chatInput.value = '';
+                chatBody.scrollTop = chatBody.scrollHeight; // Scroll to the bottom
+            }
+        }
+    </script>
 </body>
 </html>

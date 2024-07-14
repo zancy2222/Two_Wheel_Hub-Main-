@@ -95,13 +95,13 @@
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="Home.html">Home</a>
+                        <a class="nav-link" href="Home.php">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Contact.html">Contact Us</a>
+                        <a class="nav-link" href="Contact.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About Us</a>
@@ -110,10 +110,10 @@
                         <a class="nav-link" href="#">Blog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="BookingAppointment.html">Booking Appointment</a>
+                        <a class="nav-link" href="BookingAppointment.php">Booking Appointment</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="Login.html">Log in</a>
+                        <a class="nav-link active" href="Login.php">Log in</a>
                     </li>
                 </ul>
             </div>
@@ -128,19 +128,19 @@
             </div>
             <div class="col-md-6">
                 <h2>Welcome Back!</h2>
-                <form>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Login</button>
-                </form>
+                <form action="partials/login_process.php" method="post">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form>
                 <div class="login-link">
-                    <p>Don't have an account? <a href="SignUp.html">Sign Up</a></p>
+                    <p>Don't have an account? <a href="SignUp.php">Sign Up</a></p>
                 </div>
             </div>
         </div>

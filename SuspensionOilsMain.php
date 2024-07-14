@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accessories - Products</title>
+    <title>Suspension Oils - Products</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="chat.css">
@@ -273,7 +273,7 @@
                 </div>
             </form>
             <div class="navbar-icons">
-                <a class="nav-link" href="cart.html"><i class="fa fa-shopping-cart"></i><span class="cart-count">0</span></a>
+                <a class="nav-link" href="cart.php"><i class="fa fa-shopping-cart"></i><span class="cart-count">0</span></a>
             </div>
         </div>
     </nav>
@@ -286,13 +286,13 @@
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="Home.html">Home</a>
+                        <a class="nav-link" href="Home.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="Shop.html">Shop</a>
+                        <a class="nav-link active" href="Shop.php">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Contact.html">Contact Us</a>
+                        <a class="nav-link" href="Contact.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About Us</a>
@@ -301,10 +301,10 @@
                         <a class="nav-link" href="#">Blog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="BookingAppointment.html">Booking Appointment</a>
+                        <a class="nav-link" href="BookingAppointment.php">Booking Appointment</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Login.html">Log in</a>
+                        <a class="nav-link" href="Login.php">Log in</a>
                     </li>
                 </ul>
             </div>
@@ -320,7 +320,7 @@
                     <div class="card-body product-card-body">
                         <h5 class="card-title product-card-title">Product 1</h5>
                         <p class="card-text product-card-description">This is a short description of Product 1.</p>
-                        <p class="card-text product-card-info">Category: Accessories</p>
+                        <p class="card-text product-card-info">Category: Suspension Oils</p>
                         <p class="card-text product-card-info">Size: 1L</p>
                         <p class="card-text product-card-info">Color: Transparent</p>
                         <p class="card-text product-card-price">$19.99</p>
@@ -337,7 +337,7 @@
                     <div class="card-body product-card-body">
                         <h5 class="card-title product-card-title">Product 2</h5>
                         <p class="card-text product-card-description">This is a short description of Product 2.</p>
-                        <p class="card-text product-card-info">Category: Accessories</p>
+                        <p class="card-text product-card-info">Category: Suspension Oils</p>
                         <p class="card-text product-card-info">Size: 1L</p>
                         <p class="card-text product-card-info">Color: Transparent</p>
                         <p class="card-text product-card-price">$19.99</p>
@@ -354,7 +354,7 @@
                     <div class="card-body product-card-body">
                         <h5 class="card-title product-card-title">Product 3</h5>
                         <p class="card-text product-card-description">This is a short description of Product 3.</p>
-                        <p class="card-text product-card-info">Category: Accessories</p>
+                        <p class="card-text product-card-info">Category: Suspension Oils</p>
                         <p class="card-text product-card-info">Size: 1L</p>
                         <p class="card-text product-card-info">Color: Transparent</p>
                         <p class="card-text product-card-price">$19.99</p>
@@ -371,7 +371,7 @@
                     <div class="card-body product-card-body">
                         <h5 class="card-title product-card-title">Product 1</h5>
                         <p class="card-text product-card-description">This is a short description of Product 1.</p>
-                        <p class="card-text product-card-info">Category: Accessories</p>
+                        <p class="card-text product-card-info">Category: Suspension Oils</p>
                         <p class="card-text product-card-info">Size: 1L</p>
                         <p class="card-text product-card-info">Color: Transparent</p>
                         <p class="card-text product-card-price">$19.99</p>
@@ -388,7 +388,7 @@
                     <div class="card-body product-card-body">
                         <h5 class="card-title product-card-title">Product 2</h5>
                         <p class="card-text product-card-description">This is a short description of Product 2.</p>
-                        <p class="card-text product-card-info">Category: Accessories</p>
+                        <p class="card-text product-card-info">Category: Suspension Oils</p>
                         <p class="card-text product-card-info">Size: 1L</p>
                         <p class="card-text product-card-info">Color: Transparent</p>
                         <p class="card-text product-card-price">$19.99</p>
@@ -405,7 +405,7 @@
                     <div class="card-body product-card-body">
                         <h5 class="card-title product-card-title">Product 3</h5>
                         <p class="card-text product-card-description">This is a short description of Product 3.</p>
-                        <p class="card-text product-card-info">Category: Accessories</p>
+                        <p class="card-text product-card-info">Category: Suspension Oils</p>
                         <p class="card-text product-card-info">Size: 1L</p>
                         <p class="card-text product-card-info">Color: Transparent</p>
                         <p class="card-text product-card-price">$19.99</p>
@@ -418,7 +418,6 @@
             </div>
         </div>
     </div>
-
     <!-- Chat Icon -->
     <div class="chat-icon" onclick="toggleChat()">
         <i class="fas fa-comments"></i>
@@ -441,7 +440,6 @@
             <button onclick="sendMessage()">Send</button>
         </div>
     </div>
-
     <!-- Footer -->
     <footer class="footer">
         <div class="container">

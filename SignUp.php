@@ -95,13 +95,13 @@
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="Home.html">Home</a>
+                        <a class="nav-link" href="Home.php">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Contact.html">Contact Us</a>
+                        <a class="nav-link" href="Contact.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About Us</a>
@@ -110,10 +110,10 @@
                         <a class="nav-link" href="#">Blog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="BookingAppointment.html">Booking Appointment</a>
+                        <a class="nav-link" href="BookingAppointment.php">Booking Appointment</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="SignUp.html">Sign Up</a>
+                        <a class="nav-link active" href="SignUp.php">Sign Up</a>
                     </li>
                 </ul>
             </div>
@@ -123,37 +123,37 @@
     <!-- Sign Up Form -->
     <div class="container signup-container">
         <h2>Create Your Account</h2>
-        <form>
+        <form action="partials/reg_process.php" method="post">
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="firstName">First Name</label>
-                    <input type="text" class="form-control" id="firstName" placeholder="Enter your first name" required>
+                    <input type="text" class="form-control" id="firstName" name="first_name" placeholder="Enter your first name" required>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="lastName">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" placeholder="Enter your last name" required>
+                    <input type="text" class="form-control" id="lastName" name="last_name" placeholder="Enter your last name" required>
                 </div>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
             </div>
             <div class="form-group">
                 <label for="address">Complete Address</label>
-                <input type="text" class="form-control" id="unit-no" placeholder="Unit No./House No./Building" required>
-                <input type="text" class="form-control mt-2" id="street" placeholder="Street" required>
-                <input type="text" class="form-control mt-2" id="barangay" placeholder="Barangay" required>
-                <input type="text" class="form-control mt-2" id="city" placeholder="City" required>
-                <input type="text" class="form-control mt-2" id="province" placeholder="Province" required>
-                <input type="text" class="form-control mt-2" id="zip-code" placeholder="Zip Code" required>
+                <input type="text" class="form-control" id="unit-no" name="unit_no_house_no_building" placeholder="Unit No./House No./Building" required>
+                <input type="text" class="form-control mt-2" id="street" name="street" placeholder="Street" required>
+                <input type="text" class="form-control mt-2" id="barangay" name="barangay" placeholder="Barangay" required>
+                <input type="text" class="form-control mt-2" id="city" name="city" placeholder="City" required>
+                <input type="text" class="form-control mt-2" id="province" name="province" placeholder="Province" required>
+                <input type="text" class="form-control mt-2" id="zip-code" name="zip_code" placeholder="Zip Code" required>
             </div>
             <div class="form-group">
                 <label for="phone">Mobile/Phone No.</label>
-                <input type="tel" class="form-control" id="phone" placeholder="Enter your mobile/phone number" required>
+                <input type="tel" class="form-control" id="phone" name="mobile_phone_no" placeholder="Enter your mobile/phone number" required>
             </div>
             <button type="submit" class="btn btn-primary btn-block">Create Account</button>
         </form>
