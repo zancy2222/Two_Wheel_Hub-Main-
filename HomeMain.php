@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="chat.css">
     <style>
-@font-face {
+        @font-face {
     font-family: 'League Spartan';
     src: url('League_Spartan/static/LeagueSpartan-Regular.ttf') format('truetype');
     font-weight: normal;
@@ -552,7 +552,7 @@ body {
   <div class="container new-section mt-3 mb-3">
     <div class="row">
       <div class="col-12">
-        <h2 class="text-center mb-4 mt-4">OFFICIAL NATIONWIDE DISTRUBUTOR</h2>
+      <h2 class="text-center mb-4 mt-4">OFFICIAL NATIONWIDE DISTRUBUTOR</h2>
       </div>
       <div class="col-md-4 mb-4">
         <div class="new-section-item" style="background-color: #009DDF">

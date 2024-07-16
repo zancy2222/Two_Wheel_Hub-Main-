@@ -9,6 +9,15 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="chat.css">
     <style>
+                @font-face {
+    font-family: 'League Spartan';
+    src: url('League_Spartan/static/LeagueSpartan-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+body {
+    font-family: 'League Spartan', sans-serif;
+}
 .contact-info p {
     font-size: 1.1rem;
     color:var(--secondary-color);
@@ -129,10 +138,10 @@
         <div class="col-md-6 mb-4">
             <div class="card p-4">
                 <h2>Contact Information</h2>
-                <p><i class="bi bi-geo-alt-fill"></i> Address: 123 Motorcycle Lane, Biker City, Motorland 45678</p>
-                <p><i class="bi bi-telephone-fill"></i> Phone: +123 456 7890</p>
-                <p><i class="bi bi-envelope-fill"></i> Email: info@twowheelhub.com</p>
-                <p><i class="bi bi-clock-fill"></i> Business Hours: Mon - Fri, 9:00 AM - 6:00 PM</p>
+                <p><i class="bi bi-geo-alt-fill"></i> Address: 1665 Ilang Ilang St. Bgry 174, Caloocan, Philippines</p>
+                <p><i class="bi bi-telephone-fill"></i> Phone: + (63) 917 - 5695 - 469</p>
+                <p><i class="bi bi-envelope-fill"></i> Email: info@avmototuning.com</p>
+                <p><i class="bi bi-clock-fill"></i> Business Hours: Mon - Sun, 8:00 AM - 5:00 PM</p>
                 <div class="map-container" style="height: 300px;">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3111.547325087034!2d-77.03687078467502!3d38.89767607957079!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89b7b7b82373aef7%3A0x42948dc587b01e93!2sWhite%20House!5e0!3m2!1sen!2sus!4v1620051321269!5m2!1sen!2sus" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                 </div>
@@ -169,15 +178,14 @@
         <div class="row">
             <div class="col-md-3 footer-column">
                 <h5>OFFICE ADDRESS</h5>
-                <p>Unit B, 2/F Topy II Building,<br>
-                   No.3 Economia St.,<br>
-                   Bagumbayan, Quezon City</p>
+                <p>1665 Ilang Ilang St. <br>
+                     Bgry 174,<br>
+                   Caloocan, Philippines</p>
                 <p>
                     Telephone: <br>
-                    + (632) 8470-4745 (loc: 162 or 168)<br>
-                    + (632) 8470-4746 (loc: 162 or 168)<br>
+                    + (63) 917 - 5695 - 469<br>
                     Ecommerce Team:<br>
-                    Mon-Fri 8:00am-4:00pm, excluding holidays
+                    Mon-Sun 8:00am-5:00pm, excluding holidays
                 </p>
             </div>
             <div class="col-md-3 footer-column">
@@ -190,18 +198,7 @@
                     <li><a href="#">Return, Exchange, Cancellation & Refund Policy</a></li>
                 </ul>
             </div>
-            <div class="col-md-3 footer-column">
-                <h5>QUICK LINKS</h5>
-                <ul>
-                    <li><a href="#">Motorcycle</a></li>
-                    <li><a href="#">Bicycle</a></li>
-                    <li><a href="#">SALE</a></li>
-                    <li><a href="#">Stores</a></li>
-                    <li><a href="#">News</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">BE A DEALER</a></li>
-                </ul>
-            </div>
+
             <div class="col-md-3 footer-column">
                 <h5>NEWSLETTER</h5>
                 <p>Receive our latest news, product launches & exclusive offers. T&Cs Apply</p>

@@ -10,7 +10,15 @@
     <link rel="stylesheet" href="chat.css">
     <style>
 
-
+@font-face {
+    font-family: 'League Spartan';
+    src: url('League_Spartan/static/LeagueSpartan-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+body {
+    font-family: 'League Spartan', sans-serif;
+}
     </style>
 </head>
 <body>
@@ -88,21 +96,19 @@
             <button onclick="sendMessage()">Send</button>
         </div>
     </div>
- <!-- Footer -->
- <footer class="footer">
+    <footer class="footer">
     <div class="container">
         <div class="row">
             <div class="col-md-3 footer-column">
                 <h5>OFFICE ADDRESS</h5>
-                <p>Unit B, 2/F Topy II Building,<br>
-                   No.3 Economia St.,<br>
-                   Bagumbayan, Quezon City</p>
+                <p>1665 Ilang Ilang St. <br>
+                     Bgry 174,<br>
+                   Caloocan, Philippines</p>
                 <p>
                     Telephone: <br>
-                    + (632) 8470-4745 (loc: 162 or 168)<br>
-                    + (632) 8470-4746 (loc: 162 or 168)<br>
+                    + (63) 917 - 5695 - 469<br>
                     Ecommerce Team:<br>
-                    Mon-Fri 8:00am-4:00pm, excluding holidays
+                     Mon-Sun 8:00am-5:00pm, excluding holidays
                 </p>
             </div>
             <div class="col-md-3 footer-column">
@@ -115,18 +121,7 @@
                     <li><a href="#">Return, Exchange, Cancellation & Refund Policy</a></li>
                 </ul>
             </div>
-            <div class="col-md-3 footer-column">
-                <h5>QUICK LINKS</h5>
-                <ul>
-                    <li><a href="#">Motorcycle</a></li>
-                    <li><a href="#">Bicycle</a></li>
-                    <li><a href="#">SALE</a></li>
-                    <li><a href="#">Stores</a></li>
-                    <li><a href="#">News</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">BE A DEALER</a></li>
-                </ul>
-            </div>
+
             <div class="col-md-3 footer-column">
                 <h5>NEWSLETTER</h5>
                 <p>Receive our latest news, product launches & exclusive offers. T&Cs Apply</p>
