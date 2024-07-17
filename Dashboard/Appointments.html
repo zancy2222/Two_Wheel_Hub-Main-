@@ -222,100 +222,109 @@
         </li>
       </ul>
     </div>
-    <section class="home-section">
-      <div class="text">Dashboard</div>
-      <div class="search-bar">
-          <input type="text" placeholder="Search users...">
-          <button class="add-button">Add User</button>
-      </div>
-      <table id="userTable">
-          <thead>
-              <tr>
-                  <th>ID</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Email</th>
-                  <th>Address</th>
-                  <th>Mobile/Phone No.</th>
-                  <th>Actions</th>
-              </tr>
-          </thead>
-          <tbody>
-              <!-- User rows will be dynamically added here -->
-          </tbody>
-      </table>
-      <div class="pagination">
-          <button id="prevBtn" onclick="prevPage()">Prev</button>
-          <button id="nextBtn" onclick="nextPage()">Next</button>
-      </div>
-  </section>
-
-  <script>
-      const users = [
-          { id: 1, first_name: 'John', last_name: 'Doe', email: 'john.doe@example.com', address: '123 Main St, Barangay 1, City, Province, 12345', mobile_phone_no: '123-456-7890' },
-          { id: 2, first_name: 'Jane', last_name: 'Smith', email: 'jane.smith@example.com', address: '456 Elm St, Barangay 2, City, Province, 67890', mobile_phone_no: '098-765-4321' },
-          { id: 3, first_name: 'Mike', last_name: 'Johnson', email: 'mike.johnson@example.com', address: '789 Oak St, Barangay 3, City, Province, 11223', mobile_phone_no: '555-555-5555' },
-          { id: 4, first_name: 'Sara', last_name: 'Wilson', email: 'sara.wilson@example.com', address: '321 Pine St, Barangay 4, City, Province, 44556', mobile_phone_no: '666-666-6666' },
-          { id: 5, first_name: 'David', last_name: 'Brown', email: 'david.brown@example.com', address: '654 Cedar St, Barangay 5, City, Province, 77889', mobile_phone_no: '777-777-7777' },
-          { id: 6, first_name: 'Laura', last_name: 'Davis', email: 'laura.davis@example.com', address: '987 Maple St, Barangay 6, City, Province, 99001', mobile_phone_no: '888-888-8888' },
-          { id: 7, first_name: 'Chris', last_name: 'Lee', email: 'chris.lee@example.com', address: '123 Birch St, Barangay 7, City, Province, 22334', mobile_phone_no: '999-999-9999' },
-          { id: 8, first_name: 'Anna', last_name: 'Scott', email: 'anna.scott@example.com', address: '456 Willow St, Barangay 8, City, Province, 55667', mobile_phone_no: '111-111-1111' },
-          { id: 9, first_name: 'Tom', last_name: 'Baker', email: 'tom.baker@example.com', address: '789 Fir St, Barangay 9, City, Province, 88900', mobile_phone_no: '222-222-2222' },
-          { id: 10, first_name: 'Linda', last_name: 'Adams', email: 'linda.adams@example.com', address: '321 Spruce St, Barangay 10, City, Province, 33445', mobile_phone_no: '333-333-3333' },
-          { id: 11, first_name: 'James', last_name: 'White', email: 'james.white@example.com', address: '654 Poplar St, Barangay 11, City, Province, 66778', mobile_phone_no: '444-444-4444' },
-          { id: 12, first_name: 'Patricia', last_name: 'Harris', email: 'patricia.harris@example.com', address: '987 Alder St, Barangay 12, City, Province, 99012', mobile_phone_no: '555-555-5555' }
-      ];
-
-      const rowsPerPage = 5;
-      let currentPage = 1;
-
-      function renderTable() {
-          const tableBody = document.querySelector('#userTable tbody');
-          tableBody.innerHTML = '';
-
-          const start = (currentPage - 1) * rowsPerPage;
-          const end = start + rowsPerPage;
-          const pageUsers = users.slice(start, end);
-
-          pageUsers.forEach(user => {
-              const row = document.createElement('tr');
-              row.innerHTML = `
-                  <td>${user.id}</td>
-                  <td>${user.first_name}</td>
-                  <td>${user.last_name}</td>
-                  <td>${user.email}</td>
-                  <td>${user.address}</td>
-                  <td>${user.mobile_phone_no}</td>
-                  <td class="action-buttons">
-                      <button>Edit</button>
-                      <button>Delete</button>
-                  </td>
-              `;
-              tableBody.appendChild(row);
-          });
-
-          document.getElementById('prevBtn').disabled = currentPage === 1;
-          document.getElementById('nextBtn').disabled = currentPage === Math.ceil(users.length / rowsPerPage);
-      }
-
-      function prevPage() {
-          if (currentPage > 1) {
-              currentPage--;
-              renderTable();
+    <body>
+      <section class="home-section">
+          <div class="text">Appointment</div>
+          <div class="search-bar">
+              <input type="text" placeholder="Search appointments...">
+              <button class="add-button">Add Appointment</button>
+          </div>
+          <table id="appointmentTable">
+              <thead>
+                  <tr>
+                      <th>ID</th>
+                      <th>Service Category</th>
+                      <th>Service</th>
+                      <th>Preferred Date</th>
+                      <th>Preferred Time</th>
+                      <th>Email Address</th>
+                      <th>First Name</th>
+                      <th>Middle Name</th>
+                      <th>Last Name</th>
+                      <th>Complete Address</th>
+                      <th>Mobile/Phone No.</th>
+                      <th>Actions</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <!-- Appointment rows will be dynamically added here -->
+              </tbody>
+          </table>
+          <div class="pagination">
+              <button id="prevBtn" onclick="prevPage()">Prev</button>
+              <button id="nextBtn" onclick="nextPage()">Next</button>
+          </div>
+      </section>
+  
+      <script>
+          const appointments = [
+              {
+                  id: 1, serviceCategory: 'Category 1', service: 'Service 1', preferredDate: '2024-07-20', preferredTime: '10:00 AM',
+                  email: 'john.doe@example.com', firstName: 'John', middleName: 'A.', lastName: 'Doe',
+                  address: 'Unit 1, Building 1, Street 1, Barangay 1, City 1, Province 1, Zip 1111', phone: '123-456-7890'
+              },
+              {
+                  id: 2, serviceCategory: 'Category 2', service: 'Service 2', preferredDate: '2024-07-21', preferredTime: '11:00 AM',
+                  email: 'jane.smith@example.com', firstName: 'Jane', middleName: 'B.', lastName: 'Smith',
+                  address: 'Unit 2, Building 2, Street 2, Barangay 2, City 2, Province 2, Zip 2222', phone: '234-567-8901'
+              },
+              // Add more appointments as needed
+          ];
+  
+          const rowsPerPage = 5;
+          let currentPage = 1;
+  
+          function renderTable() {
+              const tableBody = document.querySelector('#appointmentTable tbody');
+              tableBody.innerHTML = '';
+  
+              const start = (currentPage - 1) * rowsPerPage;
+              const end = start + rowsPerPage;
+              const pageAppointments = appointments.slice(start, end);
+  
+              pageAppointments.forEach(appointment => {
+                  const row = document.createElement('tr');
+                  row.innerHTML = `
+                      <td>${appointment.id}</td>
+                      <td>${appointment.serviceCategory}</td>
+                      <td>${appointment.service}</td>
+                      <td>${appointment.preferredDate}</td>
+                      <td>${appointment.preferredTime}</td>
+                      <td>${appointment.email}</td>
+                      <td>${appointment.firstName}</td>
+                      <td>${appointment.middleName}</td>
+                      <td>${appointment.lastName}</td>
+                      <td>${appointment.address}</td>
+                      <td>${appointment.phone}</td>
+                      <td class="action-buttons">
+                          <button>Edit</button>
+                          <button>Delete</button>
+                      </td>
+                  `;
+                  tableBody.appendChild(row);
+              });
+  
+              document.getElementById('prevBtn').disabled = currentPage === 1;
+              document.getElementById('nextBtn').disabled = currentPage === Math.ceil(appointments.length / rowsPerPage);
           }
-      }
-
-      function nextPage() {
-          if (currentPage < Math.ceil(users.length / rowsPerPage)) {
-              currentPage++;
-              renderTable();
+  
+          function prevPage() {
+              if (currentPage > 1) {
+                  currentPage--;
+                  renderTable();
+              }
           }
-      }
-
-      // Initial render
-      renderTable();
-  </script>
-
+  
+          function nextPage() {
+              if (currentPage < Math.ceil(appointments.length / rowsPerPage)) {
+                  currentPage++;
+                  renderTable();
+              }
+          }
+  
+          // Initial render
+          renderTable();
+      </script>
     <script src="script.js"></script>
   </body>
 </html>

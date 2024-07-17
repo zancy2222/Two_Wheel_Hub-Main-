@@ -331,7 +331,7 @@ body {
                         <p class="card-text product-card-info">Category: Accessories</p>
                         <p class="card-text product-card-info">Size: 1L</p>
                         <p class="card-text product-card-info">Color: Transparent</p>
-                        <p class="card-text product-card-price">$19.99</p>
+                        <p class="card-text product-card-price">₱19.99</p>
                         <div class="product-buttons">
                             <button class="btn btn-add-to-cart">Add to Cart</button>
                             <button class="btn btn-buy">Buy Now</button>
@@ -348,7 +348,7 @@ body {
                         <p class="card-text product-card-info">Category: Accessories</p>
                         <p class="card-text product-card-info">Size: 1L</p>
                         <p class="card-text product-card-info">Color: Transparent</p>
-                        <p class="card-text product-card-price">$19.99</p>
+                        <p class="card-text product-card-price">₱19.99</p>
                         <div class="product-buttons">
                             <button class="btn btn-add-to-cart">Add to Cart</button>
                             <button class="btn btn-buy">Buy Now</button>
@@ -365,7 +365,7 @@ body {
                         <p class="card-text product-card-info">Category: Accessories</p>
                         <p class="card-text product-card-info">Size: 1L</p>
                         <p class="card-text product-card-info">Color: Transparent</p>
-                        <p class="card-text product-card-price">$19.99</p>
+                        <p class="card-text product-card-price">₱19.99</p>
                         <div class="product-buttons">
                             <button class="btn btn-add-to-cart">Add to Cart</button>
                             <button class="btn btn-buy">Buy Now</button>
@@ -382,7 +382,7 @@ body {
                         <p class="card-text product-card-info">Category: Accessories</p>
                         <p class="card-text product-card-info">Size: 1L</p>
                         <p class="card-text product-card-info">Color: Transparent</p>
-                        <p class="card-text product-card-price">$19.99</p>
+                        <p class="card-text product-card-price">₱19.99</p>
                         <div class="product-buttons">
                             <button class="btn btn-add-to-cart">Add to Cart</button>
                             <button class="btn btn-buy">Buy Now</button>
@@ -399,7 +399,7 @@ body {
                         <p class="card-text product-card-info">Category: Accessories</p>
                         <p class="card-text product-card-info">Size: 1L</p>
                         <p class="card-text product-card-info">Color: Transparent</p>
-                        <p class="card-text product-card-price">$19.99</p>
+                        <p class="card-text product-card-price">₱19.99</p>
                         <div class="product-buttons">
                             <button class="btn btn-add-to-cart">Add to Cart</button>
                             <button class="btn btn-buy">Buy Now</button>
@@ -416,7 +416,7 @@ body {
                         <p class="card-text product-card-info">Category: Accessories</p>
                         <p class="card-text product-card-info">Size: 1L</p>
                         <p class="card-text product-card-info">Color: Transparent</p>
-                        <p class="card-text product-card-price">$19.99</p>
+                        <p class="card-text product-card-price">₱19.99</p>
                         <div class="product-buttons">
                             <button class="btn btn-add-to-cart">Add to Cart</button>
                             <button class="btn btn-buy">Buy Now</button>
