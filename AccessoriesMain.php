@@ -1,5 +1,9 @@
+<?php
+include 'partials/session.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,15 +23,18 @@
             --font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             --transition-speed: 0.3s;
         }
+
         @font-face {
-    font-family: 'League Spartan';
-    src: url('League_Spartan/static/LeagueSpartan-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-body {
-    font-family: 'League Spartan', sans-serif;
-}
+            font-family: 'League Spartan';
+            src: url('League_Spartan/static/LeagueSpartan-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: 'League Spartan', sans-serif;
+        }
+
         .navbar-light.bg-white {
             background-color: var(--white-color);
             border-bottom: 1px solid var(--grey-color);
@@ -266,6 +273,7 @@ body {
         }
     </style>
 </head>
+
 <body>
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
@@ -294,13 +302,13 @@ body {
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="Home.php">Home</a>
+                        <a class="nav-link" href="HomeMain.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="Shop.php">Shop</a>
+                        <a class="nav-link active" href="ShopMain.php">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Contact.php">Contact Us</a>
+                        <a class="nav-link" href="ContactMain.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About Us</a>
@@ -309,10 +317,10 @@ body {
                         <a class="nav-link" href="#">Blog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="BookingAppointment.php">Booking Appointment</a>
+                        <a class="nav-link" href="BookingAppointmentMain.php">Booking Appointment</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Login.php">Log in</a>
+                        <a class="nav-link" href="Login.php">Log out</a>
                     </li>
                 </ul>
             </div>
@@ -450,51 +458,51 @@ body {
     </div>
     <!-- Footer -->
     <footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3 footer-column">
-                <h5>OFFICE ADDRESS</h5>
-                <p>1665 Ilang Ilang St. <br>
-                     Bgry 174,<br>
-                   Caloocan, Philippines</p>
-                <p>
-                    Telephone: <br>
-                    + (63) 917 - 5695 - 469<br>
-                    Ecommerce Team:<br>
-                     Mon-Sun 8:00am-5:00pm, excluding holidays
-                </p>
-            </div>
-            <div class="col-md-3 footer-column">
-                <h5>CUSTOMER CARE</h5>
-                <ul>
-                    <li><a href="#">Terms & Conditions</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Payment Policy</a></li>
-                    <li><a href="#">Shipping & Delivery Policy</a></li>
-                    <li><a href="#">Return, Exchange, Cancellation & Refund Policy</a></li>
-                </ul>
-            </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 footer-column">
+                    <h5>OFFICE ADDRESS</h5>
+                    <p>1665 Ilang Ilang St. <br>
+                        Bgry 174,<br>
+                        Caloocan, Philippines</p>
+                    <p>
+                        Telephone: <br>
+                        + (63) 917 - 5695 - 469<br>
+                        Ecommerce Team:<br>
+                        Mon-Sun 8:00am-5:00pm, excluding holidays
+                    </p>
+                </div>
+                <div class="col-md-3 footer-column">
+                    <h5>CUSTOMER CARE</h5>
+                    <ul>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Payment Policy</a></li>
+                        <li><a href="#">Shipping & Delivery Policy</a></li>
+                        <li><a href="#">Return, Exchange, Cancellation & Refund Policy</a></li>
+                    </ul>
+                </div>
 
-            <div class="col-md-3 footer-column">
-                <h5>NEWSLETTER</h5>
-                <p>Receive our latest news, product launches & exclusive offers. T&Cs Apply</p>
-                <div class="newsletter">
-                    <input type="email" placeholder="Your email">
-                    <button>Subscribe</button>
-                </div>
-                <div class="social-icons" style="margin-top: 30px;">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                <div class="col-md-3 footer-column">
+                    <h5>NEWSLETTER</h5>
+                    <p>Receive our latest news, product launches & exclusive offers. T&Cs Apply</p>
+                    <div class="newsletter">
+                        <input type="email" placeholder="Your email">
+                        <button>Subscribe</button>
+                    </div>
+                    <div class="social-icons" style="margin-top: 30px;">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
                 </div>
             </div>
+            <div class="footer-bottom">
+                © 2024 AV MOTO Philippines.
+            </div>
         </div>
-        <div class="footer-bottom">
-            © 2024 AV MOTO Philippines.
-        </div>
-    </div>
-</footer>
+    </footer>
 
 
 
@@ -502,6 +510,7 @@ body {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>

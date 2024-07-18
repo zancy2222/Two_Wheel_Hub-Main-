@@ -1,3 +1,6 @@
+<?php
+include 'partials/session.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -295,13 +298,13 @@ body {
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="Home.php">Home</a>
+                        <a class="nav-link" href="HomeMain.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="Shop.php">Shop</a>
+                        <a class="nav-link active" href="ShopMain.php">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Contact.php">Contact Us</a>
+                        <a class="nav-link" href="ContactMain.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About Us</a>
@@ -310,10 +313,10 @@ body {
                         <a class="nav-link" href="#">Blog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="BookingAppointment.php">Booking Appointment</a>
+                        <a class="nav-link" href="BookingAppointmentMain.php">Booking Appointment</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Login.php">Log in</a>
+                        <a class="nav-link" href="Login.php">Log out</a>
                     </li>
                 </ul>
             </div>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,11 +11,11 @@
     <link rel="stylesheet" href="chat.css">
     <style>
         @font-face {
-    font-family: 'League Spartan';
-    src: url('League_Spartan/static/LeagueSpartan-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
+            font-family: 'League Spartan';
+            src: url('League_Spartan/static/LeagueSpartan-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
 
         body {
             /* Background image example */
@@ -22,10 +23,11 @@
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            font-family: 'League Spartan', sans-serif;            
+            font-family: 'League Spartan', sans-serif;
             /* Background color example */
             /* background-color: #f0f0f0; */
         }
+
         :root {
             --primary-color: #004AAD;
             --secondary-color: #009DDF;
@@ -37,9 +39,10 @@
             --font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             --transition-speed: 0.3s;
         }
-        
+
         /* Cart table styles */
-        .cart-table th, .cart-table td {
+        .cart-table th,
+        .cart-table td {
             vertical-align: middle;
             text-align: center;
             background-color: #009DDF;
@@ -59,13 +62,13 @@
         /* Checkout form styles */
         #checkout-form .form-group {
             margin-bottom: 1.5rem;
-            
+
         }
 
         #checkout-form .form-control {
             border-radius: 0;
             box-shadow: none;
-  
+
             border: 1px solid var(--grey-color);
         }
 
@@ -92,7 +95,7 @@
             border: none;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             background-color: #d0d1d4;
-            
+
         }
 
         .card img {
@@ -111,6 +114,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
@@ -176,8 +180,11 @@
                             <table class="table table-bordered cart-table">
                                 <thead>
                                     <tr>
-                                        <th>Product</th>
-                                        <th>Name</th>
+                                        <th>Full Name</th>
+                                        <th>Complete Address</th>
+                                        <th>Product Name</th>
+                                        <th>Color</th>
+                                        <th>Size</th>
                                         <th>Price</th>
                                         <th>Quantity</th>
                                         <th>Total</th>
@@ -190,7 +197,8 @@
                             </table>
                         </div>
                         <div class="text-right">
-                            <h4>Total: $<span id="cart-total" class="cart-total">0.00</span></h4>
+                            <h4>Total: ₱<span id="cart-total" class="cart-total">0.00</span></h4>
+                            <button class="btn-primary" id="place-order-btn">Place Order</button>
                         </div>
                     </div>
                 </div>
@@ -294,132 +302,59 @@
     </div>
     <!-- Footer -->
     <footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3 footer-column">
-                <h5>OFFICE ADDRESS</h5>
-                <p>1665 Ilang Ilang St. <br>
-                     Bgry 174,<br>
-                   Caloocan, Philippines</p>
-                <p>
-                    Telephone: <br>
-                    + (63) 917 - 5695 - 469<br>
-                    Ecommerce Team:<br>
-                     Mon-Sun 8:00am-5:00pm, excluding holidays
-                </p>
-            </div>
-            <div class="col-md-3 footer-column">
-                <h5>CUSTOMER CARE</h5>
-                <ul>
-                    <li><a href="#">Terms & Conditions</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Payment Policy</a></li>
-                    <li><a href="#">Shipping & Delivery Policy</a></li>
-                    <li><a href="#">Return, Exchange, Cancellation & Refund Policy</a></li>
-                </ul>
-            </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 footer-column">
+                    <h5>OFFICE ADDRESS</h5>
+                    <p>1665 Ilang Ilang St. <br>
+                        Bgry 174,<br>
+                        Caloocan, Philippines</p>
+                    <p>
+                        Telephone: <br>
+                        + (63) 917 - 5695 - 469<br>
+                        Ecommerce Team:<br>
+                        Mon-Sun 8:00am-5:00pm, excluding holidays
+                    </p>
+                </div>
+                <div class="col-md-3 footer-column">
+                    <h5>CUSTOMER CARE</h5>
+                    <ul>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Payment Policy</a></li>
+                        <li><a href="#">Shipping & Delivery Policy</a></li>
+                        <li><a href="#">Return, Exchange, Cancellation & Refund Policy</a></li>
+                    </ul>
+                </div>
 
-            <div class="col-md-3 footer-column">
-                <h5>NEWSLETTER</h5>
-                <p>Receive our latest news, product launches & exclusive offers. T&Cs Apply</p>
-                <div class="newsletter">
-                    <input type="email" placeholder="Your email">
-                    <button>Subscribe</button>
-                </div>
-                <div class="social-icons" style="margin-top: 30px;">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                <div class="col-md-3 footer-column">
+                    <h5>NEWSLETTER</h5>
+                    <p>Receive our latest news, product launches & exclusive offers. T&Cs Apply</p>
+                    <div class="newsletter">
+                        <input type="email" placeholder="Your email">
+                        <button>Subscribe</button>
+                    </div>
+                    <div class="social-icons" style="margin-top: 30px;">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
                 </div>
             </div>
+            <div class="footer-bottom">
+                © 2024 AV MOTO Philippines.
+            </div>
         </div>
-        <div class="footer-bottom">
-            © 2024 AV MOTO Philippines.
-        </div>
-    </div>
-</footer>
+    </footer>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Retrieve cart items from localStorage
-            let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-            let cartTotal = 0;
 
-            // Function to render cart items
-            function renderCartItems() {
-                $('#cart-items').empty();
-                cartTotal = 0;
-                cartItems.forEach((item, index) => {
-                    $('#cart-items').append(`
-                        <tr>
-                            <td><img src="${item.image}" alt="${item.name}" width="50"></td>
-                            <td>${item.name}</td>
-                            <td>$${item.price.toFixed(2)}</td>
-                            <td>${item.quantity}</td>
-                            <td>$${(item.price * item.quantity).toFixed(2)}</td>
-                            <td><button class="btn btn-danger btn-sm remove-item" data-index="${index}">Remove</button></td>
-                        </tr>
-                    `);
-                    cartTotal += item.price * item.quantity;
-                });
-                $('#cart-total').text(cartTotal.toFixed(2));
-                $('.cart-count').text(cartItems.length);
-            }
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-            // Render cart items on page load
-            renderCartItems();
-
-            // Remove item from cart
-            $(document).on('click', '.remove-item', function() {
-                const index = $(this).data('index');
-                cartItems.splice(index, 1);
-                localStorage.setItem('cartItems', JSON.stringify(cartItems));
-                renderCartItems();
-            });
-
-            // Handle checkout form submission
-            $('#checkout-form').submit(function(event) {
-                event.preventDefault();
-                const email = $('#email').val();
-                const deliveryOption = $('input[name="deliveryOption"]:checked').val();
-                const firstName = $('#firstName').val();
-                const middleName = $('#middleName').val();
-                const lastName = $('#lastName').val();
-                const address = $('#address').val();
-                const street = $('#street').val();
-                const barangay = $('#barangay').val();
-                const city = $('#city').val();
-                const province = $('#province').val();
-                const zipCode = $('#zipCode').val();
-                const phone = $('#phone').val();
-                const paymentOption = $('input[name="paymentOption"]:checked').val();
-
-                const orderDetails = {
-                    email,
-                    deliveryOption,
-                    fullName: `${firstName} ${middleName} ${lastName}`,
-                    address: `${address}, ${street}, ${barangay}, ${city}, ${province}, ${zipCode}`,
-                    phone,
-                    paymentOption,
-                    cartItems,
-                    cartTotal
-                };
-
-                // Here you can handle the order processing, e.g., sending the order details to the server
-
-                // Clear cart after checkout
-                cartItems = [];
-                localStorage.setItem('cartItems', JSON.stringify(cartItems));
-                renderCartItems();
-
-                alert('Order placed successfully!');
-            });
-        });
-    </script>
     <script src="script.js"></script>
 </body>
+
 </html>
