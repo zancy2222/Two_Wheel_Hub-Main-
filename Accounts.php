@@ -1,13 +1,27 @@
 <?php
 include 'partials/session.php';
+include 'partials/db_conn.php';
+
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+// Fetch user details from the database
+$user_id = $_SESSION['user_id'];
+$query = $conn->prepare("SELECT * FROM Users WHERE id = ?");
+$query->bind_param("i", $user_id);
+$query->execute();
+$result = $query->get_result();
+$user = $result->fetch_assoc();
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop</title>
+    <title>Accounts</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -19,53 +33,54 @@ include 'partials/session.php';
             font-weight: normal;
             font-style: normal;
         }
-
         body {
             font-family: 'League Spartan', sans-serif;
+            background-color: #f8f9fa;
         }
-
-        .category-card {
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: none;
+        .form-container {
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #fff;
             border-radius: 10px;
-            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
-        .category-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
         }
-
-        .category-img {
-            height: 250px;
-            object-fit: cover;
+        .btn-primary {
+            background-color: #890606;
+            border: none;
         }
-
-        .category-card-body {
-            padding: 20px;
-            background-color: var(--white-color);
+        .btn-primary:hover {
+            background-color: #6a0505;
         }
-
-        .category-card-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 15px;
+        .btn-save-edit {
+            margin-top: 1rem;
+            background-color: #17a2b8;
+            border: none;
         }
-
-        .category-card-btn {
-            background-color: var(--primary-color);
-            color: var(--white-color);
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: background-color var(--transition-speed);
+        .btn-save-edit:hover {
+            background-color: #138496;
         }
-
-        .category-card-btn:hover {
-            background-color: var(--secondary-color);
+        .order-status-table {
+            margin-bottom: 2rem;
+        }
+        .order-status-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .order-status-table th, .order-status-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .order-status-table th {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
-
 <body>
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
@@ -97,7 +112,7 @@ include 'partials/session.php';
                         <a class="nav-link" href="HomeMain.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="ShopMain.php">Shop</a>
+                        <a class="nav-link" href="ShopMain.php">Shop</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="ContactMain.php">Contact Us</a>
@@ -112,66 +127,16 @@ include 'partials/session.php';
                         <a class="nav-link" href="BookingAppointmentMain.php">Booking Appointment</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Accounts.php">Accounts</a>
+                        <a class="nav-link active" href="Accounts.php">Accounts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Login.php">Log out</a>
+                        <a class="nav-link" href="Login.php">Log in</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="img/Oils.jpg" class="card-img-top category-img" alt="Suspension Oils">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Suspension Oils</h5>
-                        <a href="SuspensionOilsMain.php" class="btn category-card-btn">View</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="img/shock.jpg" class="card-img-top category-img" alt="Rear Shock">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Rear Shock</h5>
-                        <a href="RearShockMain.php" class="btn category-card-btn">View</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="img/accsrs.jpg" class="card-img-top category-img" alt="Accessories">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Accessories</h5>
-                        <a href="AccessoriesMain.php" class="btn category-card-btn">View</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="img/tires.jpg" class="card-img-top category-img" alt="Tires">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Tires</h5>
-                        <a href="TiresMain.php" class="btn category-card-btn">View</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="img/others.jpg" class="card-img-top category-img" alt="Others">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Others</h5>
-                        <a href="OthersMain.php" class="btn category-card-btn">View</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Chat Icon -->
     <div class="chat-icon" onclick="toggleChat()">
         <i class="fas fa-comments"></i>
@@ -194,14 +159,86 @@ include 'partials/session.php';
             <button onclick="sendMessage()">Send</button>
         </div>
     </div>
+
+    <div class="container form-container">
+        <h2>Create Account</h2>
+        <div class="order-status-table">
+            <h3>Order Status</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product name</th>
+                        <th>QTY</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sample 1</td>
+                        <td>1</td>
+                        <td>Processing</td>
+                        <td>2023-07-01</td>
+                    </tr>
+                    <tr>
+                        <td>Sample 2</td>
+                        <td>2</td>
+                        <td>Shipped</td>
+                        <td>2023-07-02</td>
+                    </tr>
+                    <tr>
+                        <td>Sample 3</td>
+                        <td>3</td>
+                        <td>Delivered</td>
+                        <td>2023-07-03</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <form action="partials/update_process.php" method="post">
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="firstName">First Name</label>
+            <input type="text" class="form-control" id="firstName" name="first_name" placeholder="Enter your first name" value="<?php echo htmlspecialchars($user['first_name']); ?>" required>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="lastName">Last Name</label>
+            <input type="text" class="form-control" id="lastName" name="last_name" placeholder="Enter your last name" value="<?php echo htmlspecialchars($user['last_name']); ?>" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
+    </div>
+    <div class="form-group">
+        <label for="address">Complete Address</label>
+        <input type="text" class="form-control" id="unit-no" name="unit_no_house_no_building" placeholder="Unit No./House No./Building" value="<?php echo htmlspecialchars($user['unit_no_house_no_building']); ?>" required>
+        <input type="text" class="form-control mt-2" id="street" name="street" placeholder="Street" value="<?php echo htmlspecialchars($user['street']); ?>" required>
+        <input type="text" class="form-control mt-2" id="barangay" name="barangay" placeholder="Barangay" value="<?php echo htmlspecialchars($user['barangay']); ?>" required>
+        <input type="text" class="form-control mt-2" id="city" name="city" placeholder="City" value="<?php echo htmlspecialchars($user['city']); ?>" required>
+        <input type="text" class="form-control mt-2" id="province" name="province" placeholder="Province" value="<?php echo htmlspecialchars($user['province']); ?>" required>
+        <input type="text" class="form-control mt-2" id="zip-code" name="zip_code" placeholder="Zip Code" value="<?php echo htmlspecialchars($user['zip_code']); ?>" required>
+    </div>
+    <div class="form-group">
+        <label for="phone">Mobile/Phone No.</label>
+        <input type="tel" class="form-control" id="phone" name="mobile_phone_no" placeholder="Enter your mobile/phone number" value="<?php echo htmlspecialchars($user['mobile_phone_no']); ?>" required>
+    </div>
+    <button type="submit" class="btn btn-save-edit btn-block">Save Edit</button>
+</form>
+    </div>
+
     <footer class="footer">
         <div class="container">
             <div class="row">
                 <div class="col-md-3 footer-column">
                     <h5>OFFICE ADDRESS</h5>
                     <p>1665 Ilang Ilang St. <br>
-                        Bgry 174,<br>
-                        Caloocan, Philippines</p>
+                       Bgry 174,<br>
+                       Caloocan, Philippines</p>
                     <p>
                         Telephone: <br>
                         + (63) 917 - 5695 - 469<br>
@@ -219,7 +256,6 @@ include 'partials/session.php';
                         <li><a href="#">Return, Exchange, Cancellation & Refund Policy</a></li>
                     </ul>
                 </div>
-
                 <div class="col-md-3 footer-column">
                     <h5>NEWSLETTER</h5>
                     <p>Receive our latest news, product launches & exclusive offers. T&Cs Apply</p>
@@ -247,5 +283,4 @@ include 'partials/session.php';
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="script.js"></script>
 </body>
-
 </html>

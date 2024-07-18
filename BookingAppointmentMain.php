@@ -96,6 +96,9 @@ body {
                     <a class="nav-link active" href="BookingAppointmentMain.php">Booking Appointment</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="Accounts.php">Accounts</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="Login.php">Log out</a>
                     </li>
                 </ul>

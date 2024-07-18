@@ -161,6 +161,9 @@
                         <a class="nav-link" href="BookingAppointment.php">Booking Appointment</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="Accounts.php">Accounts</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="Login.php">Log in</a>
                     </li>
                 </ul>
@@ -211,10 +214,6 @@
                         <h2>Checkout</h2>
                         <form id="checkout-form">
                             <div class="form-group">
-                                <label for="email">Email Address</label>
-                                <input type="email" class="form-control" id="email" required>
-                            </div>
-                            <div class="form-group">
                                 <label>Delivery Option</label><br>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="deliveryOption" id="ship" value="Ship" checked>
@@ -224,41 +223,6 @@
                                     <input class="form-check-input" type="radio" name="deliveryOption" id="pickUp" value="Pick Up">
                                     <label class="form-check-label" for="pickUp">Pick Up</label>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="firstName">First Name</label>
-                                <input type="text" class="form-control" id="firstName" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="middleName">Middle Name</label>
-                                <input type="text" class="form-control" id="middleName">
-                            </div>
-                            <div class="form-group">
-                                <label for="lastName">Last Name</label>
-                                <input type="text" class="form-control" id="lastName" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="address">Complete Address</label>
-                                <input type="text" class="form-control" id="address" placeholder="Unit No./House No./Building" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="street" placeholder="Street" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="barangay" placeholder="Barangay" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="city" placeholder="City" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="province" placeholder="Province" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="zipCode" placeholder="Zip Code" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Mobile/Phone No.</label>
-                                <input type="text" class="form-control" id="phone" required>
                             </div>
                             <div class="form-group">
                                 <label>Payment Options</label><br>
