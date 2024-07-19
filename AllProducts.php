@@ -1,23 +1,34 @@
 <?php
-include 'partials/session.php';
+include 'Partials/db_conn.php';
+
+$category = isset($_GET['category']) ? $_GET['category'] : '';
+
+if ($category) {
+    $sql = "SELECT * FROM products WHERE category = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $category);
+    $stmt->execute();
+    $result = $stmt->get_result();
+} else {
+    $sql = "SELECT * FROM products";
+    $result = $conn->query($sql);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tires - Products</title>
+    <title>Suspension Oils - Products</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="chat.css">
     <style>
-
-        body {
-            font-family: 'League Spartan', sans-serif;
-        }
-
+            body {
+      font-family: 'League Spartan', sans-serif;
+    }
         :root {
             --primary-color: #004AAD;
             --secondary-color: #009DDF;
@@ -268,7 +279,6 @@ include 'partials/session.php';
         }
     </style>
 </head>
-
 <body>
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
@@ -297,13 +307,13 @@ include 'partials/session.php';
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="HomeMain.php">Home</a>
+                        <a class="nav-link" href="Home.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="ShopMain.php">Shop</a>
+                        <a class="nav-link active" href="Shop.php">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="ContactMain.php">Contact Us</a>
+                        <a class="nav-link" href="Contact.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About Us</a>
@@ -312,13 +322,10 @@ include 'partials/session.php';
                         <a class="nav-link" href="#">Blog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="BookingAppointmentMain.php">Booking Appointment</a>
+                        <a class="nav-link" href="BookingAppointment.php">Booking Appointment</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Accounts.php">Accounts</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="Login.php">Log out</a>
+                        <a class="nav-link" href="Login.php">Log in</a>
                     </li>
                 </ul>
             </div>
@@ -328,108 +335,32 @@ include 'partials/session.php';
     <!-- Main Content -->
     <div class="container mt-5">
         <div class="row">
-            <div class="col-md-4">
-                <div class="card product-card">
-                    <img src="https://via.placeholder.com/400x200?text=Product+1" class="card-img-top product-img" alt="Product 1">
-                    <div class="card-body product-card-body">
-                        <h5 class="card-title product-card-title">Product 1</h5>
-                        <p class="card-text product-card-description">This is a short description of Product 1.</p>
-                        <p class="card-text product-card-info">Category: Tires</p>
-                        <p class="card-text product-card-info">Size: 1L</p>
-                        <p class="card-text product-card-info">Color: Transparent</p>
-                        <p class="card-text product-card-price">₱19.99</p>
-                        <div class="product-buttons">
-                            <button class="btn btn-add-to-cart">Add to Cart</button>
-                            <button class="btn btn-buy">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card product-card">
-                    <img src="https://via.placeholder.com/400x200?text=Product+2" class="card-img-top product-img" alt="Product2">
-                    <div class="card-body product-card-body">
-                        <h5 class="card-title product-card-title">Product 2</h5>
-                        <p class="card-text product-card-description">This is a short description of Product 2.</p>
-                        <p class="card-text product-card-info">Category: Tires</p>
-                        <p class="card-text product-card-info">Size: 1L</p>
-                        <p class="card-text product-card-info">Color: Transparent</p>
-                        <p class="card-text product-card-price">₱19.99</p>
-                        <div class="product-buttons">
-                            <button class="btn btn-add-to-cart">Add to Cart</button>
-                            <button class="btn btn-buy">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card product-card">
-                    <img src="https://via.placeholder.com/400x200?text=Product+3" class="card-img-top product-img" alt="Product 3">
-                    <div class="card-body product-card-body">
-                        <h5 class="card-title product-card-title">Product 3</h5>
-                        <p class="card-text product-card-description">This is a short description of Product 3.</p>
-                        <p class="card-text product-card-info">Category: Tires</p>
-                        <p class="card-text product-card-info">Size: 1L</p>
-                        <p class="card-text product-card-info">Color: Transparent</p>
-                        <p class="card-text product-card-price">₱19.99</p>
-                        <div class="product-buttons">
-                            <button class="btn btn-add-to-cart">Add to Cart</button>
-                            <button class="btn btn-buy">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card product-card">
-                    <img src="https://via.placeholder.com/400x200?text=Product+1" class="card-img-top product-img" alt="Product 1">
-                    <div class="card-body product-card-body">
-                        <h5 class="card-title product-card-title">Product 1</h5>
-                        <p class="card-text product-card-description">This is a short description of Product 1.</p>
-                        <p class="card-text product-card-info">Category: Tires</p>
-                        <p class="card-text product-card-info">Size: 1L</p>
-                        <p class="card-text product-card-info">Color: Transparent</p>
-                        <p class="card-text product-card-price">₱19.99</p>
-                        <div class="product-buttons">
-                            <button class="btn btn-add-to-cart">Add to Cart</button>
-                            <button class="btn btn-buy">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card product-card">
-                    <img src="https://via.placeholder.com/400x200?text=Product+2" class="card-img-top product-img" alt="Product2">
-                    <div class="card-body product-card-body">
-                        <h5 class="card-title product-card-title">Product 2</h5>
-                        <p class="card-text product-card-description">This is a short description of Product 2.</p>
-                        <p class="card-text product-card-info">Category: Tires</p>
-                        <p class="card-text product-card-info">Size: 1L</p>
-                        <p class="card-text product-card-info">Color: Transparent</p>
-                        <p class="card-text product-card-price">₱19.99</p>
-                        <div class="product-buttons">
-                            <button class="btn btn-add-to-cart">Add to Cart</button>
-                            <button class="btn btn-buy">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card product-card">
-                    <img src="https://via.placeholder.com/400x200?text=Product+3" class="card-img-top product-img" alt="Product 3">
-                    <div class="card-body product-card-body">
-                        <h5 class="card-title product-card-title">Product 3</h5>
-                        <p class="card-text product-card-description">This is a short description of Product 3.</p>
-                        <p class="card-text product-card-info">Category: Tires</p>
-                        <p class="card-text product-card-info">Size: 1L</p>
-                        <p class="card-text product-card-info">Color: Transparent</p>
-                        <p class="card-text product-card-price">₱19.99</p>
-                        <div class="product-buttons">
-                            <button class="btn btn-add-to-cart">Add to Cart</button>
-                            <button class="btn btn-buy">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php
+            if ($result->num_rows > 0) {
+               
+                while($row = $result->fetch_assoc()) {
+                    echo "<div class='col-md-4 mb-4'>
+                            <div class='card product-card'>
+                                <img src='Dashboard/Partials/uploads/" . htmlspecialchars($row["product_image"]) . "' class='card-img-top product-img' alt='" . htmlspecialchars($row["product_name"]) . "'>
+                                <div class='card-body product-card-body'>
+                                    <h5 class='card-title product-card-title'>" . htmlspecialchars($row["product_name"]) . "</h5>
+                                    <p class='card-text product-card-description'>" . htmlspecialchars($row["description"]) . "</p>
+                                    <p class='card-text product-card-info'>Category: " . htmlspecialchars($row["category"]) . "</p>
+                                    <p class='card-text product-card-info'>Size: " . htmlspecialchars($row["size"]) . "</p>
+                                    <p class='card-text product-card-info'>Color: " . htmlspecialchars($row["color"]) . "</p>
+                                    <p class='card-text product-card-price'>₱" . htmlspecialchars($row["price"]) . "</p>
+                                    <div class='product-buttons'>
+                                        <button class='btn btn-add-to-cart'>Add to Cart</button>
+                                        <button class='btn btn-buy'>Buy Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>";
+                }
+            } else {
+                echo "<p>No products found in this category.</p>";
+            }
+            ?>
         </div>
     </div>
     <!-- Chat Icon -->
@@ -456,57 +387,58 @@ include 'partials/session.php';
     </div>
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3 footer-column">
-                    <h5>OFFICE ADDRESS</h5>
-                    <p>1665 Ilang Ilang St. <br>
-                        Bgry 174,<br>
-                        Caloocan, Philippines</p>
-                    <p>
-                        Telephone: <br>
-                        + (63) 917 - 5695 - 469<br>
-                        Ecommerce Team:<br>
-                        Mon-Sun 8:00am-5:00pm, excluding holidays
-                    </p>
-                </div>
-                <div class="col-md-3 footer-column">
-                    <h5>CUSTOMER CARE</h5>
-                    <ul>
-                        <li><a href="#">Terms & Conditions</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Payment Policy</a></li>
-                        <li><a href="#">Shipping & Delivery Policy</a></li>
-                        <li><a href="#">Return, Exchange, Cancellation & Refund Policy</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-md-3 footer-column">
-                    <h5>NEWSLETTER</h5>
-                    <p>Receive our latest news, product launches & exclusive offers. T&Cs Apply</p>
-                    <div class="newsletter">
-                        <input type="email" placeholder="Your email">
-                        <button>Subscribe</button>
-                    </div>
-                    <div class="social-icons" style="margin-top: 30px;">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-tiktok"></i></a>
-                    </div>
-                </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 footer-column">
+                <h5>OFFICE ADDRESS</h5>
+                <p>1665 Ilang Ilang St. <br>
+                     Bgry 174,<br>
+                   Caloocan, Philippines</p>
+                <p>
+                    Telephone: <br>
+                    + (63) 917 - 5695 - 469<br>
+                    Ecommerce Team:<br>
+                     Mon-Sun 8:00am-5:00pm, excluding holidays
+                </p>
             </div>
-            <div class="footer-bottom">
-                © 2024 AV MOTO Philippines.
+            <div class="col-md-3 footer-column">
+                <h5>CUSTOMER CARE</h5>
+                <ul>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Payment Policy</a></li>
+                    <li><a href="#">Shipping & Delivery Policy</a></li>
+                    <li><a href="#">Return, Exchange, Cancellation & Refund Policy</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-3 footer-column">
+                <h5>NEWSLETTER</h5>
+                <p>Receive our latest news, product launches & exclusive offers. T&Cs Apply</p>
+                <div class="newsletter">
+                    <input type="email" placeholder="Your email">
+                    <button>Subscribe</button>
+                </div>
+                <div class="social-icons" style="margin-top: 30px;">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                </div>
             </div>
         </div>
-    </footer>
+        <div class="footer-bottom">
+            © 2024 AV MOTO Philippines.
+        </div>
+    </div>
+</footer>
+
+
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
-
 </html>

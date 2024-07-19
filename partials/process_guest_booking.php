@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email_address = $_POST['email_address'];
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
-    $unit_no_house_no_building = $_POST['unit_no_house_no_building']; // Ensure this matches the form field name
+    $unit_no_house_no_building = $_POST['unit_no_house_no_building']; 
     $street = $_POST['street'];
     $barangay = $_POST['barangay'];
     $city = $_POST['city'];
@@ -17,10 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $zip_code = $_POST['zip_code'];
     $mobile_phone_no = $_POST['mobile_phone_no'];
 
-    // Ensure complete_address is constructed from individual fields
     $complete_address = $unit_no_house_no_building . ', ' . $street . ', ' . $barangay . ', ' . $city . ', ' . $province . ', ' . $zip_code;
 
-    // Prepare and execute query
     $stmt = $conn->prepare("INSERT INTO GuestAppointment (service_category, service, preferred_date, preferred_time, email_address, first_name, last_name, complete_address, unit_no_house_no_building, street, barangay, city, province, zip_code, mobile_phone_no) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("sssssssssssssss", $service_category, $service, $preferred_date, $preferred_time, $email_address, $first_name, $last_name, $complete_address, $unit_no_house_no_building, $street, $barangay, $city, $province, $zip_code, $mobile_phone_no);
 

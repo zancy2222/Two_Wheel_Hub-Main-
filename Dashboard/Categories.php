@@ -7,6 +7,7 @@
     <!-- Boxicons CDN Link -->
     <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
     <style>
       :root {
         --primary-color: #004AAD;
@@ -15,9 +16,8 @@
         --light-grey-color: #F8F9FA;
         --black-color: #000000;
     }
-
     body {
-        font-family: Arial, sans-serif;
+      font-family: 'League Spartan', sans-serif;
         background-color: var(--light-grey-color);
         margin: 0;
         padding: 0;
@@ -80,49 +80,49 @@
       <ul class="nav-list">
       
         <li>
-          <a href="#">
+          <a href="Dashb.php">
             <i class="bx bx-grid-alt"></i>
             <span class="links_name">Dashboard</span>
           </a>
           <span class="tooltip">Dashboard</span>
         </li>
         <li>
-          <a href="#">
+          <a href="Users.php">
             <i class="bx bx-user"></i>
             <span class="links_name">User Accounts</span>
           </a>
           <span class="tooltip">User Accounts</span>
         </li>
         <li>
-          <a href="#">
+          <a href="Products.php">
             <i class='bx bx-store-alt'></i>
             <span class="links_name">Products</span>
           </a>
           <span class="tooltip">Products</span>
         </li>
         <li>
-          <a href="#">
+          <a href="">
             <i class='bx bx-receipt'></i>
             <span class="links_name">History Logs</span>
           </a>
           <span class="tooltip">History Logs</span>
         </li>
         <li>
-          <a href="#">
+          <a href="Categories.php">
             <i class='bx bx-purchase-tag-alt'></i>
             <span class="links_name">Categories</span>
           </a>
           <span class="tooltip">Categories</span>
         </li>
         <li>
-          <a href="#">
+          <a href="Orders.php">
             <i class="bx bx-cart-alt"></i>
             <span class="links_name">Order</span>
           </a>
           <span class="tooltip">Order</span>
         </li>
         <li>
-          <a href="#">
+          <a href="Appointments.php">
             <i class='bx bx-spreadsheet'></i>
             <span class="links_name">Booking</span>
           </a>

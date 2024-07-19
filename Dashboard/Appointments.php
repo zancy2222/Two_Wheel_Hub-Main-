@@ -1,3 +1,16 @@
+<?php
+include 'db_conn.php';
+
+$sql_guest = "SELECT *, CONCAT(first_name, ' ', last_name) AS full_name FROM GuestAppointment";
+$result_guest = $conn->query($sql_guest);
+
+$sql_appointment = "
+    SELECT a.*, CONCAT(u.first_name, ' ', u.last_name) AS full_name, u.email, u.complete_address, u.mobile_phone_no
+    FROM Appointment a
+    JOIN Users u ON a.user_id = u.id";
+$result_appointment = $conn->query($sql_appointment);
+?>
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -7,6 +20,8 @@
     <!-- Boxicons CDN Link -->
     <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
     <style>
       :root {
         --primary-color: #004AAD;
@@ -17,7 +32,7 @@
     }
 
     body {
-        font-family: Arial, sans-serif;
+      font-family: 'League Spartan', sans-serif;
         background-color: var(--light-grey-color);
         margin: 0;
         padding: 0;
@@ -102,6 +117,22 @@
         background-color: var(--secondary-color);
     }
 
+    .add-button {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-bottom: 20px;
+        transition: background-color 0.3s;
+    }
+
+    .add-button:hover {
+        background-color: var(--secondary-color);
+    }
+
     .pagination {
         display: flex;
         justify-content: center;
@@ -139,49 +170,49 @@
       <ul class="nav-list">
       
         <li>
-          <a href="#">
+          <a href="Dashb.php">
             <i class="bx bx-grid-alt"></i>
             <span class="links_name">Dashboard</span>
           </a>
           <span class="tooltip">Dashboard</span>
         </li>
         <li>
-          <a href="#">
+          <a href="Users.php">
             <i class="bx bx-user"></i>
             <span class="links_name">User Accounts</span>
           </a>
           <span class="tooltip">User Accounts</span>
         </li>
         <li>
-          <a href="#">
+          <a href="Products.php">
             <i class='bx bx-store-alt'></i>
             <span class="links_name">Products</span>
           </a>
           <span class="tooltip">Products</span>
         </li>
         <li>
-          <a href="#">
+          <a href="">
             <i class='bx bx-receipt'></i>
             <span class="links_name">History Logs</span>
           </a>
           <span class="tooltip">History Logs</span>
         </li>
         <li>
-          <a href="#">
+          <a href="Categories.php">
             <i class='bx bx-purchase-tag-alt'></i>
             <span class="links_name">Categories</span>
           </a>
           <span class="tooltip">Categories</span>
         </li>
         <li>
-          <a href="#">
+          <a href="Orders.php">
             <i class="bx bx-cart-alt"></i>
             <span class="links_name">Order</span>
           </a>
           <span class="tooltip">Order</span>
         </li>
         <li>
-          <a href="#">
+          <a href="Appointments.php">
             <i class='bx bx-spreadsheet'></i>
             <span class="links_name">Booking</span>
           </a>
@@ -206,100 +237,76 @@
         </li>
       </ul>
     </div>
+    <body>
     <section class="home-section">
-      <div class="text">Orders</div>
-      <div class="search-bar">
-          <input type="text" placeholder="Search orders...">
-          <button class="add-button">Add Order</button>
-      </div>
-      <table id="orderTable">
-          <thead>
-              <tr>
-                  <th>ID</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Email</th>
-                  <th>Address</th>
-                  <th>Mobile/Phone No.</th>
-                  <th>Description</th>
-                  <th>Category</th>
-                  <th>Size</th>
-                  <th>Color</th>
-                  <th>Price</th>
-                  <th>Actions</th>
-              </tr>
-          </thead>
-          <tbody>
-              <!-- Order rows will be dynamically added here -->
-          </tbody>
-      </table>
-      <div class="pagination">
-          <button id="prevBtn" onclick="prevPage()">Prev</button>
-          <button id="nextBtn" onclick="nextPage()">Next</button>
-      </div>
-  </section>
+        <div class="text">Appointment</div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search appointments...">
+        </div>
+        <table id="appointmentTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Service Category</th>
+                <th>Service</th>
+                <th>Preferred Date</th>
+                <th>Preferred Time</th>
+                <th>Email Address</th>
+                <th>Full Name</th>
+                <th>Complete Address</th>
+                <th>Mobile/Phone No.</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            if ($result_guest->num_rows > 0) {
+                while ($row = $result_guest->fetch_assoc()) {
+                    echo "<tr>
+                        <td>{$row['id']}</td>
+                        <td>{$row['service_category']}</td>
+                        <td>{$row['service']}</td>
+                        <td>{$row['preferred_date']}</td>
+                        <td>{$row['preferred_time']}</td>
+                        <td>{$row['email_address']}</td>
+                        <td>{$row['full_name']}</td>
+                        <td>{$row['complete_address']}</td>
+                        <td>{$row['mobile_phone_no']}</td>
+                        <td class='action-buttons'>
+                            <button>Delete</button>
+                        </td>
+                    </tr>";
+                }
+            }
 
-  <script>
-      const orders = [
-          { id: 1, first_name: 'John', last_name: 'Doe', email: 'john.doe@example.com', address: '123 Main St, Barangay 1, City, Province, 12345', mobile_phone_no: '123-456-7890', description: 'Product Description', category: 'Category Name', size: 'XL', color: 'Blue', price: '₱100.00' },
-          // Add more order data as needed
-      ];
+            if ($result_appointment->num_rows > 0) {
+                while ($row = $result_appointment->fetch_assoc()) {
+                    echo "<tr>
+                        <td>{$row['user_id']}</td>
+                        <td>{$row['service_category']}</td>
+                        <td>{$row['service']}</td>
+                        <td>{$row['preferred_date']}</td>
+                        <td>{$row['preferred_time']}</td>
+                        <td>{$row['email']}</td>
+                        <td>{$row['full_name']}</td>
+                        <td>{$row['complete_address']}</td>
+                        <td>{$row['mobile_phone_no']}</td>
+                        <td class='action-buttons'>
+                            <button>Delete</button>
+                        </td>
+                    </tr>";
+                }
+            }
 
-      const rowsPerPage = 5;
-      let currentPage = 1;
-
-      function renderTable() {
-          const tableBody = document.querySelector('#orderTable tbody');
-          tableBody.innerHTML = '';
-
-          const start = (currentPage - 1) * rowsPerPage;
-          const end = start + rowsPerPage;
-          const pageOrders = orders.slice(start, end);
-
-          pageOrders.forEach(order => {
-              const row = document.createElement('tr');
-              row.innerHTML = `
-                  <td>${order.id}</td>
-                  <td>${order.first_name}</td>
-                  <td>${order.last_name}</td>
-                  <td>${order.email}</td>
-                  <td>${order.address}</td>
-                  <td>${order.mobile_phone_no}</td>
-                  <td>${order.description}</td>
-                  <td>${order.category}</td>
-                  <td>${order.size}</td>
-                  <td>${order.color}</td>
-                  <td>${order.price}</td>
-                  <td class="action-buttons">
-                      <button>Edit</button>
-                      <button>Delete</button>
-                  </td>
-              `;
-              tableBody.appendChild(row);
-          });
-
-          document.getElementById('prevBtn').disabled = currentPage === 1;
-          document.getElementById('nextBtn').disabled = currentPage === Math.ceil(orders.length / rowsPerPage);
-      }
-
-      function prevPage() {
-          if (currentPage > 1) {
-              currentPage--;
-              renderTable();
-          }
-      }
-
-      function nextPage() {
-          if (currentPage < Math.ceil(orders.length / rowsPerPage)) {
-              currentPage++;
-              renderTable();
-          }
-      }
-
-      // Initial render
-      renderTable();
-  </script>
-
+            $conn->close();
+            ?>
+        </tbody>
+    </table>
+        <div class="pagination">
+            <button id="prevBtn">Prev</button>
+            <button id="nextBtn">Next</button>
+        </div>
+    </section>
     <script src="script.js"></script>
   </body>
 </html>

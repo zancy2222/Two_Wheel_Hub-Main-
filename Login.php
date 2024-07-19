@@ -6,17 +6,13 @@
     <title>Login - E-commerce Website</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
     <style>
-                @font-face {
-    font-family: 'League Spartan';
-    src: url('League_Spartan/static/LeagueSpartan-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-body {
-    font-family: 'League Spartan', sans-serif;
-}
+            body {
+      font-family: 'League Spartan', sans-serif;
+    }
         .login-container {
             max-width: 900px;
             margin: 50px auto;

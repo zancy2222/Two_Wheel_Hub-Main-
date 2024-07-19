@@ -6,16 +6,13 @@
     <title>Shop</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="chat.css">
     <style>
 
-@font-face {
-    font-family: 'League Spartan';
-    src: url('League_Spartan/static/LeagueSpartan-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
+
 body {
     font-family: 'League Spartan', sans-serif;
 }
@@ -115,54 +112,54 @@ body {
 
     <!-- Main Content -->
     <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="img/Oils.jpg" class="card-img-top category-img" alt="Suspension Oils">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Suspension Oils</h5>
-                        <a href="SuspensionOils.php" class="btn category-card-btn">View</a>
-                    </div>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card category-card">
+                <img src="img/Oils.jpg" class="card-img-top category-img" alt="Suspension Oils">
+                <div class="card-body category-card-body">
+                    <h5 class="card-title category-card-title">Suspension Oils</h5>
+                    <a href="MainProducts.php?category=Suspension%20Oils" class="btn category-card-btn">View</a>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="img/shock.jpg" class="card-img-top category-img" alt="Rear Shock">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Rear Shock</h5>
-                        <a href="RearShock.php" class="btn category-card-btn">View</a>
-                    </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card category-card">
+                <img src="img/shock.jpg" class="card-img-top category-img" alt="Rear Shock">
+                <div class="card-body category-card-body">
+                    <h5 class="card-title category-card-title">Rear Shock</h5>
+                    <a href="MainProducts.php?category=Rear%20Shock" class="btn category-card-btn">View</a>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="img/accsrs.jpg" class="card-img-top category-img" alt="Accessories">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Accessories</h5>
-                        <a href="Accessories.php" class="btn category-card-btn">View</a>
-                    </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card category-card">
+                <img src="img/accsrs.jpg" class="card-img-top category-img" alt="Accessories">
+                <div class="card-body category-card-body">
+                    <h5 class="card-title category-card-title">Accessories</h5>
+                    <a href="MainProducts.php?category=Accessories" class="btn category-card-btn">View</a>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="img/tires.jpg" class="card-img-top category-img" alt="Tires">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Tires</h5>
-                        <a href="Tires.php" class="btn category-card-btn">View</a>
-                    </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card category-card">
+                <img src="img/tires.jpg" class="card-img-top category-img" alt="Tires">
+                <div class="card-body category-card-body">
+                    <h5 class="card-title category-card-title">Tires</h5>
+                    <a href="MainProducts.php?category=Tires" class="btn category-card-btn">View</a>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="img/others.jpg" class="card-img-top category-img" alt="Others">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Others</h5>
-                        <a href="Others.php" class="btn category-card-btn">View</a>
-                    </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card category-card">
+                <img src="img/others.jpg" class="card-img-top category-img" alt="Others">
+                <div class="card-body category-card-body">
+                    <h5 class="card-title category-card-title">Others</h5>
+                    <a href="MainProducts.php?category=Others" class="btn category-card-btn">View</a>
                 </div>
             </div>
         </div>
     </div>
+</div>
     <!-- Chat Icon -->
     <div class="chat-icon" onclick="toggleChat()">
         <i class="fas fa-comments"></i>

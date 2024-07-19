@@ -10,14 +10,10 @@ include 'partials/session.php';
     <title>Suspension Oils - Products</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="chat.css">
     <style>
-        @font-face {
-            font-family: 'League Spartan';
-            src: url('League_Spartan/static/LeagueSpartan-Regular.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
 
         body {
             font-family: 'League Spartan', sans-serif;
@@ -330,111 +326,41 @@ include 'partials/session.php';
         </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="container mt-5">
         <div class="row">
-            <div class="col-md-4">
-                <div class="card product-card">
-                    <img src="https://via.placeholder.com/400x200?text=Product+1" class="card-img-top product-img" alt="Product 1">
-                    <div class="card-body product-card-body">
-                        <h5 class="card-title product-card-title">Product 1</h5>
-                        <p class="card-text product-card-description">This is a short description of Product 1.</p>
-                        <p class="card-text product-card-info">Category: Suspension Oils</p>
-                        <p class="card-text product-card-info">Size: 1L</p>
-                        <p class="card-text product-card-info">Color: Transparent</p>
-                        <p class="card-text product-card-price">₱19.99</p>
-                        <div class="product-buttons">
-                            <button class="btn btn-add-to-cart">Add to Cart</button>
-                            <button class="btn btn-buy">Buy Now</button>
+        <?php
+include 'Partials/db_conn.php'; // Include your database connection file
+
+$sql = "SELECT * FROM products WHERE category = 'Suspension Oils'";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    // Output data of each row
+    while($row = $result->fetch_assoc()) {
+        echo "<div class='col-md-4'>
+                <div class='card product-card'>
+                    <img src='Dashboard/Partials/uploads/" . $row["product_image"] . "' class='card-img-top product-img' alt='" . $row["product_name"] . "'>
+                    <div class='card-body product-card-body'>
+                        <h5 class='card-title product-card-title'>" . $row["product_name"] . "</h5>
+                        <p class='card-text product-card-description'>" . $row["description"] . "</p>
+                        <p class='card-text product-card-info'>Category: " . $row["category"] . "</p>
+                        <p class='card-text product-card-info'>Size: " . $row["size"] . "</p>
+                        <p class='card-text product-card-info'>Color: " . $row["color"] . "</p>
+                        <p class='card-text product-card-price'>₱" . $row["price"] . "</p>
+                        <div class='product-buttons'>
+                            <button class='btn btn-add-to-cart'>Add to Cart</button>
+                            <button class='btn btn-buy'>Buy Now</button>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card product-card">
-                    <img src="https://via.placeholder.com/400x200?text=Product+2" class="card-img-top product-img" alt="Product2">
-                    <div class="card-body product-card-body">
-                        <h5 class="card-title product-card-title">Product 2</h5>
-                        <p class="card-text product-card-description">This is a short description of Product 2.</p>
-                        <p class="card-text product-card-info">Category: Suspension Oils</p>
-                        <p class="card-text product-card-info">Size: 1L</p>
-                        <p class="card-text product-card-info">Color: Transparent</p>
-                        <p class="card-text product-card-price">₱19.99</p>
-                        <div class="product-buttons">
-                            <button class="btn btn-add-to-cart">Add to Cart</button>
-                            <button class="btn btn-buy">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card product-card">
-                    <img src="https://via.placeholder.com/400x200?text=Product+3" class="card-img-top product-img" alt="Product 3">
-                    <div class="card-body product-card-body">
-                        <h5 class="card-title product-card-title">Product 3</h5>
-                        <p class="card-text product-card-description">This is a short description of Product 3.</p>
-                        <p class="card-text product-card-info">Category: Suspension Oils</p>
-                        <p class="card-text product-card-info">Size: 1L</p>
-                        <p class="card-text product-card-info">Color: Transparent</p>
-                        <p class="card-text product-card-price">₱19.99</p>
-                        <div class="product-buttons">
-                            <button class="btn btn-add-to-cart">Add to Cart</button>
-                            <button class="btn btn-buy">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card product-card">
-                    <img src="https://via.placeholder.com/400x200?text=Product+1" class="card-img-top product-img" alt="Product 1">
-                    <div class="card-body product-card-body">
-                        <h5 class="card-title product-card-title">Product 1</h5>
-                        <p class="card-text product-card-description">This is a short description of Product 1.</p>
-                        <p class="card-text product-card-info">Category: Suspension Oils</p>
-                        <p class="card-text product-card-info">Size: 1L</p>
-                        <p class="card-text product-card-info">Color: Transparent</p>
-                        <p class="card-text product-card-price">₱19.99</p>
-                        <div class="product-buttons">
-                            <button class="btn btn-add-to-cart">Add to Cart</button>
-                            <button class="btn btn-buy">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card product-card">
-                    <img src="https://via.placeholder.com/400x200?text=Product+2" class="card-img-top product-img" alt="Product2">
-                    <div class="card-body product-card-body">
-                        <h5 class="card-title product-card-title">Product 2</h5>
-                        <p class="card-text product-card-description">This is a short description of Product 2.</p>
-                        <p class="card-text product-card-info">Category: Suspension Oils</p>
-                        <p class="card-text product-card-info">Size: 1L</p>
-                        <p class="card-text product-card-info">Color: Transparent</p>
-                        <p class="card-text product-card-price">₱19.99</p>
-                        <div class="product-buttons">
-                            <button class="btn btn-add-to-cart">Add to Cart</button>
-                            <button class="btn btn-buy">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card product-card">
-                    <img src="https://via.placeholder.com/400x200?text=Product+3" class="card-img-top product-img" alt="Product 3">
-                    <div class="card-body product-card-body">
-                        <h5 class="card-title product-card-title">Product 3</h5>
-                        <p class="card-text product-card-description">This is a short description of Product 3.</p>
-                        <p class="card-text product-card-info">Category: Suspension Oils</p>
-                        <p class="card-text product-card-info">Size: 1L</p>
-                        <p class="card-text product-card-info">Color: Transparent</p>
-                        <p class="card-text product-card-price">₱19.99</p>
-                        <div class="product-buttons">
-                            <button class="btn btn-add-to-cart">Add to Cart</button>
-                            <button class="btn btn-buy">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+              </div>";
+    }
+} else {
+    echo "<p>No products found in the Suspension Oils category.</p>";
+}
+$conn->close();
+?>
+
         </div>
     </div>
     <!-- Chat Icon -->

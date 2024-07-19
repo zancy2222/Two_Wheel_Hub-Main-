@@ -1,3 +1,9 @@
+<?php
+include 'db_conn.php'; // Your database connection file
+
+$sql = "SELECT * FROM Users";
+$result = $conn->query($sql);
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -7,6 +13,7 @@
     <!-- Boxicons CDN Link -->
     <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
     <style>
       :root {
         --primary-color: #004AAD;
@@ -15,9 +22,8 @@
         --light-grey-color: #F8F9FA;
         --black-color: #000000;
     }
-
     body {
-        font-family: Arial, sans-serif;
+      font-family: 'League Spartan', sans-serif;
         background-color: var(--light-grey-color);
         margin: 0;
         padding: 0;
@@ -155,49 +161,49 @@
       <ul class="nav-list">
       
         <li>
-          <a href="#">
+          <a href="Dashb.php">
             <i class="bx bx-grid-alt"></i>
             <span class="links_name">Dashboard</span>
           </a>
           <span class="tooltip">Dashboard</span>
         </li>
         <li>
-          <a href="#">
+          <a href="Users.php">
             <i class="bx bx-user"></i>
             <span class="links_name">User Accounts</span>
           </a>
           <span class="tooltip">User Accounts</span>
         </li>
         <li>
-          <a href="#">
+          <a href="Products.php">
             <i class='bx bx-store-alt'></i>
             <span class="links_name">Products</span>
           </a>
           <span class="tooltip">Products</span>
         </li>
         <li>
-          <a href="#">
+          <a href="">
             <i class='bx bx-receipt'></i>
             <span class="links_name">History Logs</span>
           </a>
           <span class="tooltip">History Logs</span>
         </li>
         <li>
-          <a href="#">
+          <a href="Categories.php">
             <i class='bx bx-purchase-tag-alt'></i>
             <span class="links_name">Categories</span>
           </a>
           <span class="tooltip">Categories</span>
         </li>
         <li>
-          <a href="#">
+          <a href="Orders.php">
             <i class="bx bx-cart-alt"></i>
             <span class="links_name">Order</span>
           </a>
           <span class="tooltip">Order</span>
         </li>
         <li>
-          <a href="#">
+          <a href="Appointments.php">
             <i class='bx bx-spreadsheet'></i>
             <span class="links_name">Booking</span>
           </a>
@@ -223,98 +229,87 @@
       </ul>
     </div>
     <section class="home-section">
-      <div class="text">Dashboard</div>
-      <div class="search-bar">
-          <input type="text" placeholder="Search products...">
-          <button class="add-button">Add Product</button>
-      </div>
-      <table id="productTable">
-          <thead>
-              <tr>
-                  <th>ID</th>
-                  <th>Product Name</th>
-                  <th>Description</th>
-                  <th>Category</th>
-                  <th>Size</th>
-                  <th>Color</th>
-                  <th>Price</th>
-                  <th>Actions</th>
-              </tr>
-          </thead>
-          <tbody>
-              <!-- Product rows will be dynamically added here -->
-          </tbody>
-      </table>
-      <div class="pagination">
-          <button id="prevBtn" onclick="prevPage()">Prev</button>
-          <button id="nextBtn" onclick="nextPage()">Next</button>
-      </div>
-  </section>
+        <div class="text">Dashboard</div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search users...">
+            <button class="add-button">Add User</button>
+        </div>
+        <table id="userTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Mobile/Phone No.</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    $address = $row['unit_no_house_no_building'] . ' ' . $row['street'] . ', ' . $row['barangay'] . ', ' . $row['city'] . ', ' . $row['province'] . ', ' . $row['zip_code'];
+                    echo "<tr>
+                        <td>{$row['id']}</td>
+                        <td>{$row['first_name']}</td>
+                        <td>{$row['last_name']}</td>
+                        <td>{$row['email']}</td>
+                        <td>{$address}</td>
+                        <td>{$row['mobile_phone_no']}</td>
+                        <td class='action-buttons'>
+                            <button>Edit</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>";
+                }
+            } else {
+                echo "<tr><td colspan='7'>No users found</td></tr>";
+            }
+            ?>
+        </tbody>
+    </table>
+    <div class="pagination">
+        <button id="prevBtn" onclick="prevPage()">Prev</button>
+        <button id="nextBtn" onclick="nextPage()">Next</button>
+    </div>
+    </section>
+    <script>
+        const rowsPerPage = 5;
+        let currentPage = 1;
+        const rows = document.querySelectorAll('#userTable tbody tr');
+        const totalPages = Math.ceil(rows.length / rowsPerPage);
 
-  <script>
-      const products = [
-          { id: 1, name: 'Product 1', description: 'Description 1', category: 'Category 1', size: 'M', color: 'Red', price: '$10' },
-          { id: 2, name: 'Product 2', description: 'Description 2', category: 'Category 2', size: 'L', color: 'Blue', price: '$20' },
-          { id: 3, name: 'Product 3', description: 'Description 3', category: 'Category 3', size: 'S', color: 'Green', price: '$30' },
-          { id: 4, name: 'Product 4', description: 'Description 4', category: 'Category 4', size: 'XL', color: 'Yellow', price: '$40' },
-          { id: 5, name: 'Product 5', description: 'Description 5', category: 'Category 5', size: 'M', color: 'Black', price: '$50' },
-          { id: 6, name: 'Product 6', description: 'Description 6', category: 'Category 6', size: 'L', color: 'White', price: '$60' },
-          { id: 7, name: 'Product 7', description: 'Description 7', category: 'Category 7', size: 'S', color: 'Red', price: '$70' },
-          { id: 8, name: 'Product 8', description: 'Description 8', category: 'Category 8', size: 'XL', color: 'Blue', price: '$80' },
-          { id: 9, name: 'Product 9', description: 'Description 9', category: 'Category 9', size: 'M', color: 'Green', price: '$90' },
-          { id: 10, name: 'Product 10', description: 'Description 10', category: 'Category 10', size: 'L', color: 'Yellow', price: '$100' }
-      ];
+        function renderTable() {
+            rows.forEach((row, index) => {
+                if (index >= (currentPage - 1) * rowsPerPage && index < currentPage * rowsPerPage) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
 
-      const rowsPerPage = 5;
-      let currentPage = 1;
+            document.getElementById('prevBtn').disabled = currentPage === 1;
+            document.getElementById('nextBtn').disabled = currentPage === totalPages;
+        }
 
-      function renderTable() {
-          const tableBody = document.querySelector('#productTable tbody');
-          tableBody.innerHTML = '';
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable();
+            }
+        }
 
-          const start = (currentPage - 1) * rowsPerPage;
-          const end = start + rowsPerPage;
-          const pageProducts = products.slice(start, end);
+        function nextPage() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTable();
+            }
+        }
 
-          pageProducts.forEach(product => {
-              const row = document.createElement('tr');
-              row.innerHTML = `
-                  <td>${product.id}</td>
-                  <td>${product.name}</td>
-                  <td>${product.description}</td>
-                  <td>${product.category}</td>
-                  <td>${product.size}</td>
-                  <td>${product.color}</td>
-                  <td>${product.price}</td>
-                  <td class="action-buttons">
-                      <button>Edit</button>
-                      <button>Delete</button>
-                  </td>
-              `;
-              tableBody.appendChild(row);
-          });
-
-          document.getElementById('prevBtn').disabled = currentPage === 1;
-          document.getElementById('nextBtn').disabled = currentPage === Math.ceil(products.length / rowsPerPage);
-      }
-
-      function prevPage() {
-          if (currentPage > 1) {
-              currentPage--;
-              renderTable();
-          }
-      }
-
-      function nextPage() {
-          if (currentPage < Math.ceil(products.length / rowsPerPage)) {
-              currentPage++;
-              renderTable();
-          }
-      }
-
-      // Initial render
-      renderTable();
-  </script>
+        renderTable();
+    </script>
 
     <script src="script.js"></script>
   </body>

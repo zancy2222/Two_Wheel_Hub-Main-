@@ -16,7 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $zip_code = $_POST['zip_code'];
     $mobile_phone_no = $_POST['mobile_phone_no'];
 
-    // Update password only if it's provided
     if (!empty($password)) {
         $password_hashed = password_hash($password, PASSWORD_DEFAULT);
         $query = $conn->prepare("UPDATE Users SET first_name=?, last_name=?, email=?, password=?, unit_no_house_no_building=?, street=?, barangay=?, city=?, province=?, zip_code=?, mobile_phone_no=? WHERE id=?");
