@@ -2,20 +2,19 @@
 include '../db_conn.php'; 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    
     $productName = $_POST['productName'];
     $description = $_POST['description'];
     $category = $_POST['category'];
     $size = $_POST['size'];
     $color = $_POST['color'];
     $price = $_POST['price'];
-    
+    $quantity = $_POST['quantity'];  
+
     $targetDir = "uploads/";
     $productImage = basename($_FILES["productImage"]["name"]);
     $targetFilePath = $targetDir . $productImage;
     $imageFileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
-    
-  
+
     $check = getimagesize($_FILES["productImage"]["tmp_name"]);
     if ($check === false) {
         die("File is not an image.");
@@ -34,9 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die("Sorry, there was an error uploading your file.");
     }
 
-    $sql = "INSERT INTO products (product_image, product_name, description, category, size, color, price) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO products (product_image, product_name, description, category, size, color, price, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssssss", $productImage, $productName, $description, $category, $size, $color, $price);
+    $stmt->bind_param("sssssssi", $productImage, $productName, $description, $category, $size, $color, $price, $quantity);
 
     if ($stmt->execute()) {
         echo "Product added successfully.";

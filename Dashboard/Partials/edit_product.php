@@ -8,11 +8,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $category = $_POST['editCategory'];
     $size = $_POST['editSize'];
     $color = $_POST['editColor'];
-    $price = preg_replace('/[^0-9.]/', '', $_POST['editPrice']); // Strip out non-numeric characters
+    $price = preg_replace('/[^0-9.]/', '', $_POST['editPrice']);
+    $quantity = $_POST['editQuantity']; 
 
-    // Handle file upload
     if (!empty($_FILES['editProductImage']['name'])) {
-        $targetDir = "Partials/uploads/";
+        $sql = "SELECT product_image FROM products WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $productId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $oldImage = $row['product_image'];
+
+        if ($oldImage && file_exists("uploads/" . $oldImage)) {
+            unlink("uploads/" . $oldImage);
+        }
+
+        $targetDir = "uploads/";
         $targetFile = $targetDir . basename($_FILES["editProductImage"]["name"]);
         if (move_uploaded_file($_FILES["editProductImage"]["tmp_name"], $targetFile)) {
             $productImage = basename($_FILES["editProductImage"]["name"]);
@@ -21,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
     } else {
-        // If no new image is uploaded, keep the old image
         $sql = "SELECT product_image FROM products WHERE id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $productId);
@@ -31,10 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $productImage = $row['product_image'];
     }
 
-    // Update the product in the database
-    $sql = "UPDATE products SET product_name=?, description=?, category=?, size=?, color=?, price=?, product_image=? WHERE id=?";
+    $sql = "UPDATE products SET product_name=?, description=?, category=?, size=?, color=?, price=?, quantity=?, product_image=? WHERE id=?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssssssi", $productName, $description, $category, $size, $color, $price, $productImage, $productId);
+    $stmt->bind_param("ssssssisi", $productName, $description, $category, $size, $color, $price, $quantity, $productImage, $productId);
 
     if ($stmt->execute()) {
         echo "Product updated successfully!";

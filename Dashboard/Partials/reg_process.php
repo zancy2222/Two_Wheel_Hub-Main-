@@ -1,5 +1,5 @@
 <?php
-include '../db_conn.php'; // Make sure this path is correct
+include '../db_conn.php'; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $first_name = $_POST['first_name'];

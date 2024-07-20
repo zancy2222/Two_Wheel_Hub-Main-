@@ -1,28 +1,46 @@
 <?php
 include '../db_conn.php';
 
-$id = $_POST['id'];
-$first_name = $_POST['first_name'];
-$last_name = $_POST['last_name'];
-$email = $_POST['email'];
-$password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-$unit_no_house_no_building = $_POST['unit_no_house_no_building'];
-$street = $_POST['street'];
-$barangay = $_POST['barangay'];
-$city = $_POST['city'];
-$province = $_POST['province'];
-$zip_code = $_POST['zip_code'];
-$mobile_phone_no = $_POST['mobile_phone_no'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $id = $_POST['editUserId'];
+    $first_name = $_POST['editFirstName'];
+    $last_name = $_POST['editLastName'];
+    $email = $_POST['editEmail'];
+    $unit_no_house_no_building = $_POST['editUnitNo'];
+    $street = $_POST['editStreet'];
+    $barangay = $_POST['editBarangay'];
+    $city = $_POST['editCity'];
+    $province = $_POST['editProvince'];
+    $zip_code = $_POST['editZipCode'];
+    $mobile_phone_no = $_POST['editPhone'];
 
-$sql = "UPDATE users SET first_name='$first_name', last_name='$last_name', email='$email', password='$password', 
-        unit_no_house_no_building='$unit_no_house_no_building', street='$street', barangay='$barangay', city='$city', 
-        province='$province', zip_code='$zip_code', mobile_phone_no='$mobile_phone_no' WHERE id='$id'";
+    $sql = "UPDATE Users 
+            SET first_name = ?, last_name = ?, email = ?, 
+                unit_no_house_no_building = ?, street = ?, 
+                barangay = ?, city = ?, province = ?, 
+                zip_code = ?, mobile_phone_no = ? 
+            WHERE id = ?";
 
-if ($conn->query($sql) === TRUE) {
-    header("Location: ../index.php");
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("ssssssssssi", 
+            $first_name, $last_name, $email, 
+            $unit_no_house_no_building, $street, 
+            $barangay, $city, $province, 
+            $zip_code, $mobile_phone_no, $id);
+
+        if ($stmt->execute()) {
+            echo "success";
+        } else {
+            echo "Error: " . $stmt->error;
+        }
+
+        $stmt->close();
+    } else {
+        echo "Error: " . $conn->error;
+    }
+
+    $conn->close();
 } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    echo "Invalid request method.";
 }
-
-$conn->close();
 ?>

@@ -16,6 +16,7 @@ if ($category) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,9 +27,10 @@ if ($category) {
 
     <link rel="stylesheet" href="chat.css">
     <style>
-            body {
-      font-family: 'League Spartan', sans-serif;
-    }
+        body {
+            font-family: 'League Spartan', sans-serif;
+        }
+
         :root {
             --primary-color: #004AAD;
             --secondary-color: #009DDF;
@@ -277,8 +279,27 @@ if ($category) {
             border-top: 1px solid var(--primary-color);
             margin-top: 20px;
         }
+
+        .color-options {
+            display: flex;
+            gap: 5px;
+        }
+
+        .color-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            border: 1px solid #ccc;
+        }
+
+        .color-circle.selected {
+            border: 2px solid #000;
+        }
     </style>
 </head>
+
 <body>
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
@@ -337,25 +358,35 @@ if ($category) {
         <div class="row">
             <?php
             if ($result->num_rows > 0) {
-               
-                while($row = $result->fetch_assoc()) {
+                while ($row = $result->fetch_assoc()) {
+                    $colors = explode(',', htmlspecialchars($row["color"]));
+
                     echo "<div class='col-md-4 mb-4'>
-                            <div class='card product-card'>
-                                <img src='Dashboard/Partials/uploads/" . htmlspecialchars($row["product_image"]) . "' class='card-img-top product-img' alt='" . htmlspecialchars($row["product_name"]) . "'>
-                                <div class='card-body product-card-body'>
-                                    <h5 class='card-title product-card-title'>" . htmlspecialchars($row["product_name"]) . "</h5>
-                                    <p class='card-text product-card-description'>" . htmlspecialchars($row["description"]) . "</p>
-                                    <p class='card-text product-card-info'>Category: " . htmlspecialchars($row["category"]) . "</p>
-                                    <p class='card-text product-card-info'>Size: " . htmlspecialchars($row["size"]) . "</p>
-                                    <p class='card-text product-card-info'>Color: " . htmlspecialchars($row["color"]) . "</p>
-                                    <p class='card-text product-card-price'>₱" . htmlspecialchars($row["price"]) . "</p>
-                                    <div class='product-buttons'>
-                                        <button class='btn btn-add-to-cart'>Add to Cart</button>
-                                        <button class='btn btn-buy'>Buy Now</button>
-                                    </div>
+                        <div class='card product-card'>
+                            <img src='Dashboard/Partials/uploads/" . htmlspecialchars($row["product_image"]) . "' class='card-img-top product-img' alt='" . htmlspecialchars($row["product_name"]) . "'>
+                            <div class='card-body product-card-body'>
+                                <h5 class='card-title product-card-title'>" . htmlspecialchars($row["product_name"]) . "</h5>
+                                <p class='card-text product-card-description'>" . htmlspecialchars($row["description"]) . "</p>
+                                <p class='card-text product-card-info'>Category: " . htmlspecialchars($row["category"]) . "</p>
+                                <p class='card-text product-card-info'>Size: " . htmlspecialchars($row["size"]) . "</p>
+                                <p class='card-text product-card-info'>Pieces available: " . htmlspecialchars($row["quantity"]) . "</p>
+                                <p class='card-text product-card-info'>Color: 
+                                    <div class='color-options'>";
+
+                    foreach ($colors as $color) {
+                        echo "<span class='color-circle' data-color='" . trim($color) . "' style='background-color:" . trim($color) . ";'></span>";
+                    }
+
+                    echo                "</div>
+                                </p>
+                                <p class='card-text product-card-price'>₱" . htmlspecialchars($row["price"]) . "</p>
+                                <div class='product-buttons'>
+                                    <button class='btn btn-add-to-cart'>Add to Cart</button>
+                                    <button class='btn btn-buy'>Buy Now</button>
                                 </div>
                             </div>
-                          </div>";
+                        </div>
+                      </div>";
                 }
             } else {
                 echo "<p>No products found in this category.</p>";
@@ -363,6 +394,7 @@ if ($category) {
             ?>
         </div>
     </div>
+
     <!-- Chat Icon -->
     <div class="chat-icon" onclick="toggleChat()">
         <i class="fas fa-comments"></i>
@@ -387,51 +419,51 @@ if ($category) {
     </div>
     <!-- Footer -->
     <footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3 footer-column">
-                <h5>OFFICE ADDRESS</h5>
-                <p>1665 Ilang Ilang St. <br>
-                     Bgry 174,<br>
-                   Caloocan, Philippines</p>
-                <p>
-                    Telephone: <br>
-                    + (63) 917 - 5695 - 469<br>
-                    Ecommerce Team:<br>
-                     Mon-Sun 8:00am-5:00pm, excluding holidays
-                </p>
-            </div>
-            <div class="col-md-3 footer-column">
-                <h5>CUSTOMER CARE</h5>
-                <ul>
-                    <li><a href="#">Terms & Conditions</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Payment Policy</a></li>
-                    <li><a href="#">Shipping & Delivery Policy</a></li>
-                    <li><a href="#">Return, Exchange, Cancellation & Refund Policy</a></li>
-                </ul>
-            </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 footer-column">
+                    <h5>OFFICE ADDRESS</h5>
+                    <p>1665 Ilang Ilang St. <br>
+                        Bgry 174,<br>
+                        Caloocan, Philippines</p>
+                    <p>
+                        Telephone: <br>
+                        + (63) 917 - 5695 - 469<br>
+                        Ecommerce Team:<br>
+                        Mon-Sun 8:00am-5:00pm, excluding holidays
+                    </p>
+                </div>
+                <div class="col-md-3 footer-column">
+                    <h5>CUSTOMER CARE</h5>
+                    <ul>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Payment Policy</a></li>
+                        <li><a href="#">Shipping & Delivery Policy</a></li>
+                        <li><a href="#">Return, Exchange, Cancellation & Refund Policy</a></li>
+                    </ul>
+                </div>
 
-            <div class="col-md-3 footer-column">
-                <h5>NEWSLETTER</h5>
-                <p>Receive our latest news, product launches & exclusive offers. T&Cs Apply</p>
-                <div class="newsletter">
-                    <input type="email" placeholder="Your email">
-                    <button>Subscribe</button>
-                </div>
-                <div class="social-icons" style="margin-top: 30px;">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                <div class="col-md-3 footer-column">
+                    <h5>NEWSLETTER</h5>
+                    <p>Receive our latest news, product launches & exclusive offers. T&Cs Apply</p>
+                    <div class="newsletter">
+                        <input type="email" placeholder="Your email">
+                        <button>Subscribe</button>
+                    </div>
+                    <div class="social-icons" style="margin-top: 30px;">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
                 </div>
             </div>
+            <div class="footer-bottom">
+                © 2024 AV MOTO Philippines.
+            </div>
         </div>
-        <div class="footer-bottom">
-            © 2024 AV MOTO Philippines.
-        </div>
-    </div>
-</footer>
+    </footer>
 
 
 
@@ -439,6 +471,25 @@ if ($category) {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="script.js"></script>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var colorCircles = document.querySelectorAll(".color-circle");
+
+            colorCircles.forEach(function(circle) {
+                circle.addEventListener("click", function() {
+                    colorCircles.forEach(function(c) {
+                        c.classList.remove("selected");
+                    });
+
+                    this.classList.add("selected");
+
+                    var selectedColor = this.getAttribute("data-color");
+                    console.log("Selected Color: " + selectedColor);
+                });
+            });
+        });
+    </script>
 </body>
+
 </html>

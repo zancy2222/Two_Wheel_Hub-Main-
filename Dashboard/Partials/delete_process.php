@@ -1,15 +1,19 @@
 <?php
 include '../db_conn.php';
 
-$id = $_POST['id'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id = $_POST['id'];
 
-$sql = "DELETE FROM users WHERE id='$id'";
+    $stmt = $conn->prepare("DELETE FROM users WHERE id = ?");
+    $stmt->bind_param("i", $id);
 
-if ($conn->query($sql) === TRUE) {
-    echo "success";
-} else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    if ($stmt->execute()) {
+        echo "success";
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+
+    $stmt->close();
+    $conn->close();
 }
-
-$conn->close();
 ?>

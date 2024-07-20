@@ -243,6 +243,41 @@ $result = $conn->query($sql);
     .modal-content form .btn-block:hover {
       background-color: var(--secondary-color);
     }
+
+    #editUserForm {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #editUserForm label {
+      margin-bottom: 5px;
+      color: var(--primary-color);
+    }
+
+    #editUserForm input[type="text"],
+    #editUserForm input[type="email"] {
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    #editUserForm button {
+      padding: 10px 20px;
+      color: white;
+      background-color: #007bff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    #editUserForm button:hover {
+      background-color: #0056b3;
+    }
   </style>
 </head>
 
@@ -328,20 +363,19 @@ $result = $conn->query($sql);
       <input type="text" placeholder="Search users...">
       <button class="add-button">Add User</button>
     </div>
-<!-- User Table -->
-<table id="userTable">
-    <thead>
+    <table id="userTable">
+      <thead>
         <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Address</th>
-            <th>Phone</th>
-            <th>Actions</th>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>Phone</th>
+          <th>Actions</th>
         </tr>
-    </thead>
-    <tbody>
+      </thead>
+      <tbody>
         <?php
         include 'db_conn.php';
 
@@ -357,220 +391,267 @@ $result = $conn->query($sql);
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . $row["id"] . "</td>";
-                echo "<td>" . $row["first_name"] . "</td>";
-                echo "<td>" . $row["last_name"] . "</td>";
-                echo "<td>" . $row["email"] . "</td>";
-                echo "<td>" . $row["unit_no_house_no_building"] . ", " . $row["street"] . ", " . $row["barangay"] . ", " . $row["city"] . ", " . $row["province"] . " " . $row["zip_code"] . "</td>";
-                echo "<td>" . $row["mobile_phone_no"] . "</td>";
-                echo "<td class='action-buttons'>
-                        <button class='edit-button'>Edit</button>
-                        <button class='delete-button' data-id='" . $row["id"] . "'>Delete</button>
-                      </td>";
-                echo "</tr>";
-            }
+          while ($row = $result->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>" . $row["id"] . "</td>";
+            echo "<td>" . $row["first_name"] . "</td>";
+            echo "<td>" . $row["last_name"] . "</td>";
+            echo "<td>" . $row["email"] . "</td>";
+            echo "<td>" . $row["unit_no_house_no_building"] . ", " . $row["street"] . ", " . $row["barangay"] . ", " . $row["city"] . ", " . $row["province"] . " " . $row["zip_code"] . "</td>";
+            echo "<td>" . $row["mobile_phone_no"] . "</td>";
+            echo "<td class='action-buttons'>
+                            <button class='edit-button'>Edit</button>
+                            <button class='delete-button' data-id='" . $row["id"] . "'>Delete</button>
+                          </td>";
+            echo "</tr>";
+          }
         } else {
-            echo "<tr><td colspan='7'>No users found</td></tr>";
+          echo "<tr><td colspan='7'>No users found</td></tr>";
         }
         $conn->close();
         ?>
-    </tbody>
-</table>
+      </tbody>
+    </table>
 
-<div class="pagination">
-    <button id="prevBtn" <?php if ($page <= 1) { echo 'disabled'; } ?> onclick="changePage(<?php echo $page - 1; ?>)">Prev</button>
-    <button id="nextBtn" <?php if ($page >= $totalPages) { echo 'disabled'; } ?> onclick="changePage(<?php echo $page + 1; ?>)">Next</button>
-</div>
 
-<!-- Add User Modal -->
-<div id="addUserModal" class="modal">
-    <div class="modal-content">
+
+    <div class="pagination">
+      <button id="prevBtn" <?php if ($page <= 1) {
+                              echo 'disabled';
+                            } ?> onclick="changePage(<?php echo $page - 1; ?>)">Prev</button>
+      <button id="nextBtn" <?php if ($page >= $totalPages) {
+                              echo 'disabled';
+                            } ?> onclick="changePage(<?php echo $page + 1; ?>)">Next</button>
+    </div>
+
+    <div id="addUserModal" class="modal">
+      <div class="modal-content">
         <span class="close">&times;</span>
         <h2>Add User</h2>
         <form id="addUserForm" method="post">
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="firstName">First Name</label>
-                    <input type="text" class="form-control" id="firstName" name="first_name" required>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="lastName">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" name="last_name" required>
-                </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="firstName">First Name</label>
+              <input type="text" class="form-control" id="firstName" name="first_name" required>
             </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+            <div class="form-group col-md-6">
+              <label for="lastName">Last Name</label>
+              <input type="text" class="form-control" id="lastName" name="last_name" required>
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <label for="address">Complete Address</label>
-                <input type="text" class="form-control" id="unit-no" name="unit_no_house_no_building" required>
-                <input type="text" class="form-control mt-2" id="street" name="street" required>
-                <input type="text" class="form-control mt-2" id="barangay" name="barangay" required>
-                <input type="text" class="form-control mt-2" id="city" name="city" required>
-                <input type="text" class="form-control mt-2" id="province" name="province" required>
-                <input type="text" class="form-control mt-2" id="zip-code" name="zip_code" required>
-            </div>
-            <div class="form-group">
-                <label for="phone">Mobile/Phone No.</label>
-                <input type="tel" class="form-control" id="phone" name="mobile_phone_no" required>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+          </div>
+          <div class="form-group">
+            <label for="address">Complete Address</label>
+            <input type="text" class="form-control" id="unit-no" name="unit_no_house_no_building" required>
+            <input type="text" class="form-control mt-2" id="street" name="street" required>
+            <input type="text" class="form-control mt-2" id="barangay" name="barangay" required>
+            <input type="text" class="form-control mt-2" id="city" name="city" required>
+            <input type="text" class="form-control mt-2" id="province" name="province" required>
+            <input type="text" class="form-control mt-2" id="zip-code" name="zip_code" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Mobile/Phone No.</label>
+            <input type="tel" class="form-control" id="phone" name="mobile_phone_no" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Create Account</button>
         </form>
+      </div>
     </div>
-</div>
 
-   <!-- Edit User Modal -->
-<div id="editUserModal" class="modal">
-    <div class="modal-content">
+
+    <div id="editUserModal" class="modal">
+      <div class="modal-content">
         <span class="close">&times;</span>
         <h2>Edit User</h2>
-        <form id="editUserForm" enctype="multipart/form-data">
-            <input type="hidden" id="editUserId" name="editUserId">
-            
-            <label for="editFirstName">First Name</label>
-            <input type="text" id="editFirstName" name="editFirstName" required>
-
-            <label for="editLastName">Last Name</label>
-            <input type="text" id="editLastName" name="editLastName" required>
-
+        <form id="editUserForm" method="post">
+          <input type="hidden" id="editUserId" name="editUserId">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="editFirstName">First Name</label>
+              <input type="text" class="form-control" id="editFirstName" name="editFirstName" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="editLastName">Last Name</label>
+              <input type="text" class="form-control" id="editLastName" name="editLastName" required>
+            </div>
+          </div>
+          <div class="form-group">
             <label for="editEmail">Email</label>
-            <input type="email" id="editEmail" name="editEmail" required>
-
-            <label for="editAddress">Address</label>
-            <input type="text" id="editAddress" name="editAddress" required>
-
-            <label for="editPhone">Phone</label>
-            <input type="text" id="editPhone" name="editPhone" required>
-
-            <button type="submit">Save Changes</button>
+            <input type="email" class="form-control" id="editEmail" name="editEmail" required>
+          </div>
+          <div class="form-group">
+            <label for="editUnitNo">Unit No/House No/Building</label>
+            <input type="text" class="form-control" id="editUnitNo" name="editUnitNo">
+          </div>
+          <div class="form-group">
+            <label for="editStreet">Street</label>
+            <input type="text" class="form-control" id="editStreet" name="editStreet">
+          </div>
+          <div class="form-group">
+            <label for="editBarangay">Barangay</label>
+            <input type="text" class="form-control" id="editBarangay" name="editBarangay">
+          </div>
+          <div class="form-group">
+            <label for="editCity">City</label>
+            <input type="text" class="form-control" id="editCity" name="editCity">
+          </div>
+          <div class="form-group">
+            <label for="editProvince">Province</label>
+            <input type="text" class="form-control" id="editProvince" name="editProvince">
+          </div>
+          <div class="form-group">
+            <label for="editZipCode">Zip Code</label>
+            <input type="text" class="form-control" id="editZipCode" name="editZipCode">
+          </div>
+          <div class="form-group">
+            <label for="editPhone">Mobile/Phone No.</label>
+            <input type="tel" class="form-control" id="editPhone" name="editPhone" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
         </form>
+      </div>
     </div>
-</div>
+
+
 
 
   </section>
 
   <script>
-    // Handle Add User Modal
     var addModal = document.getElementById("addUserModal");
-    var addBtn = document.querySelector(".add-button"); // Adjust selector as needed
+    var addBtn = document.querySelector(".add-button");
     var addSpan = document.querySelector("#addUserModal .close");
 
     addBtn.onclick = function() {
-        addModal.style.display = "block";
+      addModal.style.display = "block";
     }
 
     addSpan.onclick = function() {
-        addModal.style.display = "none";
+      addModal.style.display = "none";
     }
 
     window.onclick = function(event) {
-        if (event.target == addModal) {
-            addModal.style.display = "none";
-        }
+      if (event.target == addModal) {
+        addModal.style.display = "none";
+      }
     }
 
-    // Handle Add User Form Submission
     document.getElementById("addUserForm").onsubmit = function(event) {
-        event.preventDefault();
-        var formData = new FormData(this);
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "partials/reg_process.php", true);
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                alert("User added successfully!");
-                location.reload(); // Reload page to reflect changes
-            } else {
-                alert("An error occurred while adding the user.");
-            }
-        };
-        xhr.send(formData);
+      event.preventDefault();
+      var formData = new FormData(this);
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "partials/reg_process.php", true);
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          alert("User added successfully!");
+          location.reload();
+        } else {
+          alert("An error occurred while adding the user.");
+        }
+      };
+      xhr.send(formData);
     };
-</script>
+  </script>
 
 
   <script>
-    // Handle Edit User Modal
-    var editModal = document.getElementById("editUserModal");
-    var editBtns = document.querySelectorAll(".edit-button");
-    var editSpan = document.querySelector("#editUserModal .close");
+    document.addEventListener('DOMContentLoaded', function() {
+      var editModal = document.getElementById("editUserModal");
+      var editBtns = document.querySelectorAll(".edit-button");
+      var editSpan = document.querySelector("#editUserModal .close");
 
-    editBtns.forEach(function(editBtn) {
+      editBtns.forEach(function(editBtn) {
         editBtn.onclick = function() {
-            editModal.style.display = "block";
-            var row = editBtn.closest("tr");
-            var cells = row.querySelectorAll("td");
+          editModal.style.display = "block";
+          var row = editBtn.closest("tr");
+          var cells = row.querySelectorAll("td");
 
-            document.getElementById("editUserId").value = cells[0].innerText;
-            document.getElementById("editFirstName").value = cells[1].innerText;
-            document.getElementById("editLastName").value = cells[2].innerText;
-            document.getElementById("editEmail").value = cells[3].innerText;
-            document.getElementById("editAddress").value = cells[4].innerText;
-            document.getElementById("editPhone").value = cells[5].innerText;
+          document.getElementById("editUserId").value = cells[0].innerText;
+          document.getElementById("editFirstName").value = cells[1].innerText;
+          document.getElementById("editLastName").value = cells[2].innerText;
+          document.getElementById("editEmail").value = cells[3].innerText;
+
+          var addressParts = cells[4].innerText.split(', ');
+          document.getElementById("editUnitNo").value = addressParts[0] || '';
+          document.getElementById("editStreet").value = addressParts[1] || '';
+          document.getElementById("editBarangay").value = addressParts[2] || '';
+          document.getElementById("editCity").value = addressParts[3] || '';
+
+          var lastPart = addressParts[4] || '';
+          var provinceAndZip = lastPart.split(' ');
+          document.getElementById("editProvince").value = provinceAndZip.slice(0, -1).join(' ') || '';
+          document.getElementById("editZipCode").value = provinceAndZip[provinceAndZip.length - 1] || '';
+
+          document.getElementById("editPhone").value = cells[5].innerText;
         }
-    });
+      });
 
-    editSpan.onclick = function() {
+      editSpan.onclick = function() {
         editModal.style.display = "none";
-    }
+      }
 
-    window.onclick = function(event) {
+      window.onclick = function(event) {
         if (event.target == editModal) {
-            editModal.style.display = "none";
+          editModal.style.display = "none";
         }
-    }
+      }
 
-    // Handle Edit User Form Submission
-    document.getElementById("editUserForm").onsubmit = function(event) {
+      document.getElementById("editUserForm").onsubmit = function(event) {
         event.preventDefault();
         var formData = new FormData(this);
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "partials/edit_user.php", true);
+        xhr.open("POST", "partials/edit_process.php", true);
         xhr.onload = function() {
-            if (xhr.status === 200) {
-                alert("User updated successfully!");
-                location.reload();
-            } else {
-                alert("An error occurred while updating the user.");
-            }
+          if (xhr.status === 200) {
+            alert("User updated successfully!");
+            location.reload();
+          } else {
+            alert("An error occurred while updating the user.");
+          }
         };
         xhr.send(formData);
-    };
-
-    // Handle Delete User Buttons
-    var deleteBtns = document.querySelectorAll(".delete-button");
-    deleteBtns.forEach(function(deleteBtn) {
-        deleteBtn.onclick = function() {
-            var userId = deleteBtn.getAttribute("data-id");
-            if (confirm("Are you sure you want to delete this user?")) {
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "partials/delete_user.php", true);
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.onload = function() {
-                    if (xhr.status === 200) {
-                        alert("User deleted successfully!");
-                        location.reload();
-                    } else {
-                        alert("An error occurred while deleting the user.");
-                    }
-                };
-                xhr.send("id=" + userId);
-            }
-        };
+      };
     });
 
-    // Pagination Function
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var deleteBtns = document.querySelectorAll(".delete-button");
+      deleteBtns.forEach(function(deleteBtn) {
+        deleteBtn.onclick = function() {
+          var userId = deleteBtn.getAttribute("data-id");
+          if (confirm("Are you sure you want to delete this user?")) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "partials/delete_process.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onload = function() {
+              if (xhr.status === 200) {
+                if (xhr.responseText.trim() === "success") {
+                  alert("User deleted successfully!");
+                  location.reload();
+                } else {
+                  alert("An error occurred while deleting the user: " + xhr.responseText);
+                }
+              } else {
+                alert("An error occurred while deleting the user.");
+              }
+            };
+            xhr.send("id=" + userId);
+          }
+        };
+      });
+    });
+
     function changePage(page) {
-        window.location.href = "?page=" + page;
+      window.location.href = "?page=" + page;
     }
-</script>
+  </script>
 
 
   <script src="script.js"></script>

@@ -279,6 +279,24 @@ if ($category) {
             border-top: 1px solid var(--primary-color);
             margin-top: 20px;
         }
+        
+        .color-options {
+            display: flex;
+            gap: 5px;
+        }
+
+        .color-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            border: 1px solid #ccc;
+        }
+
+        .color-circle.selected {
+            border: 2px solid #000;
+        }
     </style>
 </head>
 <body>
@@ -337,30 +355,39 @@ if ($category) {
         </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="container mt-5">
         <div class="row">
             <?php
             if ($result->num_rows > 0) {
-                // Output data of each row
-                while($row = $result->fetch_assoc()) {
+                while ($row = $result->fetch_assoc()) {
+                    $colors = explode(',', htmlspecialchars($row["color"]));
+
                     echo "<div class='col-md-4 mb-4'>
-                            <div class='card product-card'>
-                                <img src='Dashboard/Partials/uploads/" . htmlspecialchars($row["product_image"]) . "' class='card-img-top product-img' alt='" . htmlspecialchars($row["product_name"]) . "'>
-                                <div class='card-body product-card-body'>
-                                    <h5 class='card-title product-card-title'>" . htmlspecialchars($row["product_name"]) . "</h5>
-                                    <p class='card-text product-card-description'>" . htmlspecialchars($row["description"]) . "</p>
-                                    <p class='card-text product-card-info'>Category: " . htmlspecialchars($row["category"]) . "</p>
-                                    <p class='card-text product-card-info'>Size: " . htmlspecialchars($row["size"]) . "</p>
-                                    <p class='card-text product-card-info'>Color: " . htmlspecialchars($row["color"]) . "</p>
-                                    <p class='card-text product-card-price'>₱" . htmlspecialchars($row["price"]) . "</p>
-                                    <div class='product-buttons'>
-                                        <button class='btn btn-add-to-cart'>Add to Cart</button>
-                                        <button class='btn btn-buy'>Buy Now</button>
-                                    </div>
+                        <div class='card product-card'>
+                            <img src='Dashboard/Partials/uploads/" . htmlspecialchars($row["product_image"]) . "' class='card-img-top product-img' alt='" . htmlspecialchars($row["product_name"]) . "'>
+                            <div class='card-body product-card-body'>
+                                <h5 class='card-title product-card-title'>" . htmlspecialchars($row["product_name"]) . "</h5>
+                                <p class='card-text product-card-description'>" . htmlspecialchars($row["description"]) . "</p>
+                                <p class='card-text product-card-info'>Category: " . htmlspecialchars($row["category"]) . "</p>
+                                <p class='card-text product-card-info'>Size: " . htmlspecialchars($row["size"]) . "</p>
+                                <p class='card-text product-card-info'>Pieces available: " . htmlspecialchars($row["quantity"]) . "</p>
+                                <p class='card-text product-card-info'>Color: 
+                                    <div class='color-options'>";
+
+                    foreach ($colors as $color) {
+                        echo "<span class='color-circle' data-color='" . trim($color) . "' style='background-color:" . trim($color) . ";'></span>";
+                    }
+
+                    echo                "</div>
+                                </p>
+                                <p class='card-text product-card-price'>₱" . htmlspecialchars($row["price"]) . "</p>
+                                <div class='product-buttons'>
+                                    <button class='btn btn-add-to-cart'>Add to Cart</button>
+                                    <button class='btn btn-buy'>Buy Now</button>
                                 </div>
                             </div>
-                          </div>";
+                        </div>
+                      </div>";
                 }
             } else {
                 echo "<p>No products found in this category.</p>";
@@ -368,6 +395,7 @@ if ($category) {
             ?>
         </div>
     </div>
+
     <!-- Chat Icon -->
     <div class="chat-icon" onclick="toggleChat()">
         <i class="fas fa-comments"></i>
@@ -445,5 +473,23 @@ if ($category) {
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="script.js"></script>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var colorCircles = document.querySelectorAll(".color-circle");
+
+            colorCircles.forEach(function(circle) {
+                circle.addEventListener("click", function() {
+                    colorCircles.forEach(function(c) {
+                        c.classList.remove("selected");
+                    });
+
+                    this.classList.add("selected");
+
+                    var selectedColor = this.getAttribute("data-color");
+                    console.log("Selected Color: " + selectedColor);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
