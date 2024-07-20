@@ -103,7 +103,7 @@
                         <a class="nav-link" href="Home.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Shop</a>
+                        <a class="nav-link" href="Shop.php">Shop</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="Contact.php">Contact Us</a>

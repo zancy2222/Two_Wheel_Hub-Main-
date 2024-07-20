@@ -6,311 +6,574 @@ $result = $conn->query($sql);
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Responsive Sidebar Menu HTML CSS | CodingNepal</title>
-    <link rel="stylesheet" href="style.css" />
-    <!-- Boxicons CDN Link -->
-    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-      :root {
-        --primary-color: #004AAD;
-        --secondary-color: #009DDF;
-        --grey-color: #737476;
-        --light-grey-color: #F8F9FA;
-        --black-color: #000000;
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Responsive Sidebar Menu HTML CSS | CodingNepal</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Boxicons CDN Link -->
+  <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #004AAD;
+      --secondary-color: #009DDF;
+      --grey-color: #737476;
+      --light-grey-color: #F8F9FA;
+      --black-color: #000000;
     }
+
     body {
       font-family: 'League Spartan', sans-serif;
-        background-color: var(--light-grey-color);
-        margin: 0;
-        padding: 0;
+      background-color: var(--light-grey-color);
+      margin: 0;
+      padding: 0;
     }
 
     .home-section {
-        padding: 20px;
+      padding: 20px;
     }
 
     .home-section .text {
-        font-size: 24px;
-        margin-bottom: 20px;
-        color: var(--primary-color);
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: var(--primary-color);
     }
 
     .search-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
     }
 
     .search-bar input {
-        width: 70%;
-        padding: 10px;
-        border: 1px solid var(--grey-color);
-        border-radius: 5px;
-        font-size: 16px;
+      width: 70%;
+      padding: 10px;
+      border: 1px solid var(--grey-color);
+      border-radius: 5px;
+      font-size: 16px;
     }
 
     .search-bar button {
-        background-color: var(--secondary-color);
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background-color 0.3s;
+      background-color: var(--secondary-color);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
     }
 
     .search-bar button:hover {
-        background-color: var(--primary-color);
+      background-color: var(--primary-color);
     }
 
     table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px 0;
-        font-size: 18px;
-        min-width: 400px;
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 18px;
+      min-width: 400px;
     }
 
-    table th, table td {
-        padding: 12px 15px;
-        border: 1px solid var(--grey-color);
-        text-align: left;
+    table th,
+    table td {
+      padding: 12px 15px;
+      border: 1px solid var(--grey-color);
+      text-align: left;
     }
 
     table th {
-        background-color: var(--primary-color);
-        color: white;
+      background-color: var(--primary-color);
+      color: white;
     }
 
     table tr:nth-child(even) {
-        background-color: var(--light-grey-color);
+      background-color: var(--light-grey-color);
     }
 
     .action-buttons button {
-        background-color: var(--primary-color);
-        color: white;
-        padding: 5px 10px;
-        border: none;
-        border-radius: 3px;
-        font-size: 14px;
-        cursor: pointer;
-        margin-right: 5px;
-        transition: background-color 0.3s;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 3px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-right: 5px;
+      transition: background-color 0.3s;
     }
 
     .action-buttons button:hover {
-        background-color: var(--secondary-color);
+      background-color: var(--secondary-color);
     }
 
     .add-button {
-        background-color: var(--primary-color);
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        margin-bottom: 20px;
-        transition: background-color 0.3s;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: background-color 0.3s;
     }
 
     .add-button:hover {
-        background-color: var(--secondary-color);
+      background-color: var(--secondary-color);
     }
 
     .pagination {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 20px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0;
     }
 
     .pagination button {
-        background-color: var(--primary-color);
-        color: white;
-        padding: 10px;
-        border: none;
-        border-radius: 5px;
-        margin: 0 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      margin: 0 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
     }
 
     .pagination button:hover {
-        background-color: var(--secondary-color);
+      background-color: var(--secondary-color);
     }
 
     .pagination button:disabled {
-        background-color: var(--grey-color);
-        cursor: not-allowed;
+      background-color: var(--grey-color);
+      cursor: not-allowed;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0, 0, 0);
+      background-color: rgba(0, 0, 0, 0.4);
+      padding-top: 60px;
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 10px;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .modal-content h2 {
+      text-align: center;
+      color: var(--primary-color);
+    }
+
+    .modal-content form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-content form .form-row {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .modal-content form .form-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 10px;
+    }
+
+    .modal-content form .form-group label {
+      margin-bottom: 5px;
+      color: var(--primary-color);
+    }
+
+    .modal-content form .form-group input,
+    .modal-content form .form-group select {
+      padding: 10px;
+      border: 1px solid var(--grey-color);
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .modal-content form .btn-block {
+      width: 100%;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .modal-content form .btn-block:hover {
+      background-color: var(--secondary-color);
     }
   </style>
-  </head>
-  <body>
-    <div class="sidebar">
-      <div class="logo-details">
-        
-        <i class="bx bx-menu" id="btn"></i>
-      </div>
-      <ul class="nav-list">
-      
-        <li>
-          <a href="Dashb.php">
-            <i class="bx bx-grid-alt"></i>
-            <span class="links_name">Dashboard</span>
-          </a>
-          <span class="tooltip">Dashboard</span>
-        </li>
-        <li>
-          <a href="Users.php">
-            <i class="bx bx-user"></i>
-            <span class="links_name">User Accounts</span>
-          </a>
-          <span class="tooltip">User Accounts</span>
-        </li>
-        <li>
-          <a href="Products.php">
-            <i class='bx bx-store-alt'></i>
-            <span class="links_name">Products</span>
-          </a>
-          <span class="tooltip">Products</span>
-        </li>
-        <li>
-          <a href="">
-            <i class='bx bx-receipt'></i>
-            <span class="links_name">History Logs</span>
-          </a>
-          <span class="tooltip">History Logs</span>
-        </li>
-        <li>
-          <a href="Categories.php">
-            <i class='bx bx-purchase-tag-alt'></i>
-            <span class="links_name">Categories</span>
-          </a>
-          <span class="tooltip">Categories</span>
-        </li>
-        <li>
-          <a href="Orders.php">
-            <i class="bx bx-cart-alt"></i>
-            <span class="links_name">Order</span>
-          </a>
-          <span class="tooltip">Order</span>
-        </li>
-        <li>
-          <a href="Appointments.php">
-            <i class='bx bx-spreadsheet'></i>
-            <span class="links_name">Booking</span>
-          </a>
-          <span class="tooltip">Booking</span>
-        </li>
-        <li>
-          <a href="#">
-            <i class='bx bxs-credit-card'></i>
-            <span class="links_name">Payments</span>
-          </a>
-          <span class="tooltip">Payments</span>
-        </li>
-        <li class="profile">
-          <div class="profile-details">
-            <img src="../img/AV Moto Logo.png" alt="profileImg" />
-            <div class="name_job">
-              <div class="name">AV MOTO</div>
-              <div class="job">TUNING</div>
-            </div>
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="logo-details">
+
+      <i class="bx bx-menu" id="btn"></i>
+    </div>
+    <ul class="nav-list">
+
+      <li>
+        <a href="Dashb.php">
+          <i class="bx bx-grid-alt"></i>
+          <span class="links_name">Dashboard</span>
+        </a>
+        <span class="tooltip">Dashboard</span>
+      </li>
+      <li>
+        <a href="Users.php">
+          <i class="bx bx-user"></i>
+          <span class="links_name">User Accounts</span>
+        </a>
+        <span class="tooltip">User Accounts</span>
+      </li>
+      <li>
+        <a href="Products.php">
+          <i class='bx bx-store-alt'></i>
+          <span class="links_name">Products</span>
+        </a>
+        <span class="tooltip">Products</span>
+      </li>
+      <li>
+        <a href="">
+          <i class='bx bx-receipt'></i>
+          <span class="links_name">History Logs</span>
+        </a>
+        <span class="tooltip">History Logs</span>
+      </li>
+      <li>
+        <a href="Categories.php">
+          <i class='bx bx-purchase-tag-alt'></i>
+          <span class="links_name">Categories</span>
+        </a>
+        <span class="tooltip">Categories</span>
+      </li>
+      <li>
+        <a href="Orders.php">
+          <i class="bx bx-cart-alt"></i>
+          <span class="links_name">Order</span>
+        </a>
+        <span class="tooltip">Order</span>
+      </li>
+      <li>
+        <a href="Appointments.php">
+          <i class='bx bx-spreadsheet'></i>
+          <span class="links_name">Booking</span>
+        </a>
+        <span class="tooltip">Booking</span>
+      </li>
+      <li>
+        <a href="#">
+          <i class='bx bxs-credit-card'></i>
+          <span class="links_name">Payments</span>
+        </a>
+        <span class="tooltip">Payments</span>
+      </li>
+      <li class="profile">
+        <div class="profile-details">
+          <img src="../img/AV Moto Logo.png" alt="profileImg" />
+          <div class="name_job">
+            <div class="name">AV MOTO</div>
+            <div class="job">TUNING</div>
           </div>
-          <i class="bx bx-log-out" id="log_out"></i>
-        </li>
-      </ul>
-    </div>
-    <section class="home-section">
-        <div class="text">Dashboard</div>
-        <div class="search-bar">
-            <input type="text" placeholder="Search users...">
-            <button class="add-button">Add User</button>
         </div>
-        <table id="userTable">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Address</th>
-                <th>Mobile/Phone No.</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            if ($result->num_rows > 0) {
-                while($row = $result->fetch_assoc()) {
-                    $address = $row['unit_no_house_no_building'] . ' ' . $row['street'] . ', ' . $row['barangay'] . ', ' . $row['city'] . ', ' . $row['province'] . ', ' . $row['zip_code'];
-                    echo "<tr>
-                        <td>{$row['id']}</td>
-                        <td>{$row['first_name']}</td>
-                        <td>{$row['last_name']}</td>
-                        <td>{$row['email']}</td>
-                        <td>{$address}</td>
-                        <td>{$row['mobile_phone_no']}</td>
-                        <td class='action-buttons'>
-                            <button>Edit</button>
-                            <button>Delete</button>
-                        </td>
-                    </tr>";
-                }
-            } else {
-                echo "<tr><td colspan='7'>No users found</td></tr>";
-            }
-            ?>
-        </tbody>
-    </table>
-    <div class="pagination">
-        <button id="prevBtn" onclick="prevPage()">Prev</button>
-        <button id="nextBtn" onclick="nextPage()">Next</button>
+        <i class="bx bx-log-out" id="log_out"></i>
+      </li>
+    </ul>
+  </div>
+  <section class="home-section">
+    <div class="text">Dashboard</div>
+    <div class="search-bar">
+      <input type="text" placeholder="Search users...">
+      <button class="add-button">Add User</button>
     </div>
-    </section>
-    <script>
-        const rowsPerPage = 5;
-        let currentPage = 1;
-        const rows = document.querySelectorAll('#userTable tbody tr');
-        const totalPages = Math.ceil(rows.length / rowsPerPage);
+<!-- User Table -->
+<table id="userTable">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        include 'db_conn.php';
 
-        function renderTable() {
-            rows.forEach((row, index) => {
-                if (index >= (currentPage - 1) * rowsPerPage && index < currentPage * rowsPerPage) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $rowsPerPage = 5;
+        $offset = ($page - 1) * $rowsPerPage;
 
-            document.getElementById('prevBtn').disabled = currentPage === 1;
-            document.getElementById('nextBtn').disabled = currentPage === totalPages;
-        }
+        $totalRowsResult = $conn->query("SELECT COUNT(*) as total FROM users");
+        $totalRows = $totalRowsResult->fetch_assoc()['total'];
+        $totalPages = ceil($totalRows / $rowsPerPage);
 
-        function prevPage() {
-            if (currentPage > 1) {
-                currentPage--;
-                renderTable();
+        $sql = "SELECT * FROM users LIMIT $offset, $rowsPerPage";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>" . $row["id"] . "</td>";
+                echo "<td>" . $row["first_name"] . "</td>";
+                echo "<td>" . $row["last_name"] . "</td>";
+                echo "<td>" . $row["email"] . "</td>";
+                echo "<td>" . $row["unit_no_house_no_building"] . ", " . $row["street"] . ", " . $row["barangay"] . ", " . $row["city"] . ", " . $row["province"] . " " . $row["zip_code"] . "</td>";
+                echo "<td>" . $row["mobile_phone_no"] . "</td>";
+                echo "<td class='action-buttons'>
+                        <button class='edit-button'>Edit</button>
+                        <button class='delete-button' data-id='" . $row["id"] . "'>Delete</button>
+                      </td>";
+                echo "</tr>";
             }
+        } else {
+            echo "<tr><td colspan='7'>No users found</td></tr>";
         }
+        $conn->close();
+        ?>
+    </tbody>
+</table>
 
-        function nextPage() {
-            if (currentPage < totalPages) {
-                currentPage++;
-                renderTable();
+<div class="pagination">
+    <button id="prevBtn" <?php if ($page <= 1) { echo 'disabled'; } ?> onclick="changePage(<?php echo $page - 1; ?>)">Prev</button>
+    <button id="nextBtn" <?php if ($page >= $totalPages) { echo 'disabled'; } ?> onclick="changePage(<?php echo $page + 1; ?>)">Next</button>
+</div>
+
+<!-- Add User Modal -->
+<div id="addUserModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Add User</h2>
+        <form id="addUserForm" method="post">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="firstName">First Name</label>
+                    <input type="text" class="form-control" id="firstName" name="first_name" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" name="last_name" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Complete Address</label>
+                <input type="text" class="form-control" id="unit-no" name="unit_no_house_no_building" required>
+                <input type="text" class="form-control mt-2" id="street" name="street" required>
+                <input type="text" class="form-control mt-2" id="barangay" name="barangay" required>
+                <input type="text" class="form-control mt-2" id="city" name="city" required>
+                <input type="text" class="form-control mt-2" id="province" name="province" required>
+                <input type="text" class="form-control mt-2" id="zip-code" name="zip_code" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Mobile/Phone No.</label>
+                <input type="tel" class="form-control" id="phone" name="mobile_phone_no" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+        </form>
+    </div>
+</div>
+
+   <!-- Edit User Modal -->
+<div id="editUserModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Edit User</h2>
+        <form id="editUserForm" enctype="multipart/form-data">
+            <input type="hidden" id="editUserId" name="editUserId">
+            
+            <label for="editFirstName">First Name</label>
+            <input type="text" id="editFirstName" name="editFirstName" required>
+
+            <label for="editLastName">Last Name</label>
+            <input type="text" id="editLastName" name="editLastName" required>
+
+            <label for="editEmail">Email</label>
+            <input type="email" id="editEmail" name="editEmail" required>
+
+            <label for="editAddress">Address</label>
+            <input type="text" id="editAddress" name="editAddress" required>
+
+            <label for="editPhone">Phone</label>
+            <input type="text" id="editPhone" name="editPhone" required>
+
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+
+  </section>
+
+  <script>
+    // Handle Add User Modal
+    var addModal = document.getElementById("addUserModal");
+    var addBtn = document.querySelector(".add-button"); // Adjust selector as needed
+    var addSpan = document.querySelector("#addUserModal .close");
+
+    addBtn.onclick = function() {
+        addModal.style.display = "block";
+    }
+
+    addSpan.onclick = function() {
+        addModal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == addModal) {
+            addModal.style.display = "none";
+        }
+    }
+
+    // Handle Add User Form Submission
+    document.getElementById("addUserForm").onsubmit = function(event) {
+        event.preventDefault();
+        var formData = new FormData(this);
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "partials/reg_process.php", true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                alert("User added successfully!");
+                location.reload(); // Reload page to reflect changes
+            } else {
+                alert("An error occurred while adding the user.");
             }
+        };
+        xhr.send(formData);
+    };
+</script>
+
+
+  <script>
+    // Handle Edit User Modal
+    var editModal = document.getElementById("editUserModal");
+    var editBtns = document.querySelectorAll(".edit-button");
+    var editSpan = document.querySelector("#editUserModal .close");
+
+    editBtns.forEach(function(editBtn) {
+        editBtn.onclick = function() {
+            editModal.style.display = "block";
+            var row = editBtn.closest("tr");
+            var cells = row.querySelectorAll("td");
+
+            document.getElementById("editUserId").value = cells[0].innerText;
+            document.getElementById("editFirstName").value = cells[1].innerText;
+            document.getElementById("editLastName").value = cells[2].innerText;
+            document.getElementById("editEmail").value = cells[3].innerText;
+            document.getElementById("editAddress").value = cells[4].innerText;
+            document.getElementById("editPhone").value = cells[5].innerText;
         }
+    });
 
-        renderTable();
-    </script>
+    editSpan.onclick = function() {
+        editModal.style.display = "none";
+    }
 
-    <script src="script.js"></script>
-  </body>
+    window.onclick = function(event) {
+        if (event.target == editModal) {
+            editModal.style.display = "none";
+        }
+    }
+
+    // Handle Edit User Form Submission
+    document.getElementById("editUserForm").onsubmit = function(event) {
+        event.preventDefault();
+        var formData = new FormData(this);
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "partials/edit_user.php", true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                alert("User updated successfully!");
+                location.reload();
+            } else {
+                alert("An error occurred while updating the user.");
+            }
+        };
+        xhr.send(formData);
+    };
+
+    // Handle Delete User Buttons
+    var deleteBtns = document.querySelectorAll(".delete-button");
+    deleteBtns.forEach(function(deleteBtn) {
+        deleteBtn.onclick = function() {
+            var userId = deleteBtn.getAttribute("data-id");
+            if (confirm("Are you sure you want to delete this user?")) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "partials/delete_user.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        alert("User deleted successfully!");
+                        location.reload();
+                    } else {
+                        alert("An error occurred while deleting the user.");
+                    }
+                };
+                xhr.send("id=" + userId);
+            }
+        };
+    });
+
+    // Pagination Function
+    function changePage(page) {
+        window.location.href = "?page=" + page;
+    }
+</script>
+
+
+  <script src="script.js"></script>
+</body>
+
 </html>

@@ -193,8 +193,8 @@
                             </table>
                         </div>
                         <div class="text-right">
-                            <h4>Total: ₱<span id="cart-total" class="cart-total">0.00</span></h4>
-                            <button class="btn-primary" id="place-order-btn">Place Order</button>
+                            <h4>Total: ₱<span id="cart-total" class="cart-total"> 0.00</span></h4>
+                            <!-- <button class="btn-primary" id="place-order-btn">Place Order</button> -->
                         </div>
                     </div>
                 </div>
