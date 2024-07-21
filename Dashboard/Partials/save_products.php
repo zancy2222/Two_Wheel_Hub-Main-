@@ -1,14 +1,14 @@
 <?php
-include '../db_conn.php'; 
+include '../db_conn.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $productName = $_POST['productName'];
     $description = $_POST['description'];
     $category = $_POST['category'];
-    $size = $_POST['size'];
-    $color = $_POST['color'];
     $price = $_POST['price'];
-    $quantity = $_POST['quantity'];  
+    $colors = $_POST['color'];
+    $sizes = $_POST['size'];
+    $quantities = $_POST['quantity'];
 
     $targetDir = "uploads/";
     $productImage = basename($_FILES["productImage"]["name"]);
@@ -33,17 +33,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die("Sorry, there was an error uploading your file.");
     }
 
-    $sql = "INSERT INTO products (product_image, product_name, description, category, size, color, price, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO products (product_image, product_name, description, category, price) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssssssi", $productImage, $productName, $description, $category, $size, $color, $price, $quantity);
+    $stmt->bind_param("ssssd", $productImage, $productName, $description, $category, $price);
 
     if ($stmt->execute()) {
+        $productId = $stmt->insert_id;
+        $stmt->close();
+
+        $sql = "INSERT INTO product_variations (product_id, color, size, quantity) VALUES (?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+
+        foreach ($colors as $index => $color) {
+            $size = $sizes[$index];
+            $quantity = $quantities[$index];
+            $stmt->bind_param("isss", $productId, $color, $size, $quantity);
+            $stmt->execute();
+        }
+
+        $stmt->close();
         echo "Product added successfully.";
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
 
-    $stmt->close();
     $conn->close();
 } else {
     echo "Invalid request.";

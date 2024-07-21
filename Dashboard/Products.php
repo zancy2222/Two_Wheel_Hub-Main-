@@ -312,60 +312,66 @@
             <button class="add-button">Add Product</button>
         </div>
         <table id="productTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Product Image</th>
-                    <th>Product Name</th>
-                    <th>Description</th>
-                    <th>Category</th>
-                    <th>Size</th>
-                    <th>Color</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                include 'db_conn.php';
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Product Image</th>
+            <th>Product Name</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Variations</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        include 'db_conn.php';
 
-                $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                $rowsPerPage = 5;
-                $offset = ($page - 1) * $rowsPerPage;
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $rowsPerPage = 5;
+        $offset = ($page - 1) * $rowsPerPage;
 
-                $totalRowsResult = $conn->query("SELECT COUNT(*) as total FROM products");
-                $totalRows = $totalRowsResult->fetch_assoc()['total'];
-                $totalPages = ceil($totalRows / $rowsPerPage);
+        $totalRowsResult = $conn->query("SELECT COUNT(*) as total FROM products");
+        $totalRows = $totalRowsResult->fetch_assoc()['total'];
+        $totalPages = ceil($totalRows / $rowsPerPage);
 
-                $sql = "SELECT * FROM products LIMIT $offset, $rowsPerPage";
-                $result = $conn->query($sql);
+        $sql = "SELECT * FROM products LIMIT $offset, $rowsPerPage";
+        $result = $conn->query($sql);
 
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . $row["id"] . "</td>";
-                        echo "<td><img src='Partials/uploads/" . $row["product_image"] . "' alt='" . $row["product_name"] . "' width='150'></td>";
-                        echo "<td>" . $row["product_name"] . "</td>";
-                        echo "<td>" . $row["description"] . "</td>";
-                        echo "<td>" . $row["category"] . "</td>";
-                        echo "<td>" . $row["size"] . "</td>";
-                        echo "<td>" . $row["color"] . "</td>";
-                        echo "<td>₱" . $row["price"] . "</td>";
-                        echo "<td>" . $row["quantity"] . "</td>";
-                        echo "<td class='action-buttons'>
-                        <button class='edit-button'>Edit</button>
-                        <button class='delete-button' data-id='" . $row["id"] . "'>Delete</button>
-                      </td>";
-                        echo "</tr>";
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>" . $row["id"] . "</td>";
+                echo "<td><img src='Partials/uploads/" . $row["product_image"] . "' alt='" . $row["product_name"] . "' width='150'></td>";
+                echo "<td>" . $row["product_name"] . "</td>";
+                echo "<td>" . $row["description"] . "</td>";
+                echo "<td>" . $row["category"] . "</td>";
+                echo "<td>";
+                $productId = $row["id"];
+                $variationsSql = "SELECT * FROM product_variations WHERE product_id = $productId";
+                $variationsResult = $conn->query($variationsSql);
+                if ($variationsResult->num_rows > 0) {
+                    while ($variation = $variationsResult->fetch_assoc()) {
+                        echo "Color: " . $variation["color"] . " - Size: " . $variation["size"] . " - Quantity: " . $variation["quantity"] . "<br>";
                     }
-                } else {
-                    echo "<tr><td colspan='10'>No products found</td></tr>";
                 }
-                $conn->close();
-                ?>
-            </tbody>
-        </table>
+                echo "</td>";
+                echo "<td>₱" . $row["price"] . "</td>";
+                echo "<td class='action-buttons'>
+                    <button class='edit-button'>Edit</button>
+                    <button class='delete-button' data-id='" . $row["id"] . "'>Delete</button>
+                </td>";
+                echo "</tr>";
+            }
+        } else {
+            echo "<tr><td colspan='8'>No products found</td></tr>";
+        }
+        $conn->close();
+        ?>
+    </tbody>
+</table>
+
 
         <div class="pagination">
             <button id="prevBtn" <?php if ($page <= 1) {
@@ -377,90 +383,91 @@
         </div>
 
         <div id="addProductModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Add Product</h2>
-                <form id="addProductForm" enctype="multipart/form-data" action="Partials/save_products.php" method="post">
-                    <label for="productImage">Product Image</label>
-                    <input type="file" id="productImage" name="productImage" accept="image/*" required>
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Add Product</h2>
+        <form id="addProductForm" enctype="multipart/form-data" action="Partials/save_products.php" method="post">
+            <label for="productImage">Product Image</label>
+            <input type="file" id="productImage" name="productImage" accept="image/*" required>
 
-                    <label for="productName">Product Name</label>
-                    <input type="text" id="productName" name="productName" required>
+            <label for="productName">Product Name</label>
+            <input type="text" id="productName" name="productName" required>
 
-                    <label for="description">Description</label>
-                    <input type="text" id="description" name="description" required>
+            <label for="description">Description</label>
+            <textarea id="description" name="description" required></textarea>
 
-                    <label for="category">Category</label>
-                    <select id="category" name="category" required>
-                        <option value="Suspension Oils">Suspension Oils</option>
-                        <option value="Rear Shock">Rear Shock</option>
-                        <option value="Accessories">Accessories</option>
-                        <option value="Tires">Tires</option>
-                        <option value="Others">Others</option>
-                    </select>
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+                <option value="Suspension Oils">Suspension Oils</option>
+                <option value="Rear Shock">Rear Shock</option>
+                <option value="Accessories">Accessories</option>
+                <option value="Tires">Tires</option>
+                <option value="Others">Others</option>
+            </select>
+
+            <label for="price">Price</label>
+            <input type="text" id="price" name="price" required>
+
+            <div id="variations">
+                <div class="variation">
+                    <label for="color">Color</label>
+                    <input type="text" name="color[]" required>
 
                     <label for="size">Size</label>
-                    <input type="text" id="size" name="size" required>
-
-                    <label for="color">Color</label>
-                    <input type="text" id="color" name="color" required>
-
-                    <label for="price">Price</label>
-                    <input type="text" id="price" name="price" required>
+                    <input type="text" name="size[]" required>
 
                     <label for="quantity">Quantity</label>
-                    <input type="number" id="quantity" name="quantity" required>
-
-                    <button type="submit">Add Product</button>
-                </form>
+                    <input type="number" name="quantity[]" required>
+                </div>
             </div>
-        </div>
+            <button type="button" id="addVariation">Add Variation</button>
+
+            <button type="submit">Add Product</button>
+        </form>
+    </div>
+</div>
 
 
-        <div id="editProductModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Edit Product</h2>
-                <form id="editProductForm" enctype="multipart/form-data">
-                    <input type="hidden" id="editProductId" name="editProductId">
 
-                    <label for="editProductImage">Product Image</label>
-                    <input type="file" id="editProductImage" name="editProductImage" accept="image/*">
-                    <br>
-                    <img id="currentProductImage" src="" alt="Current Image" style="max-width: 150px; display: none;">
+<div id="editProductModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Edit Product</h2>
+        <form id="editProductForm" enctype="multipart/form-data">
+            <input type="hidden" id="editProductId" name="editProductId">
 
-                    <label for="editProductName">Product Name</label>
-                    <input type="text" id="editProductName" name="editProductName" required>
+            <label for="editProductImage">Product Image</label>
+            <input type="file" id="editProductImage" name="editProductImage" accept="image/*">
+            <br>
+            <img id="currentProductImage" src="" alt="Current Image" style="max-width: 150px; display: none;">
 
-                    <label for="editDescription">Description</label>
-                    <input type="text" id="editDescription" name="editDescription" required>
+            <label for="editProductName">Product Name</label>
+            <input type="text" id="editProductName" name="editProductName" required>
 
-                    <label for="editCategory">Category</label>
-                    <select id="editCategory" name="editCategory" required>
-                        <option value="Suspension Oils">Suspension Oils</option>
-                        <option value="Rear Shock">Rear Shock</option>
-                        <option value="Accessories">Accessories</option>
-                        <option value="Tires">Tires</option>
-                        <option value="Others">Others</option>
-                    </select>
+            <label for="editDescription">Description</label>
+            <textarea id="editDescription" name="editDescription" required></textarea>
 
-                    <label for="editSize">Size</label>
-                    <input type="text" id="editSize" name="editSize" required>
+            <label for="editCategory">Category</label>
+            <select id="editCategory" name="editCategory" required>
+                <option value="Suspension Oils">Suspension Oils</option>
+                <option value="Rear Shock">Rear Shock</option>
+                <option value="Accessories">Accessories</option>
+                <option value="Tires">Tires</option>
+                <option value="Others">Others</option>
+            </select>
 
-                    <label for="editColor">Color</label>
-                    <input type="text" id="editColor" name="editColor" required>
-
-                    <label for="editPrice">Price</label>
-                    <input type="text" id="editPrice" name="editPrice" required>
-
-                    <label for="editQuantity">Quantity</label>
-                    <input type="number" id="editQuantity" name="editQuantity" required>
-
-                    <button type="submit">Save Changes</button>
-                </form>
+            <div id="editVariations">
+                <!-- Variations will be populated here by JavaScript -->
             </div>
-        </div>
+            <button type="button" id="addEditVariation">Add Variation</button>
 
+            <label for="editPrice">Price</label>
+            <input type="text" id="editPrice" name="editPrice" required>
+
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+</div>
 
     </section>
     <script>
@@ -469,10 +476,7 @@
             var addBtn = document.querySelector(".add-button");
             var addSpan = document.querySelector("#addProductModal .close");
 
-            var editModal = document.getElementById("editProductModal");
-            var editBtns = document.querySelectorAll(".edit-button");
-            var editSpan = document.querySelector("#editProductModal .close");
-
+       
             addBtn.onclick = function() {
                 addProductModal.style.display = "block";
             }
@@ -489,52 +493,7 @@
                 }
             }
 
-            editBtns.forEach(function(editBtn) {
-                editBtn.onclick = function() {
-                    editModal.style.display = "block";
-                    var row = editBtn.closest("tr");
-                    var cells = row.querySelectorAll("td");
-
-                    document.getElementById("editProductId").value = cells[0].innerText;
-                    document.getElementById("editProductName").value = cells[2].innerText;
-                    document.getElementById("editDescription").value = cells[3].innerText;
-                    document.getElementById("editCategory").value = cells[4].innerText;
-                    document.getElementById("editSize").value = cells[5].innerText;
-                    document.getElementById("editColor").value = cells[6].innerText;
-                    document.getElementById("editPrice").value = cells[7].innerText.replace('₱', '').trim();
-                    document.getElementById("editQuantity").value = cells[8].innerText; // Added
-
-                    var imageUrl = row.querySelector("img").src;
-                    var currentImage = document.getElementById("currentProductImage");
-                    if (imageUrl) {
-                        currentImage.src = imageUrl;
-                        currentImage.style.display = "block";
-                    } else {
-                        currentImage.style.display = "none";
-                    }
-                }
-            });
-
-            editSpan.onclick = function() {
-                editModal.style.display = "none";
-            }
-
-            document.getElementById("editProductForm").onsubmit = function(event) {
-                event.preventDefault();
-                var formData = new FormData(this);
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "Partials/edit_product.php", true);
-                xhr.onload = function() {
-                    if (xhr.status === 200) {
-                        alert("Product updated successfully!");
-                        location.reload();
-                    } else {
-                        alert("An error occurred while updating the product.");
-                    }
-                };
-                xhr.send(formData);
-            };
-
+          
             var deleteBtns = document.querySelectorAll(".delete-button");
             deleteBtns.forEach(function(deleteBtn) {
                 deleteBtn.onclick = function() {
@@ -557,8 +516,126 @@
             });
         });
     </script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var editModal = document.getElementById("editProductModal");
+    var editBtns = document.querySelectorAll(".edit-button");
+    var editSpan = document.querySelector("#editProductModal .close");
 
+    editBtns.forEach(function(editBtn) {
+        editBtn.onclick = function() {
+            editModal.style.display = "block";
+            var row = editBtn.closest("tr");
+            var cells = row.querySelectorAll("td");
 
+            // Set the product information
+            document.getElementById("editProductId").value = cells[0].innerText;
+            document.getElementById("editProductName").value = cells[2].innerText;
+            document.getElementById("editDescription").value = cells[3].innerText;
+            document.getElementById("editCategory").value = cells[4].innerText;
+            document.getElementById("editPrice").value = cells[6].innerText.replace('₱', '').trim(); // Fetch price
+
+            // Handle the current product image
+            var imageUrl = row.querySelector("img").src;
+            var currentImage = document.getElementById("currentProductImage");
+            if (imageUrl) {
+                currentImage.src = imageUrl;
+                currentImage.style.display = "block";
+            } else {
+                currentImage.style.display = "none";
+            }
+
+            // Fetch and display existing variations
+            var productId = cells[0].innerText;
+            fetchVariations(productId);
+        };
+    });
+
+    editSpan.onclick = function() {
+        editModal.style.display = "none";
+    };
+
+    function fetchVariations(productId) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "Partials/get_product_variations.php?productId=" + productId, true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var variations = JSON.parse(xhr.responseText);
+                var variationsContainer = document.getElementById("editVariations");
+                variationsContainer.innerHTML = ''; // Clear existing variations
+                variations.forEach(function(variation) {
+                    var variationDiv = document.createElement("div");
+                    variationDiv.className = "variation";
+                    variationDiv.innerHTML = `
+                        <label for="editColor">Color</label>
+                        <input type="text" name="editColor[]" value="${variation.color}" required>
+                        <label for="editSize">Size</label>
+                        <input type="text" name="editSize[]" value="${variation.size}" required>
+                        <label for="editQuantity">Quantity</label>
+                        <input type="number" name="editQuantity[]" value="${variation.quantity}" required>
+                    `;
+                    variationsContainer.appendChild(variationDiv);
+                });
+            } else {
+                alert("Failed to load variations.");
+            }
+        };
+        xhr.send();
+    }
+
+    document.getElementById("addEditVariation").onclick = function() {
+        var variationContainer = document.getElementById("editVariations");
+        var newVariation = document.createElement("div");
+        newVariation.className = "variation";
+        newVariation.innerHTML = `
+            <label for="editColor">Color</label>
+            <input type="text" name="editColor[]" required>
+            <label for="editSize">Size</label>
+            <input type="text" name="editSize[]" required>
+            <label for="editQuantity">Quantity</label>
+            <input type="number" name="editQuantity[]" required>
+        `;
+        variationContainer.appendChild(newVariation);
+    };
+
+    document.getElementById("editProductForm").onsubmit = function(event) {
+        event.preventDefault();
+        var formData = new FormData(this);
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "Partials/edit_product.php", true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                alert("Product updated successfully!");
+                location.reload();
+            } else {
+                alert("An error occurred while updating the product.");
+            }
+        };
+        xhr.send(formData);
+    };
+});
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    var addVariationBtn = document.getElementById("addVariation");
+    addVariationBtn.addEventListener("click", function() {
+        var variationContainer = document.getElementById("variations");
+        var newVariation = document.createElement("div");
+        newVariation.className = "variation";
+        newVariation.innerHTML = `
+            <label for="color">Color</label>
+            <input type="text" name="color[]" required>
+            <label for="size">Size</label>
+            <input type="text" name="size[]" required>
+            <label for="quantity">Quantity</label>
+            <input type="number" name="quantity[]" required>
+        `;
+        variationContainer.appendChild(newVariation);
+    });
+});
+
+</script>
     <script>
         function changePage(page) {
             window.location.href = "?page=" + page;

@@ -281,22 +281,23 @@ if ($category) {
         }
 
         .color-options {
-            display: flex;
-            gap: 5px;
-        }
+    display: flex;
+    gap: 5px;
+}
 
-        .color-circle {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: inline-block;
-            cursor: pointer;
-            border: 1px solid #ccc;
-        }
+.color-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    border: 1px solid #ccc;
+}
 
-        .color-circle.selected {
-            border: 2px solid #000;
-        }
+.color-circle.selected {
+    border: 2px solid #000;
+}
+
     </style>
 </head>
 
@@ -355,45 +356,71 @@ if ($category) {
 
     <!-- Main Content -->
     <div class="container mt-5">
-        <div class="row">
-            <?php
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    $colors = explode(',', htmlspecialchars($row["color"]));
+    <div class="row">
+        <?php
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                // Fetch variations for each product
+                $productId = $row["id"];
+                $variationSql = "SELECT * FROM product_variations WHERE product_id = ?";
+                $variationStmt = $conn->prepare($variationSql);
+                $variationStmt->bind_param("i", $productId);
+                $variationStmt->execute();
+                $variationResult = $variationStmt->get_result();
+                $variations = [];
 
-                    echo "<div class='col-md-4 mb-4'>
-                        <div class='card product-card'>
-                            <img src='Dashboard/Partials/uploads/" . htmlspecialchars($row["product_image"]) . "' class='card-img-top product-img' alt='" . htmlspecialchars($row["product_name"]) . "'>
-                            <div class='card-body product-card-body'>
-                                <h5 class='card-title product-card-title'>" . htmlspecialchars($row["product_name"]) . "</h5>
-                                <p class='card-text product-card-description'>" . htmlspecialchars($row["description"]) . "</p>
-                                <p class='card-text product-card-info'>Category: " . htmlspecialchars($row["category"]) . "</p>
-                                <p class='card-text product-card-info'>Size: " . htmlspecialchars($row["size"]) . "</p>
-                                <p class='card-text product-card-info'>Pieces available: " . htmlspecialchars($row["quantity"]) . "</p>
-                                <p class='card-text product-card-info'>Color: 
-                                    <div class='color-options'>";
+                while ($variation = $variationResult->fetch_assoc()) {
+                    $variations[] = $variation;
+                }
 
-                    foreach ($colors as $color) {
-                        echo "<span class='color-circle' data-color='" . trim($color) . "' style='background-color:" . trim($color) . ";'></span>";
+                $variationStmt->close();
+
+                // Organize variations by color
+                $colorVariations = [];
+                foreach ($variations as $variation) {
+                    $color = $variation["color"];
+                    if (!isset($colorVariations[$color])) {
+                        $colorVariations[$color] = [];
                     }
+                    $colorVariations[$color][] = $variation;
+                }
 
-                    echo                "</div>
-                                </p>
-                                <p class='card-text product-card-price'>₱" . htmlspecialchars($row["price"]) . "</p>
-                                <div class='product-buttons'>
-                                    <button class='btn btn-add-to-cart'>Add to Cart</button>
-                                    <button class='btn btn-buy'>Buy Now</button>
-                                </div>
+                // Display product details
+                echo "<div class='col-md-4 mb-4'>
+                    <div class='card product-card'>
+                        <img src='Dashboard/Partials/uploads/" . htmlspecialchars($row["product_image"]) . "' class='card-img-top product-img' alt='" . htmlspecialchars($row["product_name"]) . "'>
+                        <div class='card-body product-card-body'>
+                            <h5 class='card-title product-card-title'>" . htmlspecialchars($row["product_name"]) . "</h5>
+                            <p class='card-text product-card-description'>" . htmlspecialchars($row["description"]) . "</p>
+                            <p class='card-text product-card-info'>Category: " . htmlspecialchars($row["category"]) . "</p>
+                            <p class='card-text product-card-price'>Price: ₱" . htmlspecialchars($row["price"]) . "</p>
+                            <p class='card-text product-card-info'>Color: 
+                                <div class='color-options'>";
+
+                foreach (array_keys($colorVariations) as $color) {
+                    echo "<span class='color-circle' data-product-id='" . htmlspecialchars($row["id"]) . "' data-color='" . trim($color) . "' style='background-color:" . trim($color) . ";'></span>";
+                }
+
+                echo                "</div>
+                            </p>
+                            <div id='sizeQtyContainer-" . htmlspecialchars($row["id"]) . "' class='size-quantity-container'>
+                               
+                            </div>
+                            <div class='product-buttons'>
+                                <button class='btn btn-add-to-cart'>Add to Cart</button>
+                                <button class='btn btn-buy'>Buy Now</button>
                             </div>
                         </div>
-                      </div>";
-                }
-            } else {
-                echo "<p>No products found in this category.</p>";
+                    </div>
+                  </div>";
             }
-            ?>
-        </div>
+        } else {
+            echo "<p>No products found in this category.</p>";
+        }
+        ?>
     </div>
+</div>
+
 
     <!-- Chat Icon -->
     <div class="chat-icon" onclick="toggleChat()">
@@ -473,22 +500,44 @@ if ($category) {
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="script.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var colorCircles = document.querySelectorAll(".color-circle");
+document.addEventListener("DOMContentLoaded", function() {
+    var colorCircles = document.querySelectorAll(".color-circle");
 
-            colorCircles.forEach(function(circle) {
-                circle.addEventListener("click", function() {
-                    colorCircles.forEach(function(c) {
-                        c.classList.remove("selected");
-                    });
-
-                    this.classList.add("selected");
-
-                    var selectedColor = this.getAttribute("data-color");
-                    console.log("Selected Color: " + selectedColor);
-                });
+    colorCircles.forEach(function(circle) {
+        circle.addEventListener("click", function() {
+            colorCircles.forEach(function(c) {
+                c.classList.remove("selected");
             });
+
+            this.classList.add("selected");
+
+            var selectedColor = this.getAttribute("data-color");
+            var productId = this.getAttribute("data-product-id");
+
+            console.log("Selected Color: " + selectedColor);
+
+            // Fetch and display size and quantity information
+            fetch(`get_variations.php?product_id=${productId}&color=${encodeURIComponent(selectedColor)}`)
+                .then(response => response.json())
+                .then(data => {
+                    var container = document.getElementById(`sizeQtyContainer-${productId}`);
+                    container.innerHTML = ''; // Clear previous data
+
+                    data.forEach(variation => {
+                        var sizeInfo = document.createElement("div");
+                        sizeInfo.className = "size-info";
+                        sizeInfo.innerHTML = `
+                            <p>Size: ${variation.size}</p>
+                            <p>Pieces available: ${variation.quantity}</p>
+                        `;
+                        container.appendChild(sizeInfo);
+                    });
+                })
+                .catch(error => console.error('Error fetching variations:', error));
         });
+    });
+});
+
     </script>
 </body>
 

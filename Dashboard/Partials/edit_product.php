@@ -1,58 +1,83 @@
 <?php
 include '../db_conn.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $productId = $_POST['editProductId'];
     $productName = $_POST['editProductName'];
     $description = $_POST['editDescription'];
     $category = $_POST['editCategory'];
-    $size = $_POST['editSize'];
-    $color = $_POST['editColor'];
-    $price = preg_replace('/[^0-9.]/', '', $_POST['editPrice']);
-    $quantity = $_POST['editQuantity']; 
+    $price = $_POST['editPrice'];
+    $colors = $_POST['editColor'];
+    $sizes = $_POST['editSize'];
+    $quantities = $_POST['editQuantity'];
 
+    // Handle file upload
     if (!empty($_FILES['editProductImage']['name'])) {
-        $sql = "SELECT product_image FROM products WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $productId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        $oldImage = $row['product_image'];
-
-        if ($oldImage && file_exists("uploads/" . $oldImage)) {
-            unlink("uploads/" . $oldImage);
-        }
-
         $targetDir = "uploads/";
-        $targetFile = $targetDir . basename($_FILES["editProductImage"]["name"]);
-        if (move_uploaded_file($_FILES["editProductImage"]["tmp_name"], $targetFile)) {
-            $productImage = basename($_FILES["editProductImage"]["name"]);
+        $productImage = basename($_FILES["editProductImage"]["name"]);
+        $targetFilePath = $targetDir . $productImage;
+        $imageFileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
+
+        $check = getimagesize($_FILES["editProductImage"]["tmp_name"]);
+        if ($check === false) {
+            die("File is not an image.");
+        }
+
+        if ($_FILES["editProductImage"]["size"] > 500000) {
+            die("Sorry, your file is too large.");
+        }
+
+        $allowedTypes = array('jpg', 'png', 'jpeg', 'gif');
+        if (!in_array($imageFileType, $allowedTypes)) {
+            die("Sorry, only JPG, JPEG, PNG & GIF files are allowed.");
+        }
+
+        if (!move_uploaded_file($_FILES["editProductImage"]["tmp_name"], $targetFilePath)) {
+            die("Sorry, there was an error uploading your file.");
+        }
+
+        $sql = "UPDATE products SET product_image = ? WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("si", $productImage, $productId);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    // Update product details
+    $sql = "UPDATE products SET product_name = ?, description = ?, category = ?, price = ? WHERE id = ?";
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("sssdi", $productName, $description, $category, $price, $productId);
+        if ($stmt->execute()) {
+            $stmt->close();
+
+            // Delete existing variations
+            $sql = "DELETE FROM product_variations WHERE product_id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $productId);
+            $stmt->execute();
+            $stmt->close();
+
+            // Insert new variations
+            $sql = "INSERT INTO product_variations (product_id, color, size, quantity) VALUES (?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            foreach ($colors as $index => $color) {
+                $size = $sizes[$index];
+                $quantity = $quantities[$index];
+                $stmt->bind_param("isss", $productId, $color, $size, $quantity);
+                $stmt->execute();
+            }
+
+            $stmt->close();
+            echo "success";
         } else {
-            echo "Sorry, there was an error uploading your file.";
-            exit;
+            echo "Error: " . $stmt->error;
         }
     } else {
-        $sql = "SELECT product_image FROM products WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $productId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        $productImage = $row['product_image'];
+        echo "Error: " . $conn->error;
     }
 
-    $sql = "UPDATE products SET product_name=?, description=?, category=?, size=?, color=?, price=?, quantity=?, product_image=? WHERE id=?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssssisi", $productName, $description, $category, $size, $color, $price, $quantity, $productImage, $productId);
-
-    if ($stmt->execute()) {
-        echo "Product updated successfully!";
-    } else {
-        echo "Error updating product: " . $conn->error;
-    }
-
-    $stmt->close();
     $conn->close();
+} else {
+    echo "Invalid request method.";
 }
 ?>
