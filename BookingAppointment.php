@@ -7,39 +7,48 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
-
+    
+    <!-- FullCalendar CSS -->
+    <link rel="stylesheet" href="libs/fullcalendar/main.min.css">
+    <script src="libs/fullcalendar/main.min.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="chat.css">
     <style>
-    body {
-      font-family: 'League Spartan', sans-serif;
-    }
-        .booking-form {
-            background-color: var(--light-grey-color);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        body {
+            font-family: 'League Spartan', sans-serif;
         }
-        .booking-form .form-group label {
-            font-weight: bold;
+        #calendar {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        .booking-form .form-group select,
-        .booking-form .form-group input,
-        .booking-form .form-group textarea {
-            border: 1px solid var(--grey-color);
-            border-radius: 5px;
-            padding: 5px;
+        .fc-daygrid-day {
+            position: relative;
         }
-        .booking-form .btn {
-            background-color: var(--primary-color);
-            color: var(--white-color);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
+        .fc-daygrid-day .am-pm-buttons {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            right: 5px;
+            display: flex;
+            justify-content: space-between;
         }
-        .booking-form .btn:hover {
-            background-color: var(--secondary-color);
+        .fc-daygrid-day .am-pm-buttons button {
+            width: 100%;
+            height: auto;
+            font-size: 12px;
+            padding: 2px 4px;
+        }
+        .modal-header {
+            background-color: #007bff;
+            color: white;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+        }
+        .chat-window {
+            display: none;
         }
     </style>
 </head>
@@ -96,75 +105,97 @@
         </div>
     </nav>
 
-    <!-- Booking Appointment Form -->
-    <div class="container mt-5">
-        <h2 class="text-center">Book an Appointment</h2>
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-            <form class="booking-form" action="partials/process_guest_booking.php" method="post">
-            <div class="form-group">
-                <label for="service-category">Service Category</label>
-                <select class="form-control" id="service-category" name="service_category" required>
-                    <option value="">Select a category</option>
-                    <option value="front-suspension">Front Suspension</option>
-                    <option value="steering">Steering</option>
-                    <option value="cvt">CVT</option>
-                    <option value="wheels">Wheels</option>
-                    <option value="rear-shock">Rear Shock</option>
-                    <option value="suspension-profiling">Suspension Profiling</option>
-                    <option value="breaking-system">Breaking System</option>
-                    <option value="electrical">Electrical</option>
-                </select>
+    <div id='calendar'></div>
+
+<div class="modal fade" id="preferredTimeModal" tabindex="-1" role="dialog" aria-labelledby="preferredTimeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="preferredTimeModalLabel">Book Appointment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="form-group">
-                <label for="service">Service</label>
-                <select class="form-control" id="service" name="service" required>
-                    <option value="">Select a service</option>
-                </select>
+            <div class="modal-body">
+                <form id="bookingForm">
+                    <div class="form-group">
+                        <label for="selected-date">Selected Date</label>
+                        <input type="text" class="form-control" id="selected-date" name="selected_date" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="preferred-time">Preferred Time</label>
+                        <select class="form-control" id="preferred-time" name="preferred_time" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="service-category">Service Category</label>
+                        <select class="form-control" id="service-category" name="service_category" required>
+                            <option value="">Select Category</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="service">Service</label>
+                        <select class="form-control" id="service" name="service" required>
+                            <option value="">Select Service</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="first-name">First Name</label>
+                        <input type="text" class="form-control" id="first-name" name="first_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="middle-name">Middle Name</label>
+                        <input type="text" class="form-control" id="middle-name" name="middle_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name">Last Name</label>
+                        <input type="text" class="form-control" id="last-name" name="last_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="complete-address">Complete Address</label>
+                        <input type="text" class="form-control" id="complete-address" name="complete_address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="unit-no">Unit No./House No./Building</label>
+                        <input type="text" class="form-control" id="unit-no" name="unit_no">
+                    </div>
+                    <div class="form-group">
+                        <label for="street">Street</label>
+                        <input type="text" class="form-control" id="street" name="street" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="barangay">Barangay</label>
+                        <input type="text" class="form-control" id="barangay" name="barangay" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" class="form-control" id="city" name="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="province">Province</label>
+                        <input type="text" class="form-control" id="province" name="province" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="zip-code">Zip Code</label>
+                        <input type="text" class="form-control" id="zip-code" name="zip_code" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Mobile/Phone No.</label>
+                        <input type="text" class="form-control" id="phone" name="phone" required>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="date">Preferred Date</label>
-                <input type="date" class="form-control" id="date" name="preferred_date" required>
-            </div>
-            <div class="form-group">
-                <label for="time">Preferred Time</label>
-                <input type="time" class="form-control" id="time" name="preferred_time" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" class="form-control" id="email" name="email_address" required>
-            </div>
-            <div class="form-group">
-                <label for="first-name">First Name</label>
-                <input type="text" class="form-control" id="first-name" name="first_name" required>
-            </div>
-            <div class="form-group">
-                <label for="middle-name">Middle Name</label>
-                <input type="text" class="form-control" id="middle-name">
-            </div>
-            <div class="form-group">
-                <label for="last-name">Last Name</label>
-                <input type="text" class="form-control" id="last-name" name="last_name" required>
-            </div>
-           <!-- Other fields omitted for brevity -->
-    <div class="form-group">
-        <label for="address">Complete Address</label>
-        <input type="text" class="form-control" id="unit-no" name="unit_no_house_no_building" placeholder="Unit No./House No./Building" required>
-        <input type="text" class="form-control mt-2" id="street" name="street" placeholder="Street" required>
-        <input type="text" class="form-control mt-2" id="barangay" name="barangay" placeholder="Barangay" required>
-        <input type="text" class="form-control mt-2" id="city" name="city" placeholder="City" required>
-        <input type="text" class="form-control mt-2" id="province" name="province" placeholder="Province" required>
-        <input type="text" class="form-control mt-2" id="zip-code" name="zip_code" placeholder="Zip Code" required>
-    </div>
-    <div class="form-group">
-        <label for="phone">Mobile/Phone No.</label>
-        <input type="tel" class="form-control" id="phone" name="mobile_phone_no" required>
-    </div>
-    <button type="submit" class="btn btn-primary btn-block">Book Now</button>
-        </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveBookingButton">Save changes</button>
             </div>
         </div>
     </div>
+</div>
+
     <!-- Chat Icon -->
     <div class="chat-icon" onclick="toggleChat()">
         <i class="fas fa-comments"></i>
@@ -235,37 +266,113 @@
     </div>
 </footer>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="libs/moment/moment.min.js"></script>
+    <script src="libs/jquery/jquery.min.js"></script>
+    <script src="libs/fullcalendar/main.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        document.getElementById('service-category').addEventListener('change', function() {
-            var category = this.value;
-            var serviceSelect = document.getElementById('service');
-            serviceSelect.innerHTML = ''; // Clear previous options
-
-            var services = {
-                'front-suspension': ['Small bike front suspension tuning', 'Big bike front suspension tuning'],
-                'steering': ['Ball race replacement', 'Steering alignment'],
-                'cvt': ['Cleaning', 'Tuning', 'Upgrades', 'Gearbox Bearing Replacement'],
-                'wheels': ['Installation', 'Static Balance', 'Computerized Balance'],
-                'rear-shock': ['Installation', 'Tuning', 'Repair'],
-                'suspension-profiling': ['Big bike', 'Small bike', 'Vespa'],
-                'breaking-system': ['Cleaning and Bleeding'],
-                'electrical': ['Horn and Aux light']
-            };
-
-            if (services[category]) {
-                services[category].forEach(function(service) {
-                    var option = document.createElement('option');
-                    option.value = service.toLowerCase().replace(/ /g, '-');
-                    option.text = service;
-                    serviceSelect.appendChild(option);
-                });
+        var services = {
+            'front-suspension': ['Small bike front suspension tuning', 'Big bike front suspension tuning'],
+            'steering': ['Ball race replacement', 'Steering alignment'],
+            'cvt': ['Cleaning', 'Tuning', 'Upgrades', 'Gearbox Bearing Replacement'],
+            'wheels': ['Installation', 'Static Balance', 'Computerized Balance'],
+            'rear-shock': ['Installation', 'Tuning', 'Repair'],
+            'suspension-profiling': ['Big bike', 'Small bike', 'Vespa'],
+            'breaking-system': ['Cleaning and Bleeding'],
+            'electrical': ['Horn and Aux light']
+        };
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+    
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                dateClick: function(info) {
+                    showPreferredTimeModal(info.dateStr);
+                },
+                dayCellDidMount: function(info) {
+                    var amButton = document.createElement('button');
+                    amButton.innerHTML = 'AM<br><span>19 Slots</span>';
+                    amButton.className = 'btn btn-primary btn-sm';
+                    amButton.style.marginRight = '5px';
+                    amButton.addEventListener('click', function(event) {
+                        event.stopPropagation();
+                        showPreferredTimeModal('AM', info.date);
+                    });
+    
+                    var pmButton = document.createElement('button');
+                    pmButton.innerHTML = 'PM<br><span>20 Slots</span>';
+                    pmButton.className = 'btn btn-primary btn-sm';
+                    pmButton.addEventListener('click', function(event) {
+                        event.stopPropagation();
+                        showPreferredTimeModal('PM', info.date);
+                    });
+    
+                    var buttonContainer = document.createElement('div');
+                    buttonContainer.className = 'am-pm-buttons';
+                    buttonContainer.appendChild(amButton);
+                    buttonContainer.appendChild(pmButton);
+    
+                    info.el.appendChild(buttonContainer);
+                }
+            });
+    
+            calendar.render();
+    
+            // Populate service categories
+            var serviceCategorySelect = document.getElementById('service-category');
+            Object.keys(services).forEach(function(category) {
+                var option = document.createElement('option');
+                option.value = category;
+                option.text = category.replace(/-/g, ' ');
+                serviceCategorySelect.appendChild(option);
+            });
+    
+            serviceCategorySelect.addEventListener('change', function() {
+                var serviceSelect = document.getElementById('service');
+                serviceSelect.innerHTML = '<option value="">Select Service</option>';
+                var selectedCategory = this.value;
+                if (selectedCategory && services[selectedCategory]) {
+                    services[selectedCategory].forEach(function(service) {
+                        var option = document.createElement('option');
+                        option.value = service;
+                        option.text = service;
+                        serviceSelect.appendChild(option);
+                    });
+                }
+            });
+        });
+    
+        function showPreferredTimeModal(period, date) {
+            var timeSelect = document.getElementById('preferred-time');
+            timeSelect.innerHTML = ''; // Clear existing options
+    
+            var times = period === 'AM' 
+                ? ['8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM']
+                : ['12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'];
+    
+            times.forEach(function(time) {
+                var option = document.createElement('option');
+                option.value = time;
+                option.text = time;
+                timeSelect.appendChild(option);
+            });
+    
+            document.getElementById('selected-date').value = date.toLocaleDateString(); // Set the selected date
+            $('#preferredTimeModal').modal('show');
+        }
+    
+        document.getElementById('saveBookingButton').addEventListener('click', function() {
+            var selectedTime = document.getElementById('preferred-time').value;
+            if (selectedTime) {
+                alert('Preferred time: ' + selectedTime);
+                $('#preferredTimeModal').modal('hide');
+            } else {
+                alert('Please select a preferred time.');
             }
         });
     </script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="script.js"></script>
+    
+    
 </body>
 </html>
