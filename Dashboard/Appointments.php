@@ -244,64 +244,63 @@ $result_appointment = $conn->query($sql_appointment);
             <input type="text" placeholder="Search appointments...">
         </div>
         <table id="appointmentTable">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Service Category</th>
-                <th>Service</th>
-                <th>Preferred Date</th>
-                <th>Preferred Time</th>
-                <th>Email Address</th>
-                <th>Full Name</th>
-                <th>Complete Address</th>
-                <th>Mobile/Phone No.</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            if ($result_guest->num_rows > 0) {
-                while ($row = $result_guest->fetch_assoc()) {
-                    echo "<tr>
-                        <td>{$row['id']}</td>
-                        <td>{$row['service_category']}</td>
-                        <td>{$row['service']}</td>
-                        <td>{$row['preferred_date']}</td>
-                        <td>{$row['preferred_time']}</td>
-                        <td>{$row['email_address']}</td>
-                        <td>{$row['full_name']}</td>
-                        <td>{$row['complete_address']}</td>
-                        <td>{$row['mobile_phone_no']}</td>
-                        <td class='action-buttons'>
-                            <button>Delete</button>
-                        </td>
-                    </tr>";
-                }
-            }
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Service Category</th>
+      <th>Service</th>
+      <th>Preferred Date</th>
+      <th>Preferred Time</th>
+      <th>Email Address</th>
+      <th>Full Name</th>
+      <th>Complete Address</th>
+      <th>Mobile/Phone No.</th>
+      <th>Reference Code</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php
+    include 'db_conn.php';
 
-            if ($result_appointment->num_rows > 0) {
-                while ($row = $result_appointment->fetch_assoc()) {
-                    echo "<tr>
-                        <td>{$row['user_id']}</td>
-                        <td>{$row['service_category']}</td>
-                        <td>{$row['service']}</td>
-                        <td>{$row['preferred_date']}</td>
-                        <td>{$row['preferred_time']}</td>
-                        <td>{$row['email']}</td>
-                        <td>{$row['full_name']}</td>
-                        <td>{$row['complete_address']}</td>
-                        <td>{$row['mobile_phone_no']}</td>
-                        <td class='action-buttons'>
-                            <button>Delete</button>
-                        </td>
-                    </tr>";
-                }
-            }
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $rowsPerPage = 5;
+    $offset = ($page - 1) * $rowsPerPage;
 
-            $conn->close();
-            ?>
-        </tbody>
-    </table>
+    $totalRowsResult = $conn->query("SELECT COUNT(*) as total FROM appointments");
+    $totalRows = $totalRowsResult->fetch_assoc()['total'];
+    $totalPages = ceil($totalRows / $rowsPerPage);
+
+    $sql = "SELECT * FROM appointments LIMIT $offset, $rowsPerPage";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+      while ($row = $result->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . $row["id"] . "</td>";
+        echo "<td>" . $row["service_category"] . "</td>";
+        echo "<td>" . $row["service"] . "</td>";
+        echo "<td>" . $row["selected_date"] . "</td>";
+        echo "<td>" . $row["preferred_time"] . "</td>";
+        echo "<td>" . $row["email"] . "</td>";
+        echo "<td>" . $row["first_name"] . " " . $row["middle_name"] . " " . $row["last_name"] . "</td>";
+        echo "<td>" . $row["unit_no"] . ", " . $row["street"] . ", " . $row["barangay"] . ", " . $row["city"] . ", " . $row["province"] . " " . $row["zip_code"] . "</td>";
+        echo "<td>" . $row["phone"] . "</td>";
+        echo "<td>" . $row["reference_code"] . "</td>";
+        echo "<td class='action-buttons'>
+                    <button class='view-button'>View</button>
+                    <button class='edit-button'>Edit</button>
+                    <button class='delete-button' data-id='" . $row["id"] . "'>Delete</button>
+                  </td>";
+        echo "</tr>";
+      }
+    } else {
+      echo "<tr><td colspan='11'>No appointments found</td></tr>";
+    }
+    $conn->close();
+    ?>
+  </tbody>
+</table>
         <div class="pagination">
             <button id="prevBtn">Prev</button>
             <button id="nextBtn">Next</button>
