@@ -11,10 +11,47 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="chat.css">
     <style>
+    body {
+            --primary-color: #004AAD;
+            --secondary-color: #009DDF;
+            --danger-color: #D9534F;
+            --white-color: #FFFFFF;
+            --grey-color: #737476;
+            --light-grey-color: #F8F9FA;
+            --black-color: #000000;
+            font-family: 'League Spartan', sans-serif;
+        }
 
-body {
-    font-family: 'League Spartan', sans-serif;
-}
+        .about-section {
+            padding: 60px 0;
+            background-color: var(--light-grey-color);
+            text-align: center;
+        }
+
+        .about-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+        }
+
+        .about-section p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: var(--grey-color);
+        }
+
+        .about-section .icon {
+            font-size: 3rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        .about-section .motto {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-top: 40px;
+            color: var(--primary-color);
+        }
     </style>
 </head>
 <body>
@@ -45,22 +82,25 @@ body {
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="Home.php">Home</a>
+                        <a class="nav-link" href="HomeMain.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Shop</a>
+                        <a class="nav-link" href="ShopMain.php">Shop</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="Contact.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                                    <a class="nav-link" href="About.php">About Us</a>
+                        <a class="nav-link active" href="AboutMain.php">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Blog</a>
+                        <a class="nav-link" href="blogMain.php">Blog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="BookingAppointment.php">Booking Appointment</a>
+                        <a class="nav-link" href="BookingAppointmentMain.php">Booking Appointment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Accounts.php">Accounts</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="Login.php">Log in</a>
@@ -69,6 +109,28 @@ body {
             </div>
         </div>
     </nav>
+  <!-- About Us Content -->
+  <div class="about-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <i class="fas fa-bullseye icon"></i>
+                    <h2>Vision</h2>
+                    <p>To become top of mind and world-class company that provides premium products and excellent services.</p>
+                </div>
+                <div class="col-md-4">
+                    <i class="fas fa-flag icon"></i>
+                    <h2>Mission</h2>
+                    <p>To focus on services that are crafted with excellence which promote confidence, safety and motorcycle reliability. Ensuring everyone has a safe, reliable and worry-free ride.</p>
+                </div>
+                <div class="col-md-4">
+                    <i class="fas fa-heart icon"></i>
+                    <h2>Motto</h2>
+                    <p>Your ride is our masterpiece<br>Your safety is our passion</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Chat Icon -->
     <div class="chat-icon" onclick="toggleChat()">

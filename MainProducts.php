@@ -1,9 +1,9 @@
 <?php
-include 'Partials/db_conn.php'; // Include your database connection file
+include 'partials/db_conn.php';
+include 'partials/session.php'; // Include session management script to get user ID
 
 $category = isset($_GET['category']) ? $_GET['category'] : '';
 
-// Fetch products for the selected category
 if ($category) {
     $sql = "SELECT * FROM products WHERE category = ?";
     $stmt = $conn->prepare($sql);
@@ -11,13 +11,13 @@ if ($category) {
     $stmt->execute();
     $result = $stmt->get_result();
 } else {
-    // Default to displaying all products if no category is specified
     $sql = "SELECT * FROM products";
     $result = $conn->query($sql);
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,9 +28,10 @@ if ($category) {
 
     <link rel="stylesheet" href="chat.css">
     <style>
-            body {
-      font-family: 'League Spartan', sans-serif;
-    }
+        body {
+            font-family: 'League Spartan', sans-serif;
+        }
+
         :root {
             --primary-color: #004AAD;
             --secondary-color: #009DDF;
@@ -279,7 +280,7 @@ if ($category) {
             border-top: 1px solid var(--primary-color);
             margin-top: 20px;
         }
-        
+
         .color-options {
             display: flex;
             gap: 5px;
@@ -299,6 +300,7 @@ if ($category) {
         }
     </style>
 </head>
+
 <body>
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
@@ -314,7 +316,7 @@ if ($category) {
                 </div>
             </form>
             <div class="navbar-icons">
-                <a class="nav-link" href="cart.php"><i class="fa fa-shopping-cart"></i><span class="cart-count">0</span></a>
+                <a class="nav-link" href="cartMain.php"><i class="fa fa-shopping-cart"></i><span class="cart-count">0</span></a>
             </div>
         </div>
     </nav>
@@ -336,16 +338,16 @@ if ($category) {
                         <a class="nav-link" href="ContactMain.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About Us</a>
+                       <a class="nav-link" href="AboutMain.php">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Blog</a>
+                        <a class="nav-link" href="blogMain.php">Blog</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="BookingAppointmentMain.php">Booking Appointment</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link"href="Accounts.php">Accounts</a>
+                        <a class="nav-link" href="Accounts.php">Accounts</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="Login.php">Log out</a>
@@ -360,34 +362,53 @@ if ($category) {
             <?php
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
-                    $colors = explode(',', htmlspecialchars($row["color"]));
+                    $productId = $row["id"];
+                    $variationSql = "SELECT * FROM product_variations WHERE product_id = ?";
+                    $variationStmt = $conn->prepare($variationSql);
+                    $variationStmt->bind_param("i", $productId);
+                    $variationStmt->execute();
+                    $variationResult = $variationStmt->get_result();
+                    $variations = [];
 
-                    echo "<div class='col-md-4 mb-4'>
-                        <div class='card product-card'>
-                            <img src='Dashboard/Partials/uploads/" . htmlspecialchars($row["product_image"]) . "' class='card-img-top product-img' alt='" . htmlspecialchars($row["product_name"]) . "'>
-                            <div class='card-body product-card-body'>
-                                <h5 class='card-title product-card-title'>" . htmlspecialchars($row["product_name"]) . "</h5>
-                                <p class='card-text product-card-description'>" . htmlspecialchars($row["description"]) . "</p>
-                                <p class='card-text product-card-info'>Category: " . htmlspecialchars($row["category"]) . "</p>
-                                <p class='card-text product-card-info'>Size: " . htmlspecialchars($row["size"]) . "</p>
-                                <p class='card-text product-card-info'>Pieces available: " . htmlspecialchars($row["quantity"]) . "</p>
-                                <p class='card-text product-card-info'>Color: 
-                                    <div class='color-options'>";
-
-                    foreach ($colors as $color) {
-                        echo "<span class='color-circle' data-color='" . trim($color) . "' style='background-color:" . trim($color) . ";'></span>";
+                    while ($variation = $variationResult->fetch_assoc()) {
+                        $variations[] = $variation;
                     }
 
-                    echo                "</div>
-                                </p>
-                                <p class='card-text product-card-price'>₱" . htmlspecialchars($row["price"]) . "</p>
-                                <div class='product-buttons'>
-                                    <button class='btn btn-add-to-cart'>Add to Cart</button>
-                                    <button class='btn btn-buy'>Buy Now</button>
-                                </div>
+                    $variationStmt->close();
+
+                    $colorVariations = [];
+                    foreach ($variations as $variation) {
+                        $color = $variation["color"];
+                        if (!isset($colorVariations[$color])) {
+                            $colorVariations[$color] = [];
+                        }
+                        $colorVariations[$color][] = $variation;
+                    }
+
+                    echo "<div class='col-md-4 mb-4'>
+                    <div class='card product-card'>
+                        <img src='Dashboard/Partials/uploads/" . htmlspecialchars($row["product_image"]) . "' class='card-img-top product-img' alt='" . htmlspecialchars($row["product_name"]) . "'>
+                        <div class='card-body product-card-body'>
+                            <h5 class='card-title product-card-title'>" . htmlspecialchars($row["product_name"]) . "</h5>
+                            <p class='card-text product-card-description'>" . htmlspecialchars($row["description"]) . "</p>
+                            <p class='card-text product-card-info'>Category: " . htmlspecialchars($row["category"]) . "</p>
+                            <p class='card-text product-card-price'>Price: ₱" . htmlspecialchars($row["price"]) . "</p>
+                            <p class='card-text product-card-info'>Color: 
+                                <div class='color-options'>";
+
+                    foreach (array_keys($colorVariations) as $color) {
+                        echo "<span class='color-circle' data-product-id='" . htmlspecialchars($row["id"]) . "' data-color='" . trim($color) . "' style='background-color:" . trim($color) . ";'></span>";
+                    }
+
+                    echo "</div></p>
+                            <div id='sizeQtyContainer-" . htmlspecialchars($row["id"]) . "' class='size-quantity-container'></div>
+                            <div class='product-buttons'>
+                                <button class='btn btn-add-to-cart' data-product-id='" . htmlspecialchars($row["id"]) . "'>Add to Cart</button>
+                                <button class='btn btn-buy' data-product-id='" . htmlspecialchars($row["id"]) . "'>Buy Now</button>
                             </div>
                         </div>
-                      </div>";
+                    </div>
+                </div>";
                 }
             } else {
                 echo "<p>No products found in this category.</p>";
@@ -395,6 +416,7 @@ if ($category) {
             ?>
         </div>
     </div>
+
 
     <!-- Chat Icon -->
     <div class="chat-icon" onclick="toggleChat()">
@@ -420,51 +442,51 @@ if ($category) {
     </div>
     <!-- Footer -->
     <footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3 footer-column">
-                <h5>OFFICE ADDRESS</h5>
-                <p>1665 Ilang Ilang St. <br>
-                     Bgry 174,<br>
-                   Caloocan, Philippines</p>
-                <p>
-                    Telephone: <br>
-                    + (63) 917 - 5695 - 469<br>
-                    Ecommerce Team:<br>
-                     Mon-Sun 8:00am-5:00pm, excluding holidays
-                </p>
-            </div>
-            <div class="col-md-3 footer-column">
-                <h5>CUSTOMER CARE</h5>
-                <ul>
-                    <li><a href="#">Terms & Conditions</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Payment Policy</a></li>
-                    <li><a href="#">Shipping & Delivery Policy</a></li>
-                    <li><a href="#">Return, Exchange, Cancellation & Refund Policy</a></li>
-                </ul>
-            </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 footer-column">
+                    <h5>OFFICE ADDRESS</h5>
+                    <p>1665 Ilang Ilang St. <br>
+                        Bgry 174,<br>
+                        Caloocan, Philippines</p>
+                    <p>
+                        Telephone: <br>
+                        + (63) 917 - 5695 - 469<br>
+                        Ecommerce Team:<br>
+                        Mon-Sun 8:00am-5:00pm, excluding holidays
+                    </p>
+                </div>
+                <div class="col-md-3 footer-column">
+                    <h5>CUSTOMER CARE</h5>
+                    <ul>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Payment Policy</a></li>
+                        <li><a href="#">Shipping & Delivery Policy</a></li>
+                        <li><a href="#">Return, Exchange, Cancellation & Refund Policy</a></li>
+                    </ul>
+                </div>
 
-            <div class="col-md-3 footer-column">
-                <h5>NEWSLETTER</h5>
-                <p>Receive our latest news, product launches & exclusive offers. T&Cs Apply</p>
-                <div class="newsletter">
-                    <input type="email" placeholder="Your email">
-                    <button>Subscribe</button>
-                </div>
-                <div class="social-icons" style="margin-top: 30px;">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                <div class="col-md-3 footer-column">
+                    <h5>NEWSLETTER</h5>
+                    <p>Receive our latest news, product launches & exclusive offers. T&Cs Apply</p>
+                    <div class="newsletter">
+                        <input type="email" placeholder="Your email">
+                        <button>Subscribe</button>
+                    </div>
+                    <div class="social-icons" style="margin-top: 30px;">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
                 </div>
             </div>
+            <div class="footer-bottom">
+                © 2024 AV MOTO Philippines.
+            </div>
         </div>
-        <div class="footer-bottom">
-            © 2024 AV MOTO Philippines.
-        </div>
-    </div>
-</footer>
+    </footer>
 
 
 
@@ -472,9 +494,22 @@ if ($category) {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="script.js"></script>
-<script>
+    <script src="script.js"></script>
+    <script>
         document.addEventListener("DOMContentLoaded", function() {
+            function updateCartCount() {
+                fetch('Partials/Main_get_cart_count.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.cart_count !== undefined) {
+                            document.querySelector('.cart-count').textContent = data.cart_count;
+                        }
+                    })
+                    .catch(error => console.error('Error fetching cart count:', error));
+            }
+
+            updateCartCount();
+
             var colorCircles = document.querySelectorAll(".color-circle");
 
             colorCircles.forEach(function(circle) {
@@ -486,10 +521,94 @@ if ($category) {
                     this.classList.add("selected");
 
                     var selectedColor = this.getAttribute("data-color");
-                    console.log("Selected Color: " + selectedColor);
+                    var productId = this.getAttribute("data-product-id");
+
+                    fetch(`get_variations.php?product_id=${productId}&color=${encodeURIComponent(selectedColor)}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            var container = document.getElementById(`sizeQtyContainer-${productId}`);
+                            container.innerHTML = '';
+
+                            data.forEach(variation => {
+                                var sizeInfo = document.createElement("div");
+                                sizeInfo.className = "size-info";
+                                sizeInfo.innerHTML = `<p>Size: ${variation.size}</p><p>Pieces available: ${variation.quantity}</p>`;
+                                container.appendChild(sizeInfo);
+                            });
+                        })
+                        .catch(error => console.error('Error fetching variations:', error));
                 });
             });
+
+            var addToCartButtons = document.querySelectorAll('.btn-add-to-cart');
+            addToCartButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var productId = this.getAttribute('data-product-id');
+                    var selectedColorCircle = document.querySelector(`.color-circle[data-product-id='${productId}'].selected`);
+
+                    if (!selectedColorCircle) {
+                        alert('Please select a color.');
+                        return;
+                    }
+
+                    var selectedColor = selectedColorCircle.getAttribute('data-color');
+
+                    fetch('Partials/Main_add_to_cart.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: `product_id=${productId}&color=${encodeURIComponent(selectedColor)}&user_id=<?php echo $_SESSION['user_id']; ?>`
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.cart_count !== undefined) {
+                                document.querySelector('.cart-count').textContent = data.cart_count;
+                            } else {
+                                console.error('Error adding to cart:', data.error);
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            });
+
+
+            var buyButtons = document.querySelectorAll('.btn-buy');
+            buyButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var productId = this.getAttribute('data-product-id');
+                    var selectedColorCircle = document.querySelector(`.color-circle[data-product-id='${productId}'].selected`);
+
+                    if (!selectedColorCircle) {
+                        alert('Please select a color.');
+                        return;
+                    }
+
+                    var selectedColor = selectedColorCircle.getAttribute('data-color');
+
+                    fetch('Partials/Main_buy_now.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: `product_id=${productId}&color=${encodeURIComponent(selectedColor)}`
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+
+                                window.location.href = 'buyitemsMain.php';
+                            } else {
+                                console.error('Error buying now:', data.error);
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            });
+
         });
     </script>
+
 </body>
+
 </html>

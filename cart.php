@@ -1,3 +1,32 @@
+<?php
+session_start();
+include 'partials/db_conn.php';
+
+$sessionId = session_id();
+
+// Fetch cart items and their details
+$sql = "SELECT p.product_name, p.description, p.category, p.product_image, p.price, pv.size, pv.color, c.quantity
+        FROM cart c
+        JOIN products p ON c.product_id = p.id
+        JOIN product_variations pv ON c.product_id = pv.product_id AND pv.color = c.color
+        WHERE c.session_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $sessionId);
+$stmt->execute();
+$result = $stmt->get_result();
+$cartItems = [];
+$totalPrice = 0;
+
+while ($row = $result->fetch_assoc()) {
+    $cartItems[] = $row;
+    $totalPrice += $row['price'] * $row['quantity'];
+}
+
+$stmt->close();
+$conn->close();
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +41,6 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="chat.css">
     <style>
-
         body {
             /* Background image example */
             background-image: url('img/AV\ Moto\ Logo.png');
@@ -148,10 +176,10 @@
                         <a class="nav-link" href="Contact.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About Us</a>
+                                    <a class="nav-link" href="About.php">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Blog</a>
+                        <a class="nav-link" href="blog.php">Blog</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="BookingAppointment.php">Booking Appointment</a>
@@ -167,6 +195,7 @@
     <!-- Main Content -->
     <div class="container mt-5">
         <div class="row">
+            <!-- Cart Section -->
             <!-- Cart Section -->
             <div class="col-md-8">
                 <div class="card mb-4">
@@ -188,18 +217,31 @@
                                     </tr>
                                 </thead>
                                 <tbody id="cart-items">
-                                    <!-- Cart items will be dynamically added here -->
+                                    <?php foreach ($cartItems as $item) : ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($item['product_name']); ?></td>
+                                            <td><?php echo htmlspecialchars($item['description']); ?></td>
+                                            <td><?php echo htmlspecialchars($item['category']); ?></td>
+                                            <td><?php echo htmlspecialchars($item['size']); ?></td>
+                                            <td><?php echo htmlspecialchars($item['color']); ?></td>
+                                            <td>₱<?php echo htmlspecialchars($item['price']); ?></td>
+                                            <td><?php echo htmlspecialchars($item['quantity']); ?></td>
+                                            <td>₱<?php echo htmlspecialchars($item['price'] * $item['quantity']); ?></td>
+                                            <td>
+                                                <button class="btn btn-danger btn-remove">Remove</button>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
                         <div class="text-right">
-                            <h4>Total: ₱<span id="cart-total" class="cart-total"> 0.00</span></h4>
+                            <h4>Total: ₱<span id="cart-total" class="cart-total"><?php echo number_format($totalPrice, 2); ?></span></h4>
                             <!-- <button class="btn-primary" id="place-order-btn">Place Order</button> -->
                         </div>
                     </div>
                 </div>
             </div>
-
             <!-- Checkout Section -->
             <div class="col-md-4">
                 <div class="card">
@@ -351,6 +393,27 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     <script src="script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Function to update the cart count
+            function updateCartCount() {
+                fetch('Partials/get_cart_count.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.cart_count !== undefined) {
+                            document.querySelector('.cart-count').textContent = data.cart_count;
+                        }
+                    })
+                    .catch(error => console.error('Error fetching cart count:', error));
+            }
+
+            // Update cart count initially
+            updateCartCount();
+
+
+        });
+    </script>
+
 </body>
 
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,9 +11,10 @@
 
     <link rel="stylesheet" href="style.css">
     <style>
-            body {
-      font-family: 'League Spartan', sans-serif;
-    }
+        body {
+            font-family: 'League Spartan', sans-serif;
+        }
+
         .login-container {
             max-width: 900px;
             margin: 50px auto;
@@ -72,6 +74,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
@@ -109,10 +112,10 @@
                         <a class="nav-link" href="Contact.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About Us</a>
+                                    <a class="nav-link" href="About.php">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Blog</a>
+                        <a class="nav-link" href="blog.php">Blog</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="BookingAppointment.php">Booking Appointment</a>
@@ -134,16 +137,16 @@
             <div class="col-md-6">
                 <h2>Welcome Back!</h2>
                 <form action="partials/login_process.php" method="post">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Login</button>
-        </form>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                </form>
                 <div class="login-link">
                     <p>Don't have an account? <a href="SignUp.php">Sign Up</a></p>
                 </div>
@@ -152,56 +155,78 @@
     </div>
 
     <footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3 footer-column">
-                <h5>OFFICE ADDRESS</h5>
-                <p>1665 Ilang Ilang St. <br>
-                     Bgry 174,<br>
-                   Caloocan, Philippines</p>
-                <p>
-                    Telephone: <br>
-                    + (63) 917 - 5695 - 469<br>
-                    Ecommerce Team:<br>
-                     Mon-Sun 8:00am-5:00pm, excluding holidays
-                </p>
-            </div>
-            <div class="col-md-3 footer-column">
-                <h5>CUSTOMER CARE</h5>
-                <ul>
-                    <li><a href="#">Terms & Conditions</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Payment Policy</a></li>
-                    <li><a href="#">Shipping & Delivery Policy</a></li>
-                    <li><a href="#">Return, Exchange, Cancellation & Refund Policy</a></li>
-                </ul>
-            </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 footer-column">
+                    <h5>OFFICE ADDRESS</h5>
+                    <p>1665 Ilang Ilang St. <br>
+                        Bgry 174,<br>
+                        Caloocan, Philippines</p>
+                    <p>
+                        Telephone: <br>
+                        + (63) 917 - 5695 - 469<br>
+                        Ecommerce Team:<br>
+                        Mon-Sun 8:00am-5:00pm, excluding holidays
+                    </p>
+                </div>
+                <div class="col-md-3 footer-column">
+                    <h5>CUSTOMER CARE</h5>
+                    <ul>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Payment Policy</a></li>
+                        <li><a href="#">Shipping & Delivery Policy</a></li>
+                        <li><a href="#">Return, Exchange, Cancellation & Refund Policy</a></li>
+                    </ul>
+                </div>
 
-            <div class="col-md-3 footer-column">
-                <h5>NEWSLETTER</h5>
-                <p>Receive our latest news, product launches & exclusive offers. T&Cs Apply</p>
-                <div class="newsletter">
-                    <input type="email" placeholder="Your email">
-                    <button>Subscribe</button>
-                </div>
-                <div class="social-icons" style="margin-top: 30px;">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                <div class="col-md-3 footer-column">
+                    <h5>NEWSLETTER</h5>
+                    <p>Receive our latest news, product launches & exclusive offers. T&Cs Apply</p>
+                    <div class="newsletter">
+                        <input type="email" placeholder="Your email">
+                        <button>Subscribe</button>
+                    </div>
+                    <div class="social-icons" style="margin-top: 30px;">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
                 </div>
             </div>
+            <div class="footer-bottom">
+                © 2024 AV MOTO Philippines.
+            </div>
         </div>
-        <div class="footer-bottom">
-            © 2024 AV MOTO Philippines.
-        </div>
-    </div>
-</footer>
+    </footer>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Function to update the cart count
+            function updateCartCount() {
+                fetch('Partials/get_cart_count.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.cart_count !== undefined) {
+                            document.querySelector('.cart-count').textContent = data.cart_count;
+                        }
+                    })
+                    .catch(error => console.error('Error fetching cart count:', error));
+            }
+
+            // Update cart count initially
+            updateCartCount();
+
+
+        });
+    </script>
+
 </body>
+
 </html>

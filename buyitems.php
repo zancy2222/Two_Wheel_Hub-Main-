@@ -1,35 +1,28 @@
 <?php
+session_start();
 include 'partials/db_conn.php';
-include 'partials/session.php';
 
-if (!isset($_SESSION['user_id'])) {
-    echo "Please log in to view your cart.";
-    exit;
-}
+$sessionId = session_id();
 
-$userId = $_SESSION['user_id'];
-
-$sql = "SELECT rc.*, p.product_name, p.description, p.category, p.price 
-        FROM RegisteredCart rc
-        JOIN products p ON rc.product_id = p.id
-        WHERE rc.user_id = ?";
+$sql = "SELECT p.product_name, p.description, p.category, p.product_image, p.price, pu.size, pu.color, pu.quantity
+        FROM purchased pu
+        JOIN products p ON pu.product_id = p.id
+        WHERE pu.session_id = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $userId);
+$stmt->bind_param("s", $sessionId);
 $stmt->execute();
 $result = $stmt->get_result();
-
-$cartItems = [];
+$purchasedItems = [];
 $totalPrice = 0;
 
 while ($row = $result->fetch_assoc()) {
-    $cartItems[] = $row;
+    $purchasedItems[] = $row;
     $totalPrice += $row['price'] * $row['quantity'];
 }
 
 $stmt->close();
 $conn->close();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -179,10 +172,10 @@ $conn->close();
                         <a class="nav-link" href="Contact.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                       <a class="nav-link" href="AboutMain.php">About Us</a>
+                                    <a class="nav-link" href="About.php">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="blogMain.php">Blog</a>
+                        <a class="nav-link" href="blog.php">Blog</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="BookingAppointment.php">Booking Appointment</a>
@@ -191,7 +184,7 @@ $conn->close();
                         <a class="nav-link" href="Accounts.php">Accounts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Login.php">Log out</a>
+                        <a class="nav-link" href="Login.php">Log in</a>
                     </li>
                 </ul>
             </div>
@@ -213,45 +206,45 @@ $conn->close();
                                         <th>Product Name</th>
                                         <th>Description</th>
                                         <th>Category</th>
+                                        <th>Size</th>
                                         <th>Color</th>
                                         <th>Price</th>
                                         <th>Quantity</th>
                                         <th>Total</th>
-                                        <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody id="cart-items">
-                                    <?php foreach ($cartItems as $item) : ?>
+                                <tbody id="purchased-items">
+                                    <?php foreach ($purchasedItems as $item) : ?>
                                         <tr>
                                             <td><?php echo htmlspecialchars($item['product_name']); ?></td>
                                             <td><?php echo htmlspecialchars($item['description']); ?></td>
                                             <td><?php echo htmlspecialchars($item['category']); ?></td>
+                                            <td><?php echo htmlspecialchars($item['size']); ?></td>
                                             <td><?php echo htmlspecialchars($item['color']); ?></td>
                                             <td>₱<?php echo htmlspecialchars($item['price']); ?></td>
                                             <td><?php echo htmlspecialchars($item['quantity']); ?></td>
                                             <td>₱<?php echo htmlspecialchars($item['price'] * $item['quantity']); ?></td>
-                                            <td>
-                                                <button class="btn btn-danger btn-remove" data-product-id="<?php echo htmlspecialchars($item['product_id']); ?>">Remove</button>
-                                            </td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
                         <div class="text-right">
-                            <h4>Total: ₱<span id="cart-total" class="cart-total"><?php echo number_format($totalPrice, 2); ?></span></h4>
-                            <!-- <button class="btn-primary" id="place-order-btn">Place Order</button> -->
+                            <h4>Total: ₱<span id="purchased-total" class="purchased-total"><?php echo number_format($totalPrice, 2); ?></span></h4>
                         </div>
                     </div>
                 </div>
             </div>
-
             <!-- Checkout Section -->
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
                         <h2>Checkout</h2>
                         <form id="checkout-form">
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
                             <div class="form-group">
                                 <label>Delivery Option</label><br>
                                 <div class="form-check form-check-inline">
@@ -262,6 +255,41 @@ $conn->close();
                                     <input class="form-check-input" type="radio" name="deliveryOption" id="pickUp" value="Pick Up">
                                     <label class="form-check-label" for="pickUp">Pick Up</label>
                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" class="form-control" id="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="middleName">Middle Name</label>
+                                <input type="text" class="form-control" id="middleName">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" class="form-control" id="lastName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Complete Address</label>
+                                <input type="text" class="form-control" id="address" placeholder="Unit No./House No./Building" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="street" placeholder="Street" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="barangay" placeholder="Barangay" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="city" placeholder="City" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="province" placeholder="Province" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="zipCode" placeholder="Zip Code" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Mobile/Phone No.</label>
+                                <input type="text" class="form-control" id="phone" required>
                             </div>
                             <div class="form-group">
                                 <label>Payment Options</label><br>
@@ -358,25 +386,6 @@ $conn->close();
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     <script src="script.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Function to update the cart count
-            function updateCartCount() {
-                fetch('Partials/Main_get_cart_count.php')
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.cart_count !== undefined) {
-                            document.querySelector('.cart-count').textContent = data.cart_count;
-                        }
-                    })
-                    .catch(error => console.error('Error fetching cart count:', error));
-            }
-
-            // Update cart count initially
-            updateCartCount();
-
-        });
-    </script>
 </body>
 
 </html>

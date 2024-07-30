@@ -1,5 +1,5 @@
 <?php
-require 'Partials/db_conn.php';
+require 'partials/db_conn.php';
 
 $date = $_GET['date'];
 $period = $_GET['period'];

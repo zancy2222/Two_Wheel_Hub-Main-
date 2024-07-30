@@ -4,73 +4,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - E-commerce Website</title>
+    <title>Custom Header</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="chat.css">
     <style>
         body {
+            --primary-color: #004AAD;
+            --secondary-color: #009DDF;
+            --danger-color: #D9534F;
+            --white-color: #FFFFFF;
+            --grey-color: #737476;
+            --light-grey-color: #F8F9FA;
+            --black-color: #000000;
             font-family: 'League Spartan', sans-serif;
         }
 
-        .signup-container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 30px;
-            background-color: var(--light-grey-color);
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .signup-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-        }
-
-        .form-group label {
-            font-weight: bold;
-            color: var(--black-color);
-        }
-
-        .btn-primary {
+        .blog-header {
             background-color: var(--primary-color);
-            border: none;
-            transition: background-color var(--transition-speed);
+            color: var(--white-color);
+            padding: 60px 0;
+            text-align: center;
+            margin-bottom: 30px;
         }
 
-        .btn-primary:hover {
-            background-color: var(--secondary-color);
+        .blog-post {
+            margin-bottom: 40px;
         }
 
-        .form-control {
+        .blog-post img {
+            max-width: 100%;
+            height: auto;
             border-radius: 5px;
         }
 
-        .benefits-section {
-            margin-top: 50px;
-            text-align: center;
-        }
-
-        .benefits-section h3 {
+        .blog-post-title {
             color: var(--primary-color);
-            margin-bottom: 20px;
+            font-weight: bold;
         }
 
-        .benefit-item {
-            margin-bottom: 20px;
+        .blog-post-meta {
+            color: var(--grey-color);
         }
 
-        .benefit-item i {
-            font-size: 2rem;
-            color: var(--secondary-color);
-        }
-
-        .benefit-item p {
-            margin-top: 10px;
-            color: var(--black-color);
+        .blog-post-card {
+            background-color: var(--white-color);
+            border: 1px solid var(--light-grey-color);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -106,87 +91,80 @@
                         <a class="nav-link" href="Home.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Shop</a>
+                        <a class="nav-link" href="Shop.php">Shop</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="Contact.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                                    <a class="nav-link" href="About.php">About Us</a>
+                       <a class="nav-link" href="AboutMain.php">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="blog.php">Blog</a>
+                        <a class="nav-link" href="blogMain.php">Blog</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="BookingAppointment.php">Booking Appointment</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="SignUp.php">Sign Up</a>
+                        <a class="nav-link" href="Accounts.php">Accounts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Login.php">Log in</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+    <header class="blog-header">
+        <div class="container">
+            <h1>Our Blog</h1>
+            <p>Stay updated with our latest news and stories</p>
+        </div>
+    </header>
 
-    <!-- Sign Up Form -->
-    <div class="container signup-container">
-        <h2>Create Your Account</h2>
-        <form action="partials/reg_process.php" method="post">
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="firstName">First Name</label>
-                    <input type="text" class="form-control" id="firstName" name="first_name" placeholder="Enter your first name" required>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="lastName">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" name="last_name" placeholder="Enter your last name" required>
+    <!-- Blog Posts -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 blog-post">
+                <div class="blog-post-card">
+                    <img src="Bg/445641645_844028971086372_4877909842755558062_n.jpg" alt="Blog Post Image">
+                    <h2 class="blog-post-title">Blog Post Title</h2>
+                    <p class="blog-post-meta">January 1, 2024 by <a href="#">Author</a></p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum venenatis felis...</p>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
-            </div>
-            <div class="form-group">
-                <label for="address">Complete Address</label>
-                <input type="text" class="form-control" id="unit-no" name="unit_no_house_no_building" placeholder="Unit No./House No./Building" required>
-                <input type="text" class="form-control mt-2" id="street" name="street" placeholder="Street" required>
-                <input type="text" class="form-control mt-2" id="barangay" name="barangay" placeholder="Barangay" required>
-                <input type="text" class="form-control mt-2" id="city" name="city" placeholder="City" required>
-                <input type="text" class="form-control mt-2" id="province" name="province" placeholder="Province" required>
-                <input type="text" class="form-control mt-2" id="zip-code" name="zip_code" placeholder="Zip Code" required>
-            </div>
-            <div class="form-group">
-                <label for="phone">Mobile/Phone No.</label>
-                <input type="tel" class="form-control" id="phone" name="mobile_phone_no" placeholder="Enter your mobile/phone number" required>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Create Account</button>
-        </form>
-
-        <!-- Benefits Section -->
-        <div class="benefits-section">
-            <h3>Why Create an Account?</h3>
-            <div class="row">
-                <div class="col-md-4 benefit-item">
-                    <i class="fas fa-truck"></i>
-                    <p>Fast and Free Shipping</p>
-                </div>
-                <div class="col-md-4 benefit-item">
-                    <i class="fas fa-bell"></i>
-                    <p>Exclusive Promotions</p>
-                </div>
-                <div class="col-md-4 benefit-item">
-                    <i class="fas fa-heart"></i>
-                    <p>Personalized Recommendations</p>
+            <div class="col-md-6 blog-post">
+                <div class="blog-post-card">
+                    <img src="Bg/447465596_850089977146938_3296875718702867775_n.jpg" alt="Blog Post Image">
+                    <h2 class="blog-post-title">Blog Post Title</h2>
+                    <p class="blog-post-meta">January 1, 2024 by <a href="#">Author</a></p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum venenatis felis...</p>
                 </div>
             </div>
         </div>
     </div>
+    <!-- Chat Icon -->
+    <div class="chat-icon" onclick="toggleChat()">
+        <i class="fas fa-comments"></i>
+    </div>
 
-    <!-- Footer -->
+    <!-- Chat Window -->
+    <div class="chat-window" id="chat-window">
+        <div class="chat-header">Chat with us</div>
+        <div class="chat-body" id="chat-body">
+            <!-- Example messages -->
+            <div class="chat-message chat-message-received">
+                Hello! How can I help you today?
+            </div>
+            <div class="chat-message chat-message-sent">
+                Hi, I'd like to inquire about booking an appointment.
+            </div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chat-input" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
     <footer class="footer">
         <div class="container">
             <div class="row">
@@ -239,27 +217,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="script.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Function to update the cart count
-            function updateCartCount() {
-                fetch('Partials/get_cart_count.php')
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.cart_count !== undefined) {
-                            document.querySelector('.cart-count').textContent = data.cart_count;
-                        }
-                    })
-                    .catch(error => console.error('Error fetching cart count:', error));
-            }
-
-            // Update cart count initially
-            updateCartCount();
-
-
-        });
-    </script>
-
 </body>
 
 </html>

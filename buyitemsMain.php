@@ -1,5 +1,33 @@
 <?php
+include 'partials/db_conn.php';
 include 'partials/session.php';
+
+if (!isset($_SESSION['user_id'])) {
+    echo "Please log in to view your purchases.";
+    exit;
+}
+
+$userId = $_SESSION['user_id'];
+
+// Fetch purchased items and their details
+$sql = "SELECT p.product_name, p.description, p.category, p.product_image, p.price, pu.size, pu.color, pu.quantity
+        FROM RegisteredPurchased pu
+        JOIN products p ON pu.product_id = p.id
+        WHERE pu.user_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+$result = $stmt->get_result();
+$purchasedItems = [];
+$totalPrice = 0;
+
+while ($row = $result->fetch_assoc()) {
+    $purchasedItems[] = $row;
+    $totalPrice += $row['price'] * $row['quantity'];
+}
+
+$stmt->close();
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,15 +35,23 @@ include 'partials/session.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suspension Oils - Products</title>
+    <title>Cart</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="chat.css">
     <style>
         body {
+            /* Background image example */
+            background-image: url('img/AV\ Moto\ Logo.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             font-family: 'League Spartan', sans-serif;
+            /* Background color example */
+            /* background-color: #f0f0f0; */
         }
 
         :root {
@@ -30,241 +66,77 @@ include 'partials/session.php';
             --transition-speed: 0.3s;
         }
 
-        .navbar-light.bg-white {
-            background-color: var(--white-color);
-            border-bottom: 1px solid var(--grey-color);
+        /* Cart table styles */
+        .cart-table th,
+        .cart-table td {
+            vertical-align: middle;
+            text-align: center;
+            background-color: #009DDF;
         }
 
-        .navbar-light .navbar-nav .nav-link {
-            color: var(--black-color);
-            font-weight: bold;
-            padding: 0.5rem 1rem;
-            transition: color 0.3s;
+        .cart-table img {
+            width: 50px;
+            height: auto;
         }
 
-        .navbar-light .navbar-nav .nav-link:hover {
-            color: var(--secondary-color);
-        }
-
-        .form-inline .input-group .form-control {
-            border: 1px solid var(--grey-color);
-            border-radius: 20px 0 0 20px;
-            padding: 0.5rem 1rem;
-        }
-
-        .form-inline .input-group .btn-search {
-            border-radius: 0 20px 20px 0;
-            border: 1px solid var(--grey-color);
-            background-color: var(--grey-color);
-            color: var(--white-color);
-        }
-
-        .navbar-icons .nav-link {
-            color: var(--secondary-color);
-            font-size: 1.5rem;
-            margin-left: 15px;
-            transition: color 0.3s;
-            position: relative;
-        }
-
-        .navbar-icons .nav-link .cart-count {
-            position: absolute;
-            top: -1px;
-            right: -10px;
-            background-color: var(--danger-color);
-            color: var(--white-color);
-            border-radius: 50%;
-            padding: 2px 6px;
-            font-size: 0.8rem;
-        }
-
-        .navbar-icons .nav-link:hover {
-            color: var(--primary-color);
-        }
-
-        .navbar-light.bg-light {
-            background-color: var(--white-color);
-            border-bottom: 1px solid var(--grey-color);
-        }
-
-        .navbar-light .navbar-nav .nav-link.active {
-            color: var(--primary-color);
-        }
-
-        .navbar-light .navbar-nav .nav-link {
-            color: var(--black-color);
-            font-weight: bold;
-            padding: 0.5rem 1rem;
-            transition: color 0.3s;
-        }
-
-        .navbar-light .navbar-nav .nav-link:hover {
-            color: var(--secondary-color);
-        }
-
-        .navbar .navbar-nav {
-            font-size: 1rem;
-        }
-
-        .navbar .form-inline {
-            flex-grow: 1;
-        }
-
-        .navbar .input-group {
-            width: 100%;
-        }
-
-        .container.mt-5 .btn:hover {
-            background-color: var(--secondary-color);
-        }
-
-        .product-card {
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: none;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 30px;
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .product-img {
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .product-card-body {
-            padding: 20px;
-            background-color: var(--white-color);
-        }
-
-        .product-card-title {
+        .cart-total {
             font-size: 1.5rem;
             font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .product-card-description {
-            font-size: 1rem;
-            margin-bottom: 10px;
-        }
-
-        .product-card-info {
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-        }
-
-        .product-card-price {
-            font-size: 1.25rem;
-            font-weight: bold;
             color: var(--primary-color);
         }
 
-        .product-buttons {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
+        /* Checkout form styles */
+        #checkout-form .form-group {
+            margin-bottom: 1.5rem;
+
         }
 
-        .btn-add-to-cart,
-        .btn-buy {
-            width: calc(50% - 5px);
-            padding: 10px;
-            border: none;
+        #checkout-form .form-control {
+            border-radius: 0;
+            box-shadow: none;
+
+            border: 1px solid var(--grey-color);
+        }
+
+        #checkout-form .form-check-label {
+            margin-left: 0.5rem;
+        }
+
+        #checkout-form button {
+            background-color: var(--primary-color);
             color: var(--white-color);
+            padding: 10px 20px;
+            border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color var(--transition-speed);
         }
 
-        .btn-add-to-cart {
-            background-color: var(--primary-color);
-        }
-
-        .btn-buy {
+        #checkout-form button:hover {
             background-color: var(--secondary-color);
         }
 
-        .btn-add-to-cart:hover,
-        .btn-buy:hover {
-            opacity: 0.9;
-        }
-
-        .footer {
-            background-color: var(--secondary-color);
-            color: var(--primary-color);
-            padding: 40px 0;
-        }
-
-        .footer .footer-column {
-            margin-bottom: 30px;
-        }
-
-        .footer .footer-column h5 {
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .footer .footer-column ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .footer .footer-column ul li {
-            margin-bottom: 10px;
-        }
-
-        .footer .footer-column ul li a {
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-
-        .footer .footer-column ul li a:hover {
-            text-decoration: underline;
-        }
-
-        .footer .footer-column .social-icons a {
-            font-size: 20px;
-            margin-right: 15px;
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-
-        .footer .footer-column .social-icons a:hover {
-            color: #dddddd;
-        }
-
-        .footer .newsletter input[type="email"] {
-            width: 100%;
-            padding: 10px;
+        /* Enhanced styles for better UI */
+        .card {
             border: none;
-            border-radius: 5px;
-            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #d0d1d4;
+
         }
 
-        .footer .newsletter button {
-            width: 100%;
-            padding: 10px;
-            border: none;
+        .card img {
+            border-top-left-radius: 0.25rem;
+            border-top-right-radius: 0.25rem;
+        }
+
+        .btn-primary {
             background-color: var(--primary-color);
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
+            border-color: var(--primary-color);
         }
 
-        .footer .newsletter button:hover {
-            background-color: #555555;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding: 10px 0;
-            border-top: 1px solid var(--primary-color);
-            margin-top: 20px;
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
         }
     </style>
 </head>
@@ -284,7 +156,7 @@ include 'partials/session.php';
                 </div>
             </form>
             <div class="navbar-icons">
-                <a class="nav-link" href="cart.php"><i class="fa fa-shopping-cart"></i><span class="cart-count">0</span></a>
+                <a class="nav-link" href="#"><i class="fa fa-shopping-cart"></i><span class="cart-count">0</span></a>
             </div>
         </div>
     </nav>
@@ -325,41 +197,83 @@ include 'partials/session.php';
         </div>
     </nav>
 
+    <!-- Main Content -->
     <div class="container mt-5">
         <div class="row">
-            <?php
-            require 'partials/db_conn.php';
-
-            $sql = "SELECT * FROM products WHERE category = 'Suspension Oils'";
-            $result = $conn->query($sql);
-
-            if ($result->num_rows > 0) {
-                // Output data of each row
-                while ($row = $result->fetch_assoc()) {
-                    echo "<div class='col-md-4'>
-                <div class='card product-card'>
-                    <img src='Dashboard/Partials/uploads/" . $row["product_image"] . "' class='card-img-top product-img' alt='" . $row["product_name"] . "'>
-                    <div class='card-body product-card-body'>
-                        <h5 class='card-title product-card-title'>" . $row["product_name"] . "</h5>
-                        <p class='card-text product-card-description'>" . $row["description"] . "</p>
-                        <p class='card-text product-card-info'>Category: " . $row["category"] . "</p>
-                        <p class='card-text product-card-info'>Size: " . $row["size"] . "</p>
-                        <p class='card-text product-card-info'>Color: " . $row["color"] . "</p>
-                        <p class='card-text product-card-price'>₱" . $row["price"] . "</p>
-                        <div class='product-buttons'>
-                            <button class='btn btn-add-to-cart'>Add to Cart</button>
-                            <button class='btn btn-buy'>Buy Now</button>
+            <!-- Cart Section -->
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2>Shopping Cart</h2>
+                        <div class="table-responsive">
+                            <table class="table table-bordered cart-table">
+                                <thead>
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <th>Description</th>
+                                        <th>Category</th>
+                                        <th>Size</th>
+                                        <th>Color</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($purchasedItems as $item) : ?>
+                                        <tr>
+                                            <td><img src="Dashboard/Partials/uploads/<?php echo htmlspecialchars($item['product_image']); ?>" class="img-thumbnail" alt="<?php echo htmlspecialchars($item['product_name']); ?>" width="50" height="50"></td>
+                                            <td><?php echo htmlspecialchars($item['product_name']); ?></td>
+                                            <td><?php echo htmlspecialchars($item['description']); ?></td>
+                                            <td><?php echo htmlspecialchars($item['category']); ?></td>
+                                            <td><?php echo htmlspecialchars($item['color']); ?></td>
+                                            <td><?php echo htmlspecialchars($item['size']); ?></td>
+                                            <td><?php echo htmlspecialchars($item['quantity']); ?></td>
+                                            <td>₱<?php echo number_format($item['price'], 2); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-right">
+                            <h4>Total: ₱<span id="purchased-total" class="purchased-total"><?php echo number_format($totalPrice, 2); ?></span></h4>
                         </div>
                     </div>
                 </div>
-              </div>";
-                }
-            } else {
-                echo "<p>No products found in the Suspension Oils category.</p>";
-            }
-            $conn->close();
-            ?>
-
+            </div>
+            <!-- Checkout Section -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h2>Checkout</h2>
+                        <form id="checkout-form">
+                            <div class="form-group">
+                                <label>Delivery Option</label><br>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="deliveryOption" id="ship" value="Ship" checked>
+                                    <label class="form-check-label" for="ship">Ship</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="deliveryOption" id="pickUp" value="Pick Up">
+                                    <label class="form-check-label" for="pickUp">Pick Up</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Payment Options</label><br>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="paymentOption" id="cod" value="COD" checked>
+                                    <label class="form-check-label" for="cod">COD (Cash-on-Delivery)</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="paymentOption" id="counter" value="Counter">
+                                    <label class="form-check-label" for="counter">Payment at the Counter (For Pick Up Only)</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Buy Now</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <!-- Chat Icon -->
@@ -432,12 +346,12 @@ include 'partials/session.php';
         </div>
     </footer>
 
-
-
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
     <script src="script.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {

@@ -250,10 +250,10 @@
             <a class="nav-link" href="Contact.php">Contact Us</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">About Us</a>
+                        <a class="nav-link" href="About.php">About Us</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Blog</a>
+            <a class="nav-link" href="blog.php">Blog</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="BookingAppointment.php">Booking Appointment</a>
@@ -722,6 +722,27 @@
 
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Function to update the cart count
+      function updateCartCount() {
+        fetch('Partials/get_cart_count.php')
+          .then(response => response.json())
+          .then(data => {
+            if (data.cart_count !== undefined) {
+              document.querySelector('.cart-count').textContent = data.cart_count;
+            }
+          })
+          .catch(error => console.error('Error fetching cart count:', error));
+      }
+
+      // Update cart count initially
+      updateCartCount();
+
+
+    });
+  </script>
+
 </body>
 
 </html>

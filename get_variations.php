@@ -1,5 +1,5 @@
 <?php
-include 'Partials/db_conn.php';
+include 'partials/db_conn.php';
 
 if (isset($_GET['product_id']) && isset($_GET['color'])) {
     $productId = $_GET['product_id'];

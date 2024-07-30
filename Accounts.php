@@ -18,6 +18,7 @@ $user = $result->fetch_assoc();
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,9 +30,10 @@ $user = $result->fetch_assoc();
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="chat.css">
     <style>
-    body {
-      font-family: 'League Spartan', sans-serif;
-    }
+        body {
+            font-family: 'League Spartan', sans-serif;
+        }
+
         .form-container {
             max-width: 700px;
             margin: 2rem auto;
@@ -40,42 +42,53 @@ $user = $result->fetch_assoc();
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         .form-container h2 {
             text-align: center;
             margin-bottom: 1.5rem;
         }
+
         .btn-primary {
             background-color: #890606;
             border: none;
         }
+
         .btn-primary:hover {
             background-color: #6a0505;
         }
+
         .btn-save-edit {
             margin-top: 1rem;
             background-color: #17a2b8;
             border: none;
         }
+
         .btn-save-edit:hover {
             background-color: #138496;
         }
+
         .order-status-table {
             margin-bottom: 2rem;
         }
+
         .order-status-table table {
             width: 100%;
             border-collapse: collapse;
         }
-        .order-status-table th, .order-status-table td {
+
+        .order-status-table th,
+        .order-status-table td {
             padding: 10px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
+
         .order-status-table th {
             background-color: #f2f2f2;
         }
     </style>
 </head>
+
 <body>
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
@@ -113,10 +126,10 @@ $user = $result->fetch_assoc();
                         <a class="nav-link" href="ContactMain.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About Us</a>
+                       <a class="nav-link" href="AboutMain.php">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Blog</a>
+                        <a class="nav-link" href="blogMain.php">Blog</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="BookingAppointmentMain.php">Booking Appointment</a>
@@ -125,7 +138,7 @@ $user = $result->fetch_assoc();
                         <a class="nav-link active" href="Accounts.php">Accounts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Login.php">Log in</a>
+                        <a class="nav-link" href="Login.php">Log out</a>
                     </li>
                 </ul>
             </div>
@@ -191,39 +204,39 @@ $user = $result->fetch_assoc();
             </table>
         </div>
         <form action="partials/update_process.php" method="post">
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="firstName">First Name</label>
-            <input type="text" class="form-control" id="firstName" name="first_name" placeholder="Enter your first name" value="<?php echo htmlspecialchars($user['first_name']); ?>" required>
-        </div>
-        <div class="form-group col-md-6">
-            <label for="lastName">Last Name</label>
-            <input type="text" class="form-control" id="lastName" name="last_name" placeholder="Enter your last name" value="<?php echo htmlspecialchars($user['last_name']); ?>" required>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
-    </div>
-    <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
-    </div>
-    <div class="form-group">
-        <label for="address">Complete Address</label>
-        <input type="text" class="form-control" id="unit-no" name="unit_no_house_no_building" placeholder="Unit No./House No./Building" value="<?php echo htmlspecialchars($user['unit_no_house_no_building']); ?>" required>
-        <input type="text" class="form-control mt-2" id="street" name="street" placeholder="Street" value="<?php echo htmlspecialchars($user['street']); ?>" required>
-        <input type="text" class="form-control mt-2" id="barangay" name="barangay" placeholder="Barangay" value="<?php echo htmlspecialchars($user['barangay']); ?>" required>
-        <input type="text" class="form-control mt-2" id="city" name="city" placeholder="City" value="<?php echo htmlspecialchars($user['city']); ?>" required>
-        <input type="text" class="form-control mt-2" id="province" name="province" placeholder="Province" value="<?php echo htmlspecialchars($user['province']); ?>" required>
-        <input type="text" class="form-control mt-2" id="zip-code" name="zip_code" placeholder="Zip Code" value="<?php echo htmlspecialchars($user['zip_code']); ?>" required>
-    </div>
-    <div class="form-group">
-        <label for="phone">Mobile/Phone No.</label>
-        <input type="tel" class="form-control" id="phone" name="mobile_phone_no" placeholder="Enter your mobile/phone number" value="<?php echo htmlspecialchars($user['mobile_phone_no']); ?>" required>
-    </div>
-    <button type="submit" class="btn btn-save-edit btn-block">Save Edit</button>
-</form>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="firstName">First Name</label>
+                    <input type="text" class="form-control" id="firstName" name="first_name" placeholder="Enter your first name" value="<?php echo htmlspecialchars($user['first_name']); ?>" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" name="last_name" placeholder="Enter your last name" value="<?php echo htmlspecialchars($user['last_name']); ?>" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
+            </div>
+            <div class="form-group">
+                <label for="address">Complete Address</label>
+                <input type="text" class="form-control" id="unit-no" name="unit_no_house_no_building" placeholder="Unit No./House No./Building" value="<?php echo htmlspecialchars($user['unit_no_house_no_building']); ?>" required>
+                <input type="text" class="form-control mt-2" id="street" name="street" placeholder="Street" value="<?php echo htmlspecialchars($user['street']); ?>" required>
+                <input type="text" class="form-control mt-2" id="barangay" name="barangay" placeholder="Barangay" value="<?php echo htmlspecialchars($user['barangay']); ?>" required>
+                <input type="text" class="form-control mt-2" id="city" name="city" placeholder="City" value="<?php echo htmlspecialchars($user['city']); ?>" required>
+                <input type="text" class="form-control mt-2" id="province" name="province" placeholder="Province" value="<?php echo htmlspecialchars($user['province']); ?>" required>
+                <input type="text" class="form-control mt-2" id="zip-code" name="zip_code" placeholder="Zip Code" value="<?php echo htmlspecialchars($user['zip_code']); ?>" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Mobile/Phone No.</label>
+                <input type="tel" class="form-control" id="phone" name="mobile_phone_no" placeholder="Enter your mobile/phone number" value="<?php echo htmlspecialchars($user['mobile_phone_no']); ?>" required>
+            </div>
+            <button type="submit" class="btn btn-save-edit btn-block">Save Edit</button>
+        </form>
     </div>
 
     <footer class="footer">
@@ -232,8 +245,8 @@ $user = $result->fetch_assoc();
                 <div class="col-md-3 footer-column">
                     <h5>OFFICE ADDRESS</h5>
                     <p>1665 Ilang Ilang St. <br>
-                       Bgry 174,<br>
-                       Caloocan, Philippines</p>
+                        Bgry 174,<br>
+                        Caloocan, Philippines</p>
                     <p>
                         Telephone: <br>
                         + (63) 917 - 5695 - 469<br>
@@ -277,5 +290,25 @@ $user = $result->fetch_assoc();
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Function to update the cart count
+            function updateCartCount() {
+                fetch('Partials/Main_get_cart_count.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.cart_count !== undefined) {
+                            document.querySelector('.cart-count').textContent = data.cart_count;
+                        }
+                    })
+                    .catch(error => console.error('Error fetching cart count:', error));
+            }
+
+            // Update cart count initially
+            updateCartCount();
+
+        });
+    </script>
 </body>
+
 </html>

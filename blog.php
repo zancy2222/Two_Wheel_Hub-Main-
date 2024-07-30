@@ -11,10 +11,45 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="chat.css">
     <style>
-
-body {
-    font-family: 'League Spartan', sans-serif;
-}
+        body {
+            --primary-color: #004AAD;
+            --secondary-color: #009DDF;
+            --danger-color: #D9534F;
+            --white-color: #FFFFFF;
+            --grey-color: #737476;
+            --light-grey-color: #F8F9FA;
+            --black-color: #000000;
+            font-family: 'League Spartan', sans-serif;
+        }
+.blog-header {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            padding: 60px 0;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .blog-post {
+            margin-bottom: 40px;
+        }
+        .blog-post img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .blog-post-title {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        .blog-post-meta {
+            color: var(--grey-color);
+        }
+        .blog-post-card {
+            background-color: var(--white-color);
+            border: 1px solid var(--light-grey-color);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -48,16 +83,16 @@ body {
                         <a class="nav-link" href="Home.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Shop</a>
+                        <a class="nav-link" href="Shop.php">Shop</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="Contact.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                                    <a class="nav-link" href="About.php">About Us</a>
+                        <a class="nav-link" href="About.php">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Blog</a>
+                        <a class="nav-link active" href="blog.php">Blog</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="BookingAppointment.php">Booking Appointment</a>
@@ -69,7 +104,34 @@ body {
             </div>
         </div>
     </nav>
+    <header class="blog-header">
+        <div class="container">
+            <h1>Our Blog</h1>
+            <p>Stay updated with our latest news and stories</p>
+        </div>
+    </header>
 
+    <!-- Blog Posts -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 blog-post">
+                <div class="blog-post-card">
+                    <img src="Bg/445641645_844028971086372_4877909842755558062_n.jpg" alt="Blog Post Image">
+                    <h2 class="blog-post-title">Blog Post Title</h2>
+                    <p class="blog-post-meta">January 1, 2024 by <a href="#">Author</a></p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum venenatis felis...</p>
+                </div>
+            </div>
+            <div class="col-md-6 blog-post">
+                <div class="blog-post-card">
+                    <img src="Bg/447465596_850089977146938_3296875718702867775_n.jpg" alt="Blog Post Image">
+                    <h2 class="blog-post-title">Blog Post Title</h2>
+                    <p class="blog-post-meta">January 1, 2024 by <a href="#">Author</a></p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum venenatis felis...</p>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Chat Icon -->
     <div class="chat-icon" onclick="toggleChat()">
         <i class="fas fa-comments"></i>

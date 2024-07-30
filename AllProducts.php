@@ -1,5 +1,5 @@
 <?php
-include 'Partials/db_conn.php';
+include 'partials/db_conn.php';
 
 $category = isset($_GET['category']) ? $_GET['category'] : '';
 
@@ -281,23 +281,22 @@ if ($category) {
         }
 
         .color-options {
-    display: flex;
-    gap: 5px;
-}
+            display: flex;
+            gap: 5px;
+        }
 
-.color-circle {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    display: inline-block;
-    cursor: pointer;
-    border: 1px solid #ccc;
-}
+        .color-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            border: 1px solid #ccc;
+        }
 
-.color-circle.selected {
-    border: 2px solid #000;
-}
-
+        .color-circle.selected {
+            border: 2px solid #000;
+        }
     </style>
 </head>
 
@@ -338,10 +337,10 @@ if ($category) {
                         <a class="nav-link" href="Contact.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About Us</a>
+                                    <a class="nav-link" href="About.php">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Blog</a>
+                        <a class="nav-link" href="blog.php">Blog</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="BookingAppointment.php">Booking Appointment</a>
@@ -356,37 +355,37 @@ if ($category) {
 
     <!-- Main Content -->
     <div class="container mt-5">
-    <div class="row">
-        <?php
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                // Fetch variations for each product
-                $productId = $row["id"];
-                $variationSql = "SELECT * FROM product_variations WHERE product_id = ?";
-                $variationStmt = $conn->prepare($variationSql);
-                $variationStmt->bind_param("i", $productId);
-                $variationStmt->execute();
-                $variationResult = $variationStmt->get_result();
-                $variations = [];
+        <div class="row">
+            <?php
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    // Fetch variations for each product
+                    $productId = $row["id"];
+                    $variationSql = "SELECT * FROM product_variations WHERE product_id = ?";
+                    $variationStmt = $conn->prepare($variationSql);
+                    $variationStmt->bind_param("i", $productId);
+                    $variationStmt->execute();
+                    $variationResult = $variationStmt->get_result();
+                    $variations = [];
 
-                while ($variation = $variationResult->fetch_assoc()) {
-                    $variations[] = $variation;
-                }
-
-                $variationStmt->close();
-
-                // Organize variations by color
-                $colorVariations = [];
-                foreach ($variations as $variation) {
-                    $color = $variation["color"];
-                    if (!isset($colorVariations[$color])) {
-                        $colorVariations[$color] = [];
+                    while ($variation = $variationResult->fetch_assoc()) {
+                        $variations[] = $variation;
                     }
-                    $colorVariations[$color][] = $variation;
-                }
 
-                // Display product details
-                echo "<div class='col-md-4 mb-4'>
+                    $variationStmt->close();
+
+                    // Organize variations by color
+                    $colorVariations = [];
+                    foreach ($variations as $variation) {
+                        $color = $variation["color"];
+                        if (!isset($colorVariations[$color])) {
+                            $colorVariations[$color] = [];
+                        }
+                        $colorVariations[$color][] = $variation;
+                    }
+
+                    // Display product details
+                    echo "<div class='col-md-4 mb-4'>
                     <div class='card product-card'>
                         <img src='Dashboard/Partials/uploads/" . htmlspecialchars($row["product_image"]) . "' class='card-img-top product-img' alt='" . htmlspecialchars($row["product_name"]) . "'>
                         <div class='card-body product-card-body'>
@@ -397,29 +396,30 @@ if ($category) {
                             <p class='card-text product-card-info'>Color: 
                                 <div class='color-options'>";
 
-                foreach (array_keys($colorVariations) as $color) {
-                    echo "<span class='color-circle' data-product-id='" . htmlspecialchars($row["id"]) . "' data-color='" . trim($color) . "' style='background-color:" . trim($color) . ";'></span>";
-                }
+                    foreach (array_keys($colorVariations) as $color) {
+                        echo "<span class='color-circle' data-product-id='" . htmlspecialchars($row["id"]) . "' data-color='" . trim($color) . "' style='background-color:" . trim($color) . ";'></span>";
+                    }
 
-                echo                "</div>
+                    echo                "</div>
                             </p>
                             <div id='sizeQtyContainer-" . htmlspecialchars($row["id"]) . "' class='size-quantity-container'>
                                
                             </div>
                             <div class='product-buttons'>
-                                <button class='btn btn-add-to-cart'>Add to Cart</button>
-                                <button class='btn btn-buy'>Buy Now</button>
+                                    <button class='btn btn-add-to-cart' data-product-id='" . htmlspecialchars($row["id"]) . "'>Add to Cart</button>
+                                    <button class='btn btn-buy' data-product-id='" . htmlspecialchars($row["id"]) . "'>Buy Now</button>
+
                             </div>
                         </div>
                     </div>
                   </div>";
+                }
+            } else {
+                echo "<p>No products found in this category.</p>";
             }
-        } else {
-            echo "<p>No products found in this category.</p>";
-        }
-        ?>
+            ?>
+        </div>
     </div>
-</div>
 
 
     <!-- Chat Icon -->
@@ -500,45 +500,128 @@ if ($category) {
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="script.js"></script>
     <script>
-document.addEventListener("DOMContentLoaded", function() {
-    var colorCircles = document.querySelectorAll(".color-circle");
+        document.addEventListener("DOMContentLoaded", function() {
+            // Function to update the cart count
+            function updateCartCount() {
+                fetch('Partials/get_cart_count.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.cart_count !== undefined) {
+                            document.querySelector('.cart-count').textContent = data.cart_count;
+                        }
+                    })
+                    .catch(error => console.error('Error fetching cart count:', error));
+            }
 
-    colorCircles.forEach(function(circle) {
-        circle.addEventListener("click", function() {
-            colorCircles.forEach(function(c) {
-                c.classList.remove("selected");
-            });
+            // Initial update of cart count
+            updateCartCount();
 
-            this.classList.add("selected");
+            var colorCircles = document.querySelectorAll(".color-circle");
 
-            var selectedColor = this.getAttribute("data-color");
-            var productId = this.getAttribute("data-product-id");
+            colorCircles.forEach(function(circle) {
+                circle.addEventListener("click", function() {
+                    colorCircles.forEach(function(c) {
+                        c.classList.remove("selected");
+                    });
 
-            console.log("Selected Color: " + selectedColor);
+                    this.classList.add("selected");
 
-            // Fetch and display size and quantity information
-            fetch(`get_variations.php?product_id=${productId}&color=${encodeURIComponent(selectedColor)}`)
-                .then(response => response.json())
-                .then(data => {
-                    var container = document.getElementById(`sizeQtyContainer-${productId}`);
-                    container.innerHTML = ''; // Clear previous data
+                    var selectedColor = this.getAttribute("data-color");
+                    var productId = this.getAttribute("data-product-id");
 
-                    data.forEach(variation => {
-                        var sizeInfo = document.createElement("div");
-                        sizeInfo.className = "size-info";
-                        sizeInfo.innerHTML = `
+                    console.log("Selected Color: " + selectedColor);
+
+                    // Fetch and display size and quantity information
+                    fetch(`get_variations.php?product_id=${productId}&color=${encodeURIComponent(selectedColor)}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            var container = document.getElementById(`sizeQtyContainer-${productId}`);
+                            container.innerHTML = ''; // Clear previous data
+
+                            data.forEach(variation => {
+                                var sizeInfo = document.createElement("div");
+                                sizeInfo.className = "size-info";
+                                sizeInfo.innerHTML = `
                             <p>Size: ${variation.size}</p>
                             <p>Pieces available: ${variation.quantity}</p>
                         `;
-                        container.appendChild(sizeInfo);
-                    });
-                })
-                .catch(error => console.error('Error fetching variations:', error));
-        });
-    });
-});
+                                container.appendChild(sizeInfo);
+                            });
+                        })
+                        .catch(error => console.error('Error fetching variations:', error));
+                });
+            });
 
+            // Add to Cart button click handler
+            var addToCartButtons = document.querySelectorAll('.btn-add-to-cart');
+            addToCartButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var productId = this.getAttribute('data-product-id');
+                    var selectedColorCircle = document.querySelector(`.color-circle[data-product-id='${productId}'].selected`);
+
+                    if (!selectedColorCircle) {
+                        alert('Please select a color.');
+                        return;
+                    }
+
+                    var selectedColor = selectedColorCircle.getAttribute('data-color');
+
+                    fetch('Partials/add_to_cart.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: `product_id=${productId}&color=${encodeURIComponent(selectedColor)}`
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.cart_count !== undefined) {
+                                document.querySelector('.cart-count').textContent = data.cart_count;
+                            } else {
+                                console.error('Error adding to cart:', data.error);
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var buyNowButtons = document.querySelectorAll('.btn-buy');
+            buyNowButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var productId = this.getAttribute('data-product-id');
+                    var selectedColorCircle = document.querySelector(`.color-circle[data-product-id='${productId}'].selected`);
+
+                    if (!selectedColorCircle) {
+                        alert('Please select a color.');
+                        return;
+                    }
+
+                    var selectedColor = selectedColorCircle.getAttribute('data-color');
+
+                    fetch('Partials/buy_now.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: `product_id=${productId}&color=${encodeURIComponent(selectedColor)}`
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                window.location.href = 'buyitems.php';
+                            } else {
+                                console.error('Error processing purchase:', data.error);
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            });
+        });
     </script>
+
+
 </body>
 
 </html>

@@ -1,15 +1,11 @@
 <?php
-// Include PHPMailer files
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\SMTP;
 
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/SMTP.php';
-
-require 'Partials/db_conn.php';
-require 'partials/session.php'; // Assuming session has user info
+require 'partials/db_conn.php';
 
 function generateReferenceCode() {
     $digits = rand(100, 999);
@@ -22,25 +18,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $preferred_time = $_POST['preferred_time'];
     $service_category = $_POST['service_category'];
     $service = $_POST['service'];
-    $email = $_SESSION['email']; // Email from session
-    $first_name = $_SESSION['first_name']; // First name from session
-    $middle_name = $_SESSION['middle_name']; // Middle name from session
-    $last_name = $_SESSION['last_name']; // Last name from session
-    $complete_address = $_SESSION['complete_address']; // Complete address from session
-    $unit_no = $_SESSION['unit_no']; // Unit no from session
-    $street = $_SESSION['street']; // Street from session
-    $barangay = $_SESSION['barangay']; // Barangay from session
-    $city = $_SESSION['city']; // City from session
-    $province = $_SESSION['province']; // Province from session
-    $zip_code = $_SESSION['zip_code']; // Zip code from session
-    $phone = $_SESSION['phone']; // Phone from session
+    $email = $_POST['email'];
+    $user_id = $_POST['user_id'];
     $reference_code = generateReferenceCode();
 
-    $date = DateTime::createFromFormat('m/d/Y', $selected_date)->format('Y-m-d');
+    // Validate reference code
+    $stmt = $conn->prepare("SELECT * FROM Appointment WHERE reference_code = ?");
+    $stmt->bind_param("s", $reference_code);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        echo 'Error: Reference code already used.';
+        exit;
+    }
+
+    // Convert date format and determine period
+    $date = $selected_date; // Already in YYYY-MM-DD format
     $period = strpos($preferred_time, 'AM') !== false ? 'AM' : 'PM';
 
     $conn->begin_transaction();
     try {
+        // Check and update slot availability
         $stmt = $conn->prepare("SELECT slots_remaining FROM slots WHERE date = ? AND period = ?");
         $stmt->bind_param("ss", $date, $period);
         $stmt->execute();
@@ -50,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $row = $result->fetch_assoc();
             $slots_remaining = $row['slots_remaining'];
         } else {
+            // Insert default slots if not existing
             $slots_remaining = 20;
             $stmt = $conn->prepare("INSERT INTO slots (date, period, slots_remaining) VALUES (?, ?, ?)");
             $stmt->bind_param("ssi", $date, $period, $slots_remaining);
@@ -64,26 +64,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param("ss", $date, $period);
         $stmt->execute();
 
-        $stmt = $conn->prepare("INSERT INTO appointments (selected_date, preferred_time, service_category, service, email, first_name, middle_name, last_name, complete_address, unit_no, street, barangay, city, province, zip_code, phone, reference_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssssssssssssss", $date, $preferred_time, $service_category, $service, $email, $first_name, $middle_name, $last_name, $complete_address, $unit_no, $street, $barangay, $city, $province, $zip_code, $phone, $reference_code);
+        // Insert appointment
+        $stmt = $conn->prepare("INSERT INTO Appointment (selected_date, preferred_time, service_category, service, user_id, reference_code) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssss", $date, $preferred_time, $service_category, $service, $user_id, $reference_code);
         $stmt->execute();
 
-        $mail = new PHPMailer(true);
+        // Send confirmation email
+        $mail = new PHPMailer;
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com'; // SMTP server
-        $mail->SMTPAuth = true;
-        $mail->Username = 'danielzanbaltazar.forwork@gmail.com'; // SMTP username
-        $mail->Password = 'nqzk mmww mxin ikve'; // SMTP password
+        $mail->Host       = 'smtp.gmail.com'; 
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'danielzanbaltazar.forwork@gmail.com'; 
+        $mail->Password   = 'nqzk mmww mxin ikve'; 
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
+        $mail->Port       = 587;
 
-        $mail->setFrom('danielzanbaltazar.forwork@gmail.com', 'AVMOTO Booking Confirmation');
+        $mail->setFrom('danielzanbaltazar.forwork@gmail.com', 'AV MOTO Booking Confirmation');
         $mail->addAddress($email);
         $mail->isHTML(true);
-        $mail->Subject = 'Booking Confirmation';
-        $mail->Body = "Thank you for your booking. Your reference code is $reference_code.";
+        $mail->Subject = 'AV MOTO Booking Confirmation';
+        $mail->Body = 'Thank you for your booking. Your reference code is ' . $reference_code;
 
-        $mail->send();
+        if (!$mail->send()) {
+            throw new Exception('Message could not be sent. Mailer Error: ' . $mail->ErrorInfo);
+        }
 
         $conn->commit();
         echo 'Reference code sent to your email. Please check your email and enter the reference code to confirm the booking.';

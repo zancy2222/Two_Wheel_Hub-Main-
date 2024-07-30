@@ -5,7 +5,7 @@ use PHPMailer\PHPMailer\Exception;
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/SMTP.php';
-require 'Partials/db_conn.php';
+require 'partials/db_conn.php';
 
 function generateReferenceCode() {
     $digits = rand(100, 999);

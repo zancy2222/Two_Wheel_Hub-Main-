@@ -13,7 +13,6 @@ include 'partials/session.php';
     <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="chat.css">
     <style>
-
         body {
             font-family: 'League Spartan', sans-serif;
         }
@@ -306,10 +305,10 @@ include 'partials/session.php';
                         <a class="nav-link" href="ContactMain.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About Us</a>
+                       <a class="nav-link" href="AboutMain.php">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Blog</a>
+                        <a class="nav-link" href="blogMain.php">Blog</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="BookingAppointmentMain.php">Booking Appointment</a>
@@ -507,6 +506,25 @@ include 'partials/session.php';
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Function to update the cart count
+            function updateCartCount() {
+                fetch('Partials/Main_get_cart_count.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.cart_count !== undefined) {
+                            document.querySelector('.cart-count').textContent = data.cart_count;
+                        }
+                    })
+                    .catch(error => console.error('Error fetching cart count:', error));
+            }
+
+            // Update cart count initially
+            updateCartCount();
+
+        });
+    </script>
 </body>
 
 </html>

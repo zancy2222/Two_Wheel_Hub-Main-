@@ -98,10 +98,10 @@
                         <a class="nav-link" href="Contact.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About Us</a>
+                                    <a class="nav-link" href="About.php">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Blog</a>
+                        <a class="nav-link" href="blog.php">Blog</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="BookingAppointment.php">Booking Appointment</a>
@@ -317,57 +317,57 @@
             var calendarEl = document.getElementById('calendar');
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'dayGridMonth',
-    dateClick: function(info) {
-        showPreferredTimeModal('AM', info.dateStr); // Pass 'AM' by default or modify as needed
-    },
-    dayCellDidMount: function(info) {
-        var amButton = document.createElement('button');
-        var pmButton = document.createElement('button');
+                initialView: 'dayGridMonth',
+                dateClick: function(info) {
+                    showPreferredTimeModal('AM', info.dateStr); // Pass 'AM' by default or modify as needed
+                },
+                dayCellDidMount: function(info) {
+                    var amButton = document.createElement('button');
+                    var pmButton = document.createElement('button');
 
-        // Format date to YYYY-MM-DD
-        var date = info.date;
-        var formattedDate = date.getFullYear() + '-' +
-                            ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
-                            ('0' + date.getDate()).slice(-2);
+                    // Format date to YYYY-MM-DD
+                    var date = info.date;
+                    var formattedDate = date.getFullYear() + '-' +
+                        ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+                        ('0' + date.getDate()).slice(-2);
 
-        // Fetch AM slots
-        fetch(`load_slots.php?date=${formattedDate}&period=AM`)
-            .then(response => response.json())
-            .then(data => {
-                amButton.innerHTML = `AM<br><span>${data.slots_remaining} Slots</span>`;
-                amButton.className = 'btn btn-primary btn-sm';
-                amButton.style.marginRight = '5px';
-                amButton.addEventListener('click', function(event) {
-                    event.stopPropagation();
-                    showPreferredTimeModal('AM', formattedDate);
-                });
-            })
-            .catch(error => console.error('Error fetching AM slots:', error));
+                    // Fetch AM slots
+                    fetch(`load_slots.php?date=${formattedDate}&period=AM`)
+                        .then(response => response.json())
+                        .then(data => {
+                            amButton.innerHTML = `AM<br><span>${data.slots_remaining} Slots</span>`;
+                            amButton.className = 'btn btn-primary btn-sm';
+                            amButton.style.marginRight = '5px';
+                            amButton.addEventListener('click', function(event) {
+                                event.stopPropagation();
+                                showPreferredTimeModal('AM', formattedDate);
+                            });
+                        })
+                        .catch(error => console.error('Error fetching AM slots:', error));
 
-        // Fetch PM slots
-        fetch(`load_slots.php?date=${formattedDate}&period=PM`)
-            .then(response => response.json())
-            .then(data => {
-                pmButton.innerHTML = `PM<br><span>${data.slots_remaining} Slots</span>`;
-                pmButton.className = 'btn btn-primary btn-sm';
-                pmButton.addEventListener('click', function(event) {
-                    event.stopPropagation();
-                    showPreferredTimeModal('PM', formattedDate);
-                });
-            })
-            .catch(error => console.error('Error fetching PM slots:', error));
+                    // Fetch PM slots
+                    fetch(`load_slots.php?date=${formattedDate}&period=PM`)
+                        .then(response => response.json())
+                        .then(data => {
+                            pmButton.innerHTML = `PM<br><span>${data.slots_remaining} Slots</span>`;
+                            pmButton.className = 'btn btn-primary btn-sm';
+                            pmButton.addEventListener('click', function(event) {
+                                event.stopPropagation();
+                                showPreferredTimeModal('PM', formattedDate);
+                            });
+                        })
+                        .catch(error => console.error('Error fetching PM slots:', error));
 
-        var buttonContainer = document.createElement('div');
-        buttonContainer.className = 'am-pm-buttons';
-        buttonContainer.appendChild(amButton);
-        buttonContainer.appendChild(pmButton);
+                    var buttonContainer = document.createElement('div');
+                    buttonContainer.className = 'am-pm-buttons';
+                    buttonContainer.appendChild(amButton);
+                    buttonContainer.appendChild(pmButton);
 
-        info.el.appendChild(buttonContainer);
-    }
-});
+                    info.el.appendChild(buttonContainer);
+                }
+            });
 
-calendar.render();
+            calendar.render();
 
             // Populate service categories
             var serviceCategorySelect = document.getElementById('service-category');
@@ -394,100 +394,119 @@ calendar.render();
         });
 
         function showPreferredTimeModal(period, date) {
-    var timeSelect = document.getElementById('preferred-time');
-    timeSelect.innerHTML = ''; // Clear existing options
+            var timeSelect = document.getElementById('preferred-time');
+            timeSelect.innerHTML = ''; // Clear existing options
 
-    var times = period === 'AM' ?
-        ['8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM'] :
-        ['12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'];
+            var times = period === 'AM' ? ['8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM'] : ['12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'];
 
-    // Make sure date is a string and handle accordingly
-    fetch(`load_slots.php?date=${date}&period=${period}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.slots_remaining > 0) {
-                times.forEach(function(time) {
-                    var option = document.createElement('option');
-                    option.value = time;
-                    option.text = time;
-                    timeSelect.appendChild(option);
-                });
-                document.getElementById('selected-date').value = date; // Set the selected date
-                $('#preferredTimeModal').modal('show');
-            } else {
-                alert(`No slots available for ${period} on ${date}`);
-            }
-        })
-        .catch(error => console.error('Error fetching slots:', error));
-}
-
-document.getElementById('saveBookingButton').addEventListener('click', function() {
-    var formData = new FormData(document.getElementById('bookingForm'));
-    var selectedTime = document.getElementById('preferred-time').value;
-    if (selectedTime) {
-        formData.append('preferred_time', selectedTime);
-        checkReferenceCode(formData);
-    } else {
-        alert('Please select a preferred time.');
-    }
-});
-function checkReferenceCode(formData) {
-    $.ajax({
-        url: 'save_booking.php',
-        type: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function(response) {
-            if (response.includes('Error:') || response.includes('Invalid reference code')) {
-                // Display an error message and keep the modal open
-                alert('Please try again, wrong reference code.');
-            } else {
-                // Hide the modal and proceed to the next step
-                $('#referenceCodeModal').modal('show');
-            }
-        },
-        error: function() {
-            alert('An error occurred while sending the reference code.');
+            // Make sure date is a string and handle accordingly
+            fetch(`load_slots.php?date=${date}&period=${period}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.slots_remaining > 0) {
+                        times.forEach(function(time) {
+                            var option = document.createElement('option');
+                            option.value = time;
+                            option.text = time;
+                            timeSelect.appendChild(option);
+                        });
+                        document.getElementById('selected-date').value = date; // Set the selected date
+                        $('#preferredTimeModal').modal('show');
+                    } else {
+                        alert(`No slots available for ${period} on ${date}`);
+                    }
+                })
+                .catch(error => console.error('Error fetching slots:', error));
         }
-    });
-}
 
-
-document.getElementById('submitReferenceCodeButton').addEventListener('click', function() {
-    var refCode = document.getElementById('reference-code').value;
-    if (refCode) {
-        var formData = new FormData(document.getElementById('bookingForm'));
-        formData.append('reference_code', refCode);
-        saveBooking(formData);
-        $('#referenceCodeModal').modal('hide');
-    } else {
-        alert('Please enter the reference code.');
-    }
-});
-
-function saveBooking(formData) {
-    $.ajax({
-        url: 'send_verification.php',
-        type: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function(response) {
-            if (response.includes('Invalid reference code')) {
-                // Display an error message and keep the modal open
-                alert('Please try again, wrong reference code.');
+        document.getElementById('saveBookingButton').addEventListener('click', function() {
+            var formData = new FormData(document.getElementById('bookingForm'));
+            var selectedTime = document.getElementById('preferred-time').value;
+            if (selectedTime) {
+                formData.append('preferred_time', selectedTime);
+                checkReferenceCode(formData);
             } else {
-                alert('Booking saved successfully!');
-                $('#preferredTimeModal').modal('hide');
-                window.location.reload(); // Reload the page
+                alert('Please select a preferred time.');
             }
-        },
-        error: function() {
-            alert('An error occurred while saving the booking.');
+        });
+
+        function checkReferenceCode(formData) {
+            $.ajax({
+                url: 'save_booking.php',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    if (response.includes('Error:') || response.includes('Invalid reference code')) {
+                        // Display an error message and keep the modal open
+                        alert('Please try again, wrong reference code.');
+                    } else {
+                        // Hide the modal and proceed to the next step
+                        $('#referenceCodeModal').modal('show');
+                    }
+                },
+                error: function() {
+                    alert('An error occurred while sending the reference code.');
+                }
+            });
         }
-    });
-}
+
+
+        document.getElementById('submitReferenceCodeButton').addEventListener('click', function() {
+            var refCode = document.getElementById('reference-code').value;
+            if (refCode) {
+                var formData = new FormData(document.getElementById('bookingForm'));
+                formData.append('reference_code', refCode);
+                saveBooking(formData);
+                $('#referenceCodeModal').modal('hide');
+            } else {
+                alert('Please enter the reference code.');
+            }
+        });
+
+        function saveBooking(formData) {
+            $.ajax({
+                url: 'send_verification.php',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    if (response.includes('Invalid reference code')) {
+                        // Display an error message and keep the modal open
+                        alert('Please try again, wrong reference code.');
+                    } else {
+                        alert('Booking saved successfully!');
+                        $('#preferredTimeModal').modal('hide');
+                        window.location.reload(); // Reload the page
+                    }
+                },
+                error: function() {
+                    alert('An error occurred while saving the booking.');
+                }
+            });
+        }
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Function to update the cart count
+            function updateCartCount() {
+                fetch('Partials/get_cart_count.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.cart_count !== undefined) {
+                            document.querySelector('.cart-count').textContent = data.cart_count;
+                        }
+                    })
+                    .catch(error => console.error('Error fetching cart count:', error));
+            }
+
+            // Update cart count initially
+            updateCartCount();
+
+
+        });
     </script>
 
 </body>
