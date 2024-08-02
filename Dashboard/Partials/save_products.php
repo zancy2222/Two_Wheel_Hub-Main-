@@ -52,6 +52,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         $stmt->close();
+
+        // Log the admin action
+        $action = "Admin added product: " . $productName;
+        $sql = "INSERT INTO AdminLogs (action) VALUES (?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $action);
+        $stmt->execute();
+        $stmt->close();
+
         echo "Product added successfully.";
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;

@@ -178,7 +178,7 @@ $conn->close();
                         <a class="nav-link" href="ContactMain.php">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                       <a class="nav-link" href="AboutMain.php">About Us</a>
+                        <a class="nav-link" href="AboutMain.php">About Us</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="blogMain.php">Blog</a>
@@ -190,8 +190,9 @@ $conn->close();
                         <a class="nav-link" href="Accounts.php">Accounts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Login.php">Log out</a>
+                        <a class="nav-link" href="partials/user_logout.php">Log out</a>
                     </li>
+
                 </ul>
             </div>
         </div>

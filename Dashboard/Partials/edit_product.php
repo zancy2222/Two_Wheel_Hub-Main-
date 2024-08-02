@@ -68,7 +68,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             $stmt->close();
-            echo "success";
+
+            // Log the admin action
+            $action = "Admin edited product: " . $productName;
+            $logStmt = $conn->prepare("INSERT INTO AdminLogs (action) VALUES (?)");
+            $logStmt->bind_param("s", $action);
+            $logStmt->execute();
+            $logStmt->close();
+
+            echo "Product edited successfully.";
         } else {
             echo "Error: " . $stmt->error;
         }

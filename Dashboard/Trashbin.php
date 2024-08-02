@@ -259,12 +259,12 @@
                 <span class="tooltip">Products</span>
             </li>
             <li>
-                <a href="">
-                    <i class='bx bx-receipt'></i>
-                    <span class="links_name">History Logs</span>
-                </a>
-                <span class="tooltip">History Logs</span>
-            </li>
+        <a href="HistoryLogs.php">
+          <i class='bx bx-receipt'></i>
+          <span class="links_name">History Logs</span>
+        </a>
+        <span class="tooltip">History Logs</span>
+      </li>
             <li>
                 <a href="Categories.php">
                     <i class='bx bx-purchase-tag-alt'></i>

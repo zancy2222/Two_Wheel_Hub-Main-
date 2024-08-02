@@ -311,7 +311,7 @@ $result = $conn->query($sql);
         <span class="tooltip">Products</span>
       </li>
       <li>
-        <a href="">
+        <a href="HistoryLogs.php">
           <i class='bx bx-receipt'></i>
           <span class="links_name">History Logs</span>
         </a>
@@ -353,7 +353,10 @@ $result = $conn->query($sql);
             <div class="job">TUNING</div>
           </div>
         </div>
-        <i class="bx bx-log-out" id="log_out"></i>
+        <!-- Logout Button -->
+        <form action="Partials/logout.php" method="post" style="display: inline;">
+          <button type="submit" id="log_out" class="bx bx-log-out"></button>
+        </form>
       </li>
     </ul>
   </div>

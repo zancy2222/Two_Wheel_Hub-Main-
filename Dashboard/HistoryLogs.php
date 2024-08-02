@@ -1,16 +1,3 @@
-<?php
-include 'db_conn.php';
-
-$sql_guest = "SELECT *, CONCAT(first_name, ' ', last_name) AS full_name FROM GuestAppointment";
-$result_guest = $conn->query($sql_guest);
-
-$sql_appointment = "
-    SELECT a.*, CONCAT(u.first_name, ' ', u.last_name) AS full_name, u.email, u.complete_address, u.mobile_phone_no
-    FROM Appointment a
-    JOIN Users u ON a.user_id = u.id";
-$result_appointment = $conn->query($sql_appointment);
-?>
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -256,6 +243,18 @@ $result_appointment = $conn->query($sql_appointment);
     .modal-footer button:hover {
       background-color: #0056b3;
     }
+    #log_out {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
+}
+
+#log_out:hover {
+    color: #f00; /* Change color on hover */
+}
+
   </style>
 </head>
 
@@ -324,193 +323,89 @@ $result_appointment = $conn->query($sql_appointment);
         <span class="tooltip">Payments</span>
       </li>
       <li class="profile">
-        <div class="profile-details">
-          <img src="../img/AV Moto Logo.png" alt="profileImg" />
-          <div class="name_job">
+    <div class="profile-details">
+        <img src="../img/AV Moto Logo.png" alt="profileImg" />
+        <div class="name_job">
             <div class="name">AV MOTO</div>
             <div class="job">TUNING</div>
-          </div>
         </div>
-        <!-- Logout Button -->
-        <form action="Partials/logout.php" method="post" style="display: inline;">
-          <button type="submit" id="log_out" class="bx bx-log-out"></button>
-        </form>
-      </li>
+    </div>
+    <!-- Logout Button -->
+    <form action="Partials/logout.php" method="post" style="display: inline;">
+        <button type="submit" id="log_out" class="bx bx-log-out"></button>
+    </form>
+</li>
+
     </ul>
   </div>
 
   <body>
     <section class="home-section">
-      <div class="text">Appointment</div>
-      <div class="search-bar">
-        <input type="text" placeholder="Search appointments...">
-      </div>
-      <h2>Guest Appointment</h2>
-      <table id="appointmentTable">
+      <h2 class="text">History Logs</h2>
+      <table id="adminLogsTable">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Reference Code</th>
-            <th>Actions</th>
+            <th>Action</th>
+            <th>Timestamp</th>
           </tr>
         </thead>
-        <tbody id="appointmentsBody">
-          <!-- Appointment rows will be inserted here -->
+        <tbody id="adminLogsBody">
+          <!-- Admin logs will be inserted here -->
         </tbody>
       </table>
-      <div class="pagination" id="appointmentsPagination">
-        <button id="appointmentsPrevBtn">Prev</button>
-        <button id="appointmentsNextBtn">Next</button>
-      </div>
-
-      <h2>Registered Account Appointment</h2>
-      <table id="appointmentTable2">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Reference Code</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="appointmentBody">
-          <!-- Appointment rows will be inserted here -->
-        </tbody>
-      </table>
-      <div class="pagination" id="appointmentPagination">
-        <button id="appointmentPrevBtn">Prev</button>
-        <button id="appointmentNextBtn">Next</button>
+      <div class="pagination" id="adminLogsPagination">
+        <button id="adminLogsPrevBtn">Prev</button>
+        <button id="adminLogsNextBtn">Next</button>
       </div>
 
       <!-- Modal structure -->
-      <div id="viewModal" class="modal">
-        <div class="modal-content" id="modalContentContainer">
-          <div class="modal-header">
-            <h2>Appointment Details</h2>
-            <span class="close">&times;</span>
-          </div>
-          <div id="modalContent">
-            <!-- Dynamic content will be loaded here -->
-          </div>
-          <div class="modal-footer">
-            <button class="close">Close</button>
-          </div>
-        </div>
-      </div>
+
 
 
     </section>
     <script src="script.js"></script>
     <script>
-      var modal = document.getElementById("viewModal");
-      var modalContentContainer = document.getElementById("modalContentContainer");
+      document.addEventListener("DOMContentLoaded", function() {
+        const logsPerPage = 10;
+        let currentPage = 1;
 
-      // Get the <span> element that closes the modal
-      var span = document.getElementsByClassName("close");
+        function fetchLogs(page) {
+          fetch(`Partials/fetch_admin_logs.php?page=${page}&limit=${logsPerPage}`)
+            .then(response => response.json())
+            .then(data => {
+              const tbody = document.getElementById('adminLogsBody');
+              tbody.innerHTML = '';
 
-      // When the user clicks on <span> (x) or the close button, close the modal
-      for (var i = 0; i < span.length; i++) {
-        span[i].onclick = function() {
-          closeModal();
+              data.logs.forEach(log => {
+                const row = document.createElement('tr');
+                const actionCell = document.createElement('td');
+                actionCell.textContent = log.action;
+                const timestampCell = document.createElement('td');
+                timestampCell.textContent = log.timestamp;
+                row.appendChild(actionCell);
+                row.appendChild(timestampCell);
+                tbody.appendChild(row);
+              });
+
+              document.getElementById('adminLogsPrevBtn').disabled = page === 1;
+              document.getElementById('adminLogsNextBtn').disabled = data.logs.length < logsPerPage;
+            });
         }
-      }
 
-      // When the user clicks anywhere outside of the modal, close it
-      window.onclick = function(event) {
-        if (event.target == modal) {
-          closeModal();
-        }
-      }
-
-      function viewDetails(id, type) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "Partials/get_appointment_details.php?id=" + id + "&type=" + type, true);
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState == 4 && xhr.status == 200) {
-            document.getElementById("modalContent").innerHTML = xhr.responseText;
-            openModal();
+        document.getElementById('adminLogsPrevBtn').addEventListener('click', function() {
+          if (currentPage > 1) {
+            currentPage--;
+            fetchLogs(currentPage);
           }
-        };
-        xhr.send();
-      }
+        });
 
-      function openModal() {
-        modal.style.display = "block";
-        setTimeout(function() {
-          modalContentContainer.classList.add("show");
-        }, 10); // Slight delay for smooth transition
-      }
+        document.getElementById('adminLogsNextBtn').addEventListener('click', function() {
+          currentPage++;
+          fetchLogs(currentPage);
+        });
 
-      function closeModal() {
-        modalContentContainer.classList.remove("show");
-        setTimeout(function() {
-          modal.style.display = "none";
-        }, 300); // Match the transition duration
-      }
-
-      var appointmentsPage = 1;
-      var appointmentsRowsPerPage = 5;
-      var appointmentsTotalPages;
-
-      var appointmentPage = 1;
-      var appointmentRowsPerPage = 5;
-      var appointmentTotalPages;
-
-      function fetchAppointmentsData() {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "Partials/fetch_appointments.php?page=" + appointmentsPage, true);
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState == 4 && xhr.status == 200) {
-            var response = JSON.parse(xhr.responseText);
-            appointmentsTotalPages = response.totalPages;
-            document.getElementById("appointmentsBody").innerHTML = response.rows;
-          }
-        };
-        xhr.send();
-      }
-
-      function fetchAppointmentData() {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "Partials/fetch_appointment.php?page=" + appointmentPage, true);
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState == 4 && xhr.status == 200) {
-            var response = JSON.parse(xhr.responseText);
-            appointmentTotalPages = response.totalPages;
-            document.getElementById("appointmentBody").innerHTML = response.rows;
-          }
-        };
-        xhr.send();
-      }
-
-      document.getElementById("appointmentsPrevBtn").onclick = function() {
-        if (appointmentsPage > 1) {
-          appointmentsPage--;
-          fetchAppointmentsData();
-        }
-      };
-
-      document.getElementById("appointmentsNextBtn").onclick = function() {
-        if (appointmentsPage < appointmentsTotalPages) {
-          appointmentsPage++;
-          fetchAppointmentsData();
-        }
-      };
-
-      document.getElementById("appointmentPrevBtn").onclick = function() {
-        if (appointmentPage > 1) {
-          appointmentPage--;
-          fetchAppointmentData();
-        }
-      };
-
-      document.getElementById("appointmentNextBtn").onclick = function() {
-        if (appointmentPage < appointmentTotalPages) {
-          appointmentPage++;
-          fetchAppointmentData();
-        }
-      };
-
-      fetchAppointmentsData();
-      fetchAppointmentData();
+        fetchLogs(currentPage);
+      });
     </script>
 
 

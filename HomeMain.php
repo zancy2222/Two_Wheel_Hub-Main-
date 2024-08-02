@@ -268,7 +268,7 @@ include 'partials/session.php';
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="Login.php">Log out</a>
+            <a class="nav-link" href="partials/user_logout.php">Log out</a>
           </li>
         </ul>
       </div>

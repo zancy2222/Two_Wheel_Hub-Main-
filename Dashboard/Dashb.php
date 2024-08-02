@@ -104,7 +104,7 @@
         <span class="tooltip">Products</span>
       </li>
       <li>
-        <a href="">
+        <a href="HistoryLogs.php">
           <i class='bx bx-receipt'></i>
           <span class="links_name">History Logs</span>
         </a>
@@ -146,7 +146,10 @@
             <div class="job">TUNING</div>
           </div>
         </div>
-        <i class="bx bx-log-out" id="log_out"></i>
+        <!-- Logout Button -->
+        <form action="Partials/logout.php" method="post" style="display: inline;">
+          <button type="submit" id="log_out" class="bx bx-log-out"></button>
+        </form>
       </li>
     </ul>
   </div>
@@ -154,32 +157,86 @@
     <div class="text">Dashboard</div>
     <div class="card-container">
       <div class="card">
-        <i class='bx bx-box card-icon'></i>
-        <div class="card-number">120</div>
-        <div>
-          <h5 class="card-title">Products</h5>
-          <p class="card-text">Manage your products.</p>
-        </div>
-      </div>
-      <div class="card">
-        <i class='bx bx-calendar card-icon'></i>
-        <div class="card-number">45</div>
-        <div>
-          <h5 class="card-title">Appointments</h5>
-          <p class="card-text">View and manage appointments.</p>
-        </div>
-      </div>
-      <div class="card">
         <i class='bx bx-user card-icon'></i>
-        <div class="card-number">320</div>
+        <div class="card-number">
+          <?php
+          include 'db_conn.php';
+
+          $sql = "SELECT COUNT(*) AS total_users FROM Users";
+          $result = $conn->query($sql);
+
+          if ($result) {
+            $row = $result->fetch_assoc();
+            echo $row['total_users'];
+          } else {
+            echo "Error: " . $conn->error;
+          }
+
+          $conn->close();
+          ?>
+
+        </div>
         <div>
           <h5 class="card-title">Total User</h5>
           <p class="card-text">View total users.</p>
         </div>
       </div>
+
+      <div class="card">
+        <i class='bx bx-calendar card-icon'></i>
+        <div class="card-number">
+          <?php
+          include 'db_conn.php';
+
+          $sql = "SELECT (SELECT COUNT(*) FROM GuestAppointment) + (SELECT COUNT(*) FROM Appointment) AS total_bookings";
+          $result = $conn->query($sql);
+
+          if ($result) {
+            $row = $result->fetch_assoc();
+            echo $row['total_bookings'];
+          } else {
+            echo "Error: " . $conn->error;
+          }
+
+          $conn->close();
+          ?>
+
+        </div>
+        <div>
+          <h5 class="card-title">Appointments</h5>
+          <p class="card-text">View and manage appointments.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <i class='bx bx-box card-icon'></i>
+        <div class="card-number">
+          <?php
+          include 'db_conn.php';
+
+          $sql = "SELECT COUNT(*) AS total_products FROM products";
+          $result = $conn->query($sql);
+
+          if ($result) {
+            $row = $result->fetch_assoc();
+            echo $row['total_products'];
+          } else {
+            echo "Error: " . $conn->error;
+          }
+
+          $conn->close();
+          ?>
+
+        </div>
+        <div>
+          <h5 class="card-title">Products</h5>
+          <p class="card-text">Manage your products.</p>
+        </div>
+      </div>
+
       <div class="card">
         <i class='bx bx-category card-icon'></i>
-        <div class="card-number">10</div>
+        <div class="card-number">5</div>
         <div>
           <h5 class="card-title">Categories</h5>
           <p class="card-text">Manage categories.</p>
