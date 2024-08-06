@@ -553,7 +553,6 @@ $result = $conn->query($sql);
       xhr.open("POST", "partials/reg_process.php", true);
       xhr.onload = function() {
         if (xhr.status === 200) {
-          alert("User added successfully!");
           location.reload();
         } else {
           alert("An error occurred while adding the user.");
@@ -613,7 +612,6 @@ $result = $conn->query($sql);
         xhr.open("POST", "partials/edit_process.php", true);
         xhr.onload = function() {
           if (xhr.status === 200) {
-            alert("User updated successfully!");
             location.reload();
           } else {
             alert("An error occurred while updating the user.");
@@ -636,7 +634,6 @@ $result = $conn->query($sql);
             xhr.onload = function() {
               if (xhr.status === 200) {
                 if (xhr.responseText.trim() === "success") {
-                  alert("User deleted successfully!");
                   location.reload();
                 } else {
                   alert("An error occurred while deleting the user: " + xhr.responseText);

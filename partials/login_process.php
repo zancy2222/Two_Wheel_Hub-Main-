@@ -46,10 +46,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("Location: ../ShopMain.php");
                 exit();
             } else {
-                echo "Invalid email or password.";
-            }
+                echo '<script>';
+                echo 'alert("Invalid Email and Password");';
+                echo 'window.location.href = "../Login.php";';
+                echo '</script>';
+                exit();            }
         } else {
-            echo "You need to register first.";
+            echo '<script>';
+            echo 'alert("Please Register First");';
+            echo 'window.location.href = "../Login.php";';
+            echo '</script>';
+            exit();
         }
 
         $stmt->close();

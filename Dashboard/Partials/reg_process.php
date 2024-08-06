@@ -18,7 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             VALUES ('$first_name', '$last_name', '$email', '$password', '$unit_no_house_no_building', '$street', '$barangay', '$city', '$province', '$zip_code', '$mobile_phone_no')";
 
     if ($conn->query($sql) === TRUE) {
-        echo "User added successfully!";
+        echo '<script>';
+        
+        echo 'window.location.href = "../Users.php";';
+        echo '</script>';
+        exit();
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }

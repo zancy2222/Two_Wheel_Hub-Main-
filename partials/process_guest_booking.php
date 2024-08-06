@@ -23,7 +23,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("sssssssssssssss", $service_category, $service, $preferred_date, $preferred_time, $email_address, $first_name, $last_name, $complete_address, $unit_no_house_no_building, $street, $barangay, $city, $province, $zip_code, $mobile_phone_no);
 
     if ($stmt->execute()) {
-        echo "Appointment successfully booked.";
         header("Location: booking_confirmation.php");
         exit();
     } else {

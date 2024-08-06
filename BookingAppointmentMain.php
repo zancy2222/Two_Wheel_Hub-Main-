@@ -425,8 +425,8 @@ $conn->close();
                     } else if (response.includes('Reference code sent to your email.')) {
                         $('#referenceCodeModal').modal('show');
                     } else {
-                        alert('Booking saved successfully!');
                         $('#preferredTimeModal').modal('hide');
+                        window.location.reload(); // Reload the page
                     }
                 },
                 error: function() {
@@ -444,7 +444,7 @@ $conn->close();
                 },
                 success: function(response) {
                     if (response === 'Success') {
-                        alert('Booking saved successfully!');
+                     
                         $('#referenceCodeModal').modal('hide');
                         window.location.reload(); // Reload the page
                     } else {

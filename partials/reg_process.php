@@ -20,7 +20,11 @@ $stmt = $conn->prepare("INSERT INTO Users (first_name, last_name, email, passwor
 $stmt->bind_param("ssssssssssss", $first_name, $last_name, $email, $password, $complete_address, $unit_no_house_no_building, $street, $barangay, $city, $province, $zip_code, $mobile_phone_no);
 
 if ($stmt->execute()) {
-    echo "New record created successfully";
+    echo '<script>';
+    echo 'alert("User Added Succesfully");';
+    echo 'window.location.href = "../Login.php";';
+    echo '</script>';
+    exit();
 } else {
     echo "Error: " . $stmt->error;
 }

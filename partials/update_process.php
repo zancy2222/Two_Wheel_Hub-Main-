@@ -26,7 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($query->execute()) {
-        echo "Details updated successfully.";
         header("Location: ../Accounts.php");
         exit();
     } else {

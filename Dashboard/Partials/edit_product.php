@@ -76,7 +76,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $logStmt->execute();
             $logStmt->close();
 
-            echo "Product edited successfully.";
+            echo '<script>';
+        
+            echo 'window.location.href = "../Products.php";';
+            echo '</script>';
+            exit();
         } else {
             echo "Error: " . $stmt->error;
         }

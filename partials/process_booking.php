@@ -19,7 +19,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("issss", $user_id, $service_category, $service, $preferred_date, $preferred_time);
 
     if ($stmt->execute()) {
-        echo "Appointment successfully booked.";
         header("Location: ../BookingAppointmentMain.php");
         exit();
     } else {

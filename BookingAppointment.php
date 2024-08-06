@@ -477,7 +477,7 @@
                         // Display an error message and keep the modal open
                         alert('Please try again, wrong reference code.');
                     } else {
-                        alert('Booking saved successfully!');
+                       
                         $('#preferredTimeModal').modal('hide');
                         window.location.reload(); // Reload the page
                     }

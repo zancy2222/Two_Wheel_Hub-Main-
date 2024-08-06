@@ -61,7 +61,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute();
         $stmt->close();
 
-        echo "Product added successfully.";
+        echo '<script>';
+        
+        echo 'window.location.href = "../Products.php";';
+        echo '</script>';
+        exit();
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
