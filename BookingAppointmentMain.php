@@ -276,17 +276,51 @@ $conn->close();
     <script src="libs/fullcalendar/main.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        var services = {
-            'front-suspension': ['Small bike front suspension tuning', 'Big bike front suspension tuning'],
-            'steering': ['Ball race replacement', 'Steering alignment'],
-            'cvt': ['Cleaning', 'Tuning', 'Upgrades', 'Gearbox Bearing Replacement'],
-            'wheels': ['Installation', 'Static Balance', 'Computerized Balance'],
-            'rear-shock': ['Installation', 'Tuning', 'Repair'],
-            'suspension-profiling': ['Big bike', 'Small bike', 'Vespa'],
-            'breaking-system': ['Cleaning and Bleeding'],
-            'electrical': ['Horn and Aux light']
-        };
+$(document).ready(function() {
+    // Populate service categories
+    $.ajax({
+        url: 'partials/fetch_categories.php',
+        method: 'GET',
+        success: function(data) {
+            $('#service-category').append(data);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching categories:', error);
+        }
+    });
 
+    // Update services dropdown based on selected category
+    $('#service-category').change(function() {
+        var categoryId = $(this).val();
+        var categoryName = $('#service-category option:selected').data('name');
+        
+        // Store the category name in a hidden input field
+        $('#category-name').val(categoryName);
+        
+        $.ajax({
+            url: 'partials/fetch_services.php',
+            method: 'GET',
+            data: { category_id: categoryId },
+            success: function(data) {
+                var services = JSON.parse(data);
+                var $serviceSelect = $('#service');
+                $serviceSelect.empty();
+                $serviceSelect.append('<option value="">Select Service</option>');
+                services.forEach(function(service) {
+                    $serviceSelect.append('<option value="' + service + '">' + service + '</option>');
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching services:', error);
+            }
+        });
+    });
+});
+
+</script>
+
+    <script>
+     
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
 
@@ -342,28 +376,7 @@ $conn->close();
 
             calendar.render();
 
-            // Populate service categories
-            var serviceCategorySelect = document.getElementById('service-category');
-            Object.keys(services).forEach(function(category) {
-                var option = document.createElement('option');
-                option.value = category;
-                option.text = category.replace(/-/g, ' ');
-                serviceCategorySelect.appendChild(option);
-            });
-
-            serviceCategorySelect.addEventListener('change', function() {
-                var serviceSelect = document.getElementById('service');
-                serviceSelect.innerHTML = '<option value="">Select Service</option>';
-                var selectedCategory = this.value;
-                if (selectedCategory && services[selectedCategory]) {
-                    services[selectedCategory].forEach(function(service) {
-                        var option = document.createElement('option');
-                        option.value = service;
-                        option.text = service;
-                        serviceSelect.appendChild(option);
-                    });
-                }
-            });
+          
         });
 
         function showPreferredTimeModal(period, date) {

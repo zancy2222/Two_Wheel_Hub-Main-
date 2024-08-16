@@ -155,6 +155,85 @@ CREATE TABLE appointments (
     reference_code VARCHAR(6) NOT NULL
 );
 
+
+-- NEW ADDED
+CREATE TABLE ServiceCategories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    category_name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Services (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    category_id INT NOT NULL,
+    service_name VARCHAR(100) NOT NULL,
+    FOREIGN KEY (category_id) REFERENCES ServiceCategories(id) ON DELETE CASCADE
+);
+
+CREATE TABLE GuestBuyedProducts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    session_id VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    delivery_option VARCHAR(50) NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    middle_name VARCHAR(100),
+    last_name VARCHAR(100) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    street VARCHAR(255) NOT NULL,
+    barangay VARCHAR(255) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    province VARCHAR(100) NOT NULL,
+    zip_code VARCHAR(20) NOT NULL,
+    phone VARCHAR(50) NOT NULL,
+    payment_option VARCHAR(50) NOT NULL,
+    total_price DECIMAL(10, 2) NOT NULL,
+    purchased_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+ALTER TABLE GuestBuyedProducts ADD COLUMN reference_code VARCHAR(6) NOT NULL;
+ALTER TABLE GuestBuyedProducts ADD COLUMN status ENUM('Processing', 'Shipped', 'Delivered') DEFAULT 'Processing';
+
+CREATE TABLE GuestBuyedProductItems (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    buyed_product_id INT NOT NULL,
+    product_id INT NOT NULL,
+    size VARCHAR(50),
+    color VARCHAR(50),
+    quantity INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (buyed_product_id) REFERENCES GuestBuyedProducts(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+CREATE TABLE RegisteredBuyedProducts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    delivery_option VARCHAR(50) NOT NULL,
+    payment_option VARCHAR(50) NOT NULL,
+    total_price DECIMAL(10, 2) NOT NULL,
+    purchased_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
+);
+ALTER TABLE RegisteredBuyedProducts ADD COLUMN reference_code VARCHAR(6) NOT NULL;
+ALTER TABLE RegisteredBuyedProducts ADD COLUMN status ENUM('Processing', 'Shipped', 'Delivered') DEFAULT 'Processing';
+
+CREATE TABLE RegisteredBuyedProductItems (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    buyed_product_id INT NOT NULL,
+    product_id INT NOT NULL,
+    size VARCHAR(50) NOT NULL,
+    color VARCHAR(50) NOT NULL,
+    quantity INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (buyed_product_id) REFERENCES RegisteredBuyedProducts(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+CREATE TABLE notifications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    message TEXT NOT NULL,
+    is_read TINYINT(1) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+-- NEW ADDED
+
+
 -- OLD
 CREATE TABLE cart (
     id INT AUTO_INCREMENT PRIMARY KEY,

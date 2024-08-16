@@ -5,7 +5,10 @@ $id = $_GET['id'];
 $type = $_GET['type'];
 
 if ($type == 'appointments') {
-    $sql = "SELECT * FROM appointments WHERE id = $id";
+    $sql = "SELECT a.*, c.category_name 
+            FROM appointments a 
+            JOIN ServiceCategories c ON a.service_category = c.id 
+            WHERE a.id = $id";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -13,7 +16,7 @@ if ($type == 'appointments') {
         echo "<p>ID: " . $row["id"] . "</p>";
         echo "<p>Selected Date: " . $row["selected_date"] . "</p>";
         echo "<p>Preferred Time: " . $row["preferred_time"] . "</p>";
-        echo "<p>Service Category: " . $row["service_category"] . "</p>";
+        echo "<p>Service Category: " . $row["category_name"] . "</p>";
         echo "<p>Service: " . $row["service"] . "</p>";
         echo "<p>Email: " . $row["email"] . "</p>";
         echo "<p>Full Name: " . $row["first_name"] . " " . $row["middle_name"] . " " . $row["last_name"] . "</p>";
@@ -30,10 +33,11 @@ if ($type == 'appointments') {
         echo "No details found";
     }
 } else if ($type == 'Appointment') {
-    $sql = "SELECT a.*, u.first_name, u.last_name, u.email, u.complete_address, u.mobile_phone_no 
+    $sql = "SELECT a.*, c.category_name, u.first_name, u.last_name, u.email, u.complete_address, u.mobile_phone_no 
             FROM Appointment a 
+            JOIN ServiceCategories c ON a.service_category = c.id
             JOIN Users u ON a.user_id = u.id 
-            WHERE appointment_id = $id";
+            WHERE a.appointment_id = $id";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -41,7 +45,7 @@ if ($type == 'appointments') {
         echo "<p>ID: " . $row["appointment_id"] . "</p>";
         echo "<p>Selected Date: " . $row["selected_date"] . "</p>";
         echo "<p>Preferred Time: " . $row["preferred_time"] . "</p>";
-        echo "<p>Service Category: " . $row["service_category"] . "</p>";
+        echo "<p>Service Category: " . $row["category_name"] . "</p>";
         echo "<p>Service: " . $row["service"] . "</p>";
         echo "<p>Email: " . $row["email"] . "</p>";
         echo "<p>Full Name: " . $row["first_name"] . " " . $row["last_name"] . "</p>";

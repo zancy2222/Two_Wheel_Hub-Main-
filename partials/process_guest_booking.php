@@ -2,20 +2,20 @@
 include 'db_conn.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $service_category = $_POST['service_category'];
+    $service_category = $_POST['category_name']; // Use the category name from hidden input
     $service = $_POST['service'];
     $preferred_date = $_POST['preferred_date'];
     $preferred_time = $_POST['preferred_time'];
-    $email_address = $_POST['email_address'];
+    $email_address = $_POST['email'];
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
-    $unit_no_house_no_building = $_POST['unit_no_house_no_building']; 
+    $unit_no_house_no_building = $_POST['unit_no'];
     $street = $_POST['street'];
     $barangay = $_POST['barangay'];
     $city = $_POST['city'];
     $province = $_POST['province'];
     $zip_code = $_POST['zip_code'];
-    $mobile_phone_no = $_POST['mobile_phone_no'];
+    $mobile_phone_no = $_POST['phone'];
 
     $complete_address = $unit_no_house_no_building . ', ' . $street . ', ' . $barangay . ', ' . $city . ', ' . $province . ', ' . $zip_code;
 

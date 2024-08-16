@@ -240,70 +240,73 @@ $conn->close();
                 <div class="card">
                     <div class="card-body">
                         <h2>Checkout</h2>
-                        <form id="checkout-form">
-                            <div class="form-group">
-                                <label for="email">Email Address</label>
-                                <input type="email" class="form-control" id="email" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Delivery Option</label><br>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="deliveryOption" id="ship" value="Ship" checked>
-                                    <label class="form-check-label" for="ship">Ship</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="deliveryOption" id="pickUp" value="Pick Up">
-                                    <label class="form-check-label" for="pickUp">Pick Up</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="firstName">First Name</label>
-                                <input type="text" class="form-control" id="firstName" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="middleName">Middle Name</label>
-                                <input type="text" class="form-control" id="middleName">
-                            </div>
-                            <div class="form-group">
-                                <label for="lastName">Last Name</label>
-                                <input type="text" class="form-control" id="lastName" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="address">Complete Address</label>
-                                <input type="text" class="form-control" id="address" placeholder="Unit No./House No./Building" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="street" placeholder="Street" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="barangay" placeholder="Barangay" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="city" placeholder="City" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="province" placeholder="Province" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="zipCode" placeholder="Zip Code" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Mobile/Phone No.</label>
-                                <input type="text" class="form-control" id="phone" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Payment Options</label><br>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="paymentOption" id="cod" value="COD" checked>
-                                    <label class="form-check-label" for="cod">COD (Cash-on-Delivery)</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="paymentOption" id="counter" value="Counter">
-                                    <label class="form-check-label" for="counter">Payment at the Counter (For Pick Up Only)</label>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block">Buy Now</button>
-                        </form>
+                        <form id="checkout-form" action="partials/process_checkout.php" method="POST">
+    <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+    <div class="form-group">
+        <label>Delivery Option</label><br>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="deliveryOption" id="ship" value="Ship" checked>
+            <label class="form-check-label" for="ship">Ship</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="deliveryOption" id="pickUp" value="Pick Up">
+            <label class="form-check-label" for="pickUp">Pick Up</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" class="form-control" id="firstName" name="firstName" required>
+    </div>
+    <div class="form-group">
+        <label for="middleName">Middle Name</label>
+        <input type="text" class="form-control" id="middleName" name="middleName">
+    </div>
+    <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" class="form-control" id="lastName" name="lastName" required>
+    </div>
+    <div class="form-group">
+        <label for="address">Complete Address</label>
+        <input type="text" class="form-control" id="address" name="address" placeholder="Unit No./House No./Building" required>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="street" name="street" placeholder="Street" required>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="barangay" name="barangay" placeholder="Barangay" required>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="province" name="province" placeholder="Province" required>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="zipCode" name="zipCode" placeholder="Zip Code" required>
+    </div>
+    <div class="form-group">
+        <label for="phone">Mobile/Phone No.</label>
+        <input type="text" class="form-control" id="phone" name="phone" required>
+    </div>
+    <div class="form-group">
+        <label>Payment Options</label><br>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="paymentOption" id="cod" value="COD" checked>
+            <label class="form-check-label" for="cod">COD (Cash-on-Delivery)</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="paymentOption" id="counter" value="Counter">
+            <label class="form-check-label" for="counter">Payment at the Counter (For Pick Up Only)</label>
+        </div>
+    </div>
+    <input type="hidden" name="totalPrice" value="<?php echo htmlspecialchars($totalPrice); ?>">
+
+    <button type="submit" class="btn btn-primary btn-block">Buy Now</button>
+</form>
+
                     </div>
                 </div>
             </div>

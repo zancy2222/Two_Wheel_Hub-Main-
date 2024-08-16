@@ -247,31 +247,34 @@ $conn->close();
                 <div class="card">
                     <div class="card-body">
                         <h2>Checkout</h2>
-                        <form id="checkout-form">
-                            <div class="form-group">
-                                <label>Delivery Option</label><br>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="deliveryOption" id="ship" value="Ship" checked>
-                                    <label class="form-check-label" for="ship">Ship</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="deliveryOption" id="pickUp" value="Pick Up">
-                                    <label class="form-check-label" for="pickUp">Pick Up</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Payment Options</label><br>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="paymentOption" id="cod" value="COD" checked>
-                                    <label class="form-check-label" for="cod">COD (Cash-on-Delivery)</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="paymentOption" id="counter" value="Counter">
-                                    <label class="form-check-label" for="counter">Payment at the Counter (For Pick Up Only)</label>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block">Buy Now</button>
-                        </form>
+                        <form id="checkout-form" action="partials/process_registered_checkout.php" method="POST">
+    <div class="form-group">
+        <label>Delivery Option</label><br>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="deliveryOption" id="ship" value="Ship" checked>
+            <label class="form-check-label" for="ship">Ship</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="deliveryOption" id="pickUp" value="Pick Up">
+            <label class="form-check-label" for="pickUp">Pick Up</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Payment Options</label><br>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="paymentOption" id="cod" value="COD" checked>
+            <label class="form-check-label" for="cod">COD (Cash-on-Delivery)</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="paymentOption" id="counter" value="Counter">
+            <label class="form-check-label" for="counter">Payment at the Counter (For Pick Up Only)</label>
+        </div>
+    </div>
+    <input type="hidden" name="totalPrice" value="<?php echo htmlspecialchars($totalPrice); ?>">
+
+    <button type="submit" class="btn btn-primary btn-block">Buy Now</button>
+</form>
+
                     </div>
                 </div>
             </div>

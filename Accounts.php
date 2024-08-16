@@ -15,6 +15,19 @@ $query->bind_param("i", $user_id);
 $query->execute();
 $result = $query->get_result();
 $user = $result->fetch_assoc();
+
+// Fetch orders for the logged-in user
+$queryOrders = $conn->prepare("
+    SELECT rbp.id AS order_id, rbp.reference_code, rbp.status, p.product_name, rpi.color, rpi.quantity, rpi.price
+    FROM RegisteredBuyedProducts rbp
+    JOIN RegisteredBuyedProductItems rpi ON rbp.id = rpi.buyed_product_id
+    JOIN products p ON rpi.product_id = p.id
+    WHERE rbp.user_id = ?
+    ORDER BY rbp.purchased_at DESC
+");
+$queryOrders->bind_param("i", $user_id);
+$queryOrders->execute();
+$resultOrders = $queryOrders->get_result();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -174,35 +187,29 @@ $user = $result->fetch_assoc();
         <div class="order-status-table">
             <h3>Order Status</h3>
             <table class="table">
-                <thead>
-                    <tr>
-                        <th>Product name</th>
-                        <th>QTY</th>
-                        <th>Status</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Sample 1</td>
-                        <td>1</td>
-                        <td>Processing</td>
-                        <td>2023-07-01</td>
-                    </tr>
-                    <tr>
-                        <td>Sample 2</td>
-                        <td>2</td>
-                        <td>Shipped</td>
-                        <td>2023-07-02</td>
-                    </tr>
-                    <tr>
-                        <td>Sample 3</td>
-                        <td>3</td>
-                        <td>Delivered</td>
-                        <td>2023-07-03</td>
-                    </tr>
-                </tbody>
-            </table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Reference Code</th>
+                    <th>Product Name</th>
+                    <th>Color</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($row = $resultOrders->fetch_assoc()): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($row['order_id']); ?></td>
+                    <td><?php echo htmlspecialchars($row['reference_code']); ?></td>
+                    <td><?php echo htmlspecialchars($row['product_name']); ?></td>
+                    <td><?php echo htmlspecialchars($row['color']); ?></td>
+                    <td><?php echo htmlspecialchars($row['quantity']); ?></td>
+                    <td><?php echo htmlspecialchars($row['status']); ?></td>
+                </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
         </div>
         <form action="partials/update_process.php" method="post">
             <div class="form-row">

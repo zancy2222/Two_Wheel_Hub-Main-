@@ -216,50 +216,89 @@
   <section class="home-section">
     <div class="text">Orders</div>
     <div class="search-bar">
-      <input type="text" placeholder="Search orders...">
+        <input type="text" placeholder="Search orders...">
     </div>
-    <table id="orderTable">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Full Name</th>
-          <th>Email</th>
-          <th>Address</th>
-          <th>Mobile/Phone No.</th>
-          <th>Description</th>
-          <th>Category</th>
-          <th>Size</th>
-          <th>Color</th>
-          <th>Price</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>John Doe</td>
-          <td>john.doe@example.com</td>
-          <td>123 Main St, Barangay 1, City, Province, 12345</td>
-          <td>123-456-7890</td>
-          <td>Product Description</td>
-          <td>Category Name</td>
-          <td>XL</td>
-          <td>Blue</td>
-          <td>₱100.00</td>
-          <td>Processing</td>
-          <td class="action-buttons">
-            <button>Modify</button>
-          </td>
-        </tr>
-        <!-- Add more static rows as needed -->
-      </tbody>
+    
+    <!-- Guest Orders -->
+    <div class="text">Guest Orders</div>
+    <?php
+    include 'db_conn.php';
+
+    $sqlGuest = "SELECT gp.id AS order_id, gp.reference_code, gp.status
+                 FROM GuestBuyedProducts gp
+                 ORDER BY gp.purchased_at DESC";
+
+    $stmtGuest = $conn->prepare($sqlGuest);
+    $stmtGuest->execute();
+    $resultGuest = $stmtGuest->get_result();
+    ?>
+
+    <table id="guestOrderTable" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Reference Code</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php while ($row = $resultGuest->fetch_assoc()): ?>
+            <tr>
+                <td><?php echo htmlspecialchars($row['order_id']); ?></td>
+                <td><?php echo htmlspecialchars($row['reference_code']); ?></td>
+                <td><?php echo htmlspecialchars($row['status']); ?></td>
+                <td class="action-buttons">
+                    <button onclick="viewOrder('<?php echo htmlspecialchars($row['order_id']); ?>')">View</button>
+                    <button onclick="modifyOrder('<?php echo htmlspecialchars($row['order_id']); ?>')">Modify</button>
+                </td>
+            </tr>
+            <?php endwhile; ?>
+        </tbody>
     </table>
+
+    <!-- Registered Orders -->
+    <div class="text">Registered User Orders</div>
+    <?php
+    $sqlRegistered = "SELECT rbp.id AS order_id, rbp.reference_code, rbp.status
+                      FROM RegisteredBuyedProducts rbp
+                      ORDER BY rbp.purchased_at DESC";
+
+    $stmtRegistered = $conn->prepare($sqlRegistered);
+    $stmtRegistered->execute();
+    $resultRegistered = $stmtRegistered->get_result();
+    ?>
+
+    <table id="registeredOrderTable" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Reference Code</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php while ($row = $resultRegistered->fetch_assoc()): ?>
+            <tr>
+                <td><?php echo htmlspecialchars($row['order_id']); ?></td>
+                <td><?php echo htmlspecialchars($row['reference_code']); ?></td>
+                <td><?php echo htmlspecialchars($row['status']); ?></td>
+                <td class="action-buttons">
+                    <button onclick="viewOrder('<?php echo htmlspecialchars($row['order_id']); ?>')">View</button>
+                    <button onclick="modifyOrder('<?php echo htmlspecialchars($row['order_id']); ?>')">Modify</button>
+                </td>
+            </tr>
+            <?php endwhile; ?>
+        </tbody>
+    </table>
+
     <div class="pagination">
-      <button id="prevBtn">Prev</button>
-      <button id="nextBtn">Next</button>
+        <button id="prevBtn">Prev</button>
+        <button id="nextBtn">Next</button>
     </div>
-  </section>
+</section>
+
   <script src="script.js"></script>
 </body>
 
