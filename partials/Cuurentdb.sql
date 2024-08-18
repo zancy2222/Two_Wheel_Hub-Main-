@@ -186,6 +186,7 @@ CREATE TABLE GuestBuyedProducts (
     phone VARCHAR(50) NOT NULL,
     payment_option VARCHAR(50) NOT NULL,
     total_price DECIMAL(10, 2) NOT NULL,
+    receipt_path VARCHAR(255),
     purchased_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ALTER TABLE GuestBuyedProducts ADD COLUMN reference_code VARCHAR(6) NOT NULL;
@@ -213,6 +214,7 @@ CREATE TABLE RegisteredBuyedProducts (
 );
 ALTER TABLE RegisteredBuyedProducts ADD COLUMN reference_code VARCHAR(6) NOT NULL;
 ALTER TABLE RegisteredBuyedProducts ADD COLUMN status ENUM('Processing', 'Shipped', 'Delivered') DEFAULT 'Processing';
+ALTER TABLE RegisteredBuyedProducts ADD COLUMN receipt_image VARCHAR(255);
 
 CREATE TABLE RegisteredBuyedProductItems (
     id INT AUTO_INCREMENT PRIMARY KEY,

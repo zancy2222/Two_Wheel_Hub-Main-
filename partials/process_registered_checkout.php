@@ -21,20 +21,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['user_id'])) {
     $totalPrice = isset($_POST['totalPrice']) ? $_POST['totalPrice'] : 0;
     $referenceCode = generateReferenceCode();
     $status = 'Processing'; // Set the initial status
+    $purchaseDate = date('Y-m-d H:i:s');
 
-    // Insert checkout details into RegisteredBuyedProducts with reference code and status
+    // Fetch user's full name
+    $userNameSql = "SELECT CONCAT(first_name, ' ', last_name) AS full_name, email FROM Users WHERE id = ?";
+    $userNameStmt = $conn->prepare($userNameSql);
+    $userNameStmt->bind_param("i", $userId);
+    $userNameStmt->execute();
+    $userNameResult = $userNameStmt->get_result();
+    $userNameRow = $userNameResult->fetch_assoc();
+    $fullName = $userNameRow['full_name'];
+    $userEmail = $userNameRow['email'];
+
+    // Insert checkout details into RegisteredBuyedProducts
     $sql = "INSERT INTO RegisteredBuyedProducts 
-            (user_id, delivery_option, payment_option, total_price, reference_code, status) 
+            (user_id, delivery_option, payment_option, total_price, reference_code, status, purchased_at) 
             VALUES 
-            (?, ?, ?, ?, ?, ?)";
+            (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("issdss", $userId, $deliveryOption, $paymentOption, $totalPrice, $referenceCode, $status);
+    $stmt->bind_param("issdsss", $userId, $deliveryOption, $paymentOption, $totalPrice, $referenceCode, $status, $purchaseDate);
 
     if ($stmt->execute()) {
         $buyedProductId = $stmt->insert_id;
 
         // Fetch purchased items
-        $sql = "SELECT p.id AS product_id, pu.size, pu.color, pu.quantity, p.price
+        $sql = "SELECT p.id AS product_id, pu.size, pu.color, pu.quantity, p.price, p.product_name
                 FROM RegisteredPurchased pu
                 JOIN products p ON pu.product_id = p.id
                 WHERE pu.user_id = ?";
@@ -44,12 +55,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['user_id'])) {
         $result = $stmt->get_result();
 
         // Insert purchased items into RegisteredBuyedProductItems and update quantities
+        $products = [];
         while ($row = $result->fetch_assoc()) {
             $productId = $row['product_id'];
             $size = $row['size'];
             $color = $row['color'];
             $quantity = $row['quantity'];
             $price = $row['price'];
+            $productName = $row['product_name'];
 
             // Insert into RegisteredBuyedProductItems
             $insertItemSql = "INSERT INTO RegisteredBuyedProductItems 
@@ -68,9 +81,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['user_id'])) {
 
             // Check if the quantity has reached 10
             $checkQtySql = "SELECT pv.quantity, p.product_name 
-            FROM product_variations pv 
-            JOIN products p ON pv.product_id = p.id 
-            WHERE pv.product_id = ? AND pv.color = ?";
+                            FROM product_variations pv 
+                            JOIN products p ON pv.product_id = p.id 
+                            WHERE pv.product_id = ? AND pv.color = ?";
             $checkQtyStmt = $conn->prepare($checkQtySql);
             $checkQtyStmt->bind_param("is", $productId, $color);
             $checkQtyStmt->execute();
@@ -89,11 +102,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['user_id'])) {
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                     $mail->Port       = 587;
 
-                    //Recipients
                     $mail->setFrom('danielzanbaltazar.forwork@gmail.com', 'AV MOTO ALERT STOCKS');
                     $mail->addAddress('danielzanbaltazar.forwork@gmail.com');
 
-                    // Content
                     $mail->isHTML(true);
                     $mail->Subject = 'Low Stocks Alert!';
                     $mail->Body    = "Low Stocks Alert!<br>
@@ -106,17 +117,63 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['user_id'])) {
                     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
                 }
             }
+
+            $products[] = [
+                'product_name' => $productName,
+                'color' => $color,
+                'size' => $size,
+                'quantity' => $quantity,
+                'price' => $price
+            ];
         }
 
-        // Send the reference code to the user's email
-        $userEmailSql = "SELECT email FROM Users WHERE id = ?";
-        $userEmailStmt = $conn->prepare($userEmailSql);
-        $userEmailStmt->bind_param("i", $userId);
-        $userEmailStmt->execute();
-        $userEmailResult = $userEmailStmt->get_result();
-        $userEmailRow = $userEmailResult->fetch_assoc();
-        $userEmail = $userEmailRow['email'];
+        // Generate digital receipt image
+        $imageWidth = 600;
+        $imageHeight = 450 + (count($products) * 50); // Dynamic height based on product count
+        $receiptImage = imagecreatetruecolor($imageWidth, $imageHeight);
 
+        // Colors
+        $white = imagecolorallocate($receiptImage, 255, 255, 255);
+        $black = imagecolorallocate($receiptImage, 0, 0, 0);
+        $gray = imagecolorallocate($receiptImage, 200, 200, 200);
+
+        // Fill background
+        imagefilledrectangle($receiptImage, 0, 0, $imageWidth, $imageHeight, $white);
+
+        // Add text
+        $fontPath = 'League_Spartan/LeagueSpartan-VariableFont_wght.ttf'; // Path to the font file
+
+        // Store name and title
+        imagettftext($receiptImage, 24, 0, 20, 50, $black, $fontPath, "AV MOTO");
+        imagettftext($receiptImage, 20, 0, 20, 90, $black, $fontPath, "Digital Receipt");
+
+        // Details
+        imagettftext($receiptImage, 16, 0, 20, 130, $black, $fontPath, "Full Name: $fullName");
+        imagettftext($receiptImage, 16, 0, 20, 160, $black, $fontPath, "Reference Code: $referenceCode");
+        imagettftext($receiptImage, 16, 0, 20, 190, $black, $fontPath, "Delivery Option: $deliveryOption");
+        imagettftext($receiptImage, 16, 0, 20, 220, $black, $fontPath, "Payment Option: $paymentOption");
+        imagettftext($receiptImage, 16, 0, 20, 250, $black, $fontPath, "Total Price: PHP " . number_format($totalPrice, 2));
+        imagettftext($receiptImage, 16, 0, 20, 280, $black, $fontPath, "Purchase Date: $purchaseDate");
+
+        $y = 320;
+        foreach ($products as $product) {
+            imagettftext($receiptImage, 14, 0, 20, $y, $black, $fontPath, "Product: {$product['product_name']}");
+            imagettftext($receiptImage, 14, 0, 20, $y + 30, $black, $fontPath, "Color: {$product['color']} | Size: {$product['size']} | Quantity: {$product['quantity']} | Price: PHP " . number_format($product['price'], 2));
+            $y += 60;
+        }
+
+        // Output and save image
+        $imageFilePath = 'receipts/receipt_' . $buyedProductId . '.png';
+        imagepng($receiptImage, $imageFilePath);
+        imagedestroy($receiptImage);
+
+        // Save receipt image path to database
+        $imageSql = "UPDATE RegisteredBuyedProducts SET receipt_image = ? WHERE id = ?";
+        $imageStmt = $conn->prepare($imageSql);
+        $imageStmt->bind_param("si", $imageFilePath, $buyedProductId);
+        $imageStmt->execute();
+
+        // Send receipt email
         $mail = new PHPMailer(true);
         try {
             $mail->isSMTP();
@@ -127,36 +184,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['user_id'])) {
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port       = 587;
 
-            //Recipients
             $mail->setFrom('danielzanbaltazar.forwork@gmail.com', 'AV MOTO');
             $mail->addAddress($userEmail);
 
-            // Content
             $mail->isHTML(true);
-            $mail->Subject = 'Your Purchase Reference Code';
-            $mail->Body    = "Thank you for your purchase!<br>Your reference code is: <strong>$referenceCode</strong>";
+            $mail->Subject = 'Your Purchase Receipt';
+            $mail->Body    = "Dear $fullName,<br><br>
+                              Thank you for your purchase. Please find your receipt attached.<br><br>
+                              Best regards,<br>
+                              AV MOTO";
+
+            $mail->addAttachment($imageFilePath);
 
             $mail->send();
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
 
-        // Clear purchased items after checkout
-        $delete_sql = "DELETE FROM RegisteredPurchased WHERE user_id = ?";
-        $delete_stmt = $conn->prepare($delete_sql);
-        $delete_stmt->bind_param("i", $userId);
-        $delete_stmt->execute();
-        $delete_stmt->close();
+        // Clean up: Remove the receipt image file
+        unlink($imageFilePath);
 
-        // Redirect to a success or confirmation page
-        header("Location: ../buyitemsMain.php");
+        echo "Purchase successful. A receipt has been sent to your email.";
     } else {
         echo "Error: " . $stmt->error;
     }
 
-    $stmt->close();
-    $conn->close();
+    // Clear purchased items from RegisteredPurchased
+    $deleteSql = "DELETE FROM RegisteredPurchased WHERE user_id = ?";
+    $deleteStmt = $conn->prepare($deleteSql);
+    $deleteStmt->bind_param("i", $userId);
+    $deleteStmt->execute();
 } else {
-    header("Location: buyitemsMain.php");
+    echo "You must be logged in to make a purchase.";
 }
 ?>
