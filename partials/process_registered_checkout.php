@@ -204,7 +204,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['user_id'])) {
         // Clean up: Remove the receipt image file
         unlink($imageFilePath);
 
-        echo "Purchase successful. A receipt has been sent to your email.";
+        header("Location: ../ShopMain.php");
+        exit();
     } else {
         echo "Error: " . $stmt->error;
     }
