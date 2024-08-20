@@ -449,7 +449,7 @@ $(document).ready(function() {
 
         function checkReferenceCode(formData) {
             $.ajax({
-                url: 'save_booking.php',
+                url: 'Partials/save_booking.php',
                 type: 'POST',
                 data: formData,
                 contentType: false,

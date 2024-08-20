@@ -5,7 +5,7 @@ use PHPMailer\PHPMailer\Exception;
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/SMTP.php';
-require 'partials/db_conn.php';
+require 'db_conn.php';
 
 function generateReferenceCode() {
     $digits = rand(100, 999);
@@ -13,10 +13,46 @@ function generateReferenceCode() {
     return $digits . $letters;
 }
 
+function generateReceiptImage($data) {
+    // Create a new image
+    $image = imagecreatetruecolor(400, 300);
+
+    // Set background color
+    $bgColor = imagecolorallocate($image, 255, 255, 255);
+    imagefilledrectangle($image, 0, 0, 400, 300, $bgColor);
+
+    // Set text color
+    $textColor = imagecolorallocate($image, 0, 0, 0);
+
+    // Path to the font file
+    $fontPath = 'League_Spartan/LeagueSpartan-VariableFont_wght.ttf';
+    $fontSize = 12; // Adjust font size as needed
+    $yPosition = 20;
+
+    // Add text to image
+    imagettftext($image, $fontSize, 0, 20, $yPosition, $textColor, $fontPath, "AV MOTO");
+    $yPosition += 30;
+    imagettftext($image, $fontSize, 0, 20, $yPosition, $textColor, $fontPath, "Digital Receipt");
+    $yPosition += 40;
+
+    foreach ($data as $label => $value) {
+        imagettftext($image, $fontSize, 0, 20, $yPosition, $textColor, $fontPath, "$label: $value");
+        $yPosition += 30;
+    }
+
+    // Save the image
+    $receiptPath = 'receipts/receipt_' . $data['Reference Code'] . '.png';
+    imagepng($image, $receiptPath);
+    imagedestroy($image);
+
+    return $receiptPath;
+}
+
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $selected_date = $_POST['selected_date'];
     $preferred_time = $_POST['preferred_time'];
-    $service_category = $_POST['service_category'];
+    $service_category_id = $_POST['service_category'];
     $service = $_POST['service'];
     $email = $_POST['email'];
     $first_name = $_POST['first_name'];
@@ -74,18 +110,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param("ss", $date, $period);
         $stmt->execute();
 
-        // Insert appointment
+        // Get service category name
+        $stmt = $conn->prepare("SELECT category_name FROM ServiceCategories WHERE id = ?");
+        $stmt->bind_param("i", $service_category_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $category_row = $result->fetch_assoc();
+        $service_category_name = $category_row['category_name'];
+
+        // Insert appointment with service category name
         $stmt = $conn->prepare("INSERT INTO appointments (selected_date, preferred_time, service_category, service, email, first_name, middle_name, last_name, complete_address, unit_no, street, barangay, city, province, zip_code, phone, reference_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssssssssssssss", $date, $preferred_time, $service_category, $service, $email, $first_name, $middle_name, $last_name, $complete_address, $unit_no, $street, $barangay, $city, $province, $zip_code, $phone, $reference_code);
+        $stmt->bind_param("sssssssssssssssss", $date, $preferred_time, $service_category_name, $service, $email, $first_name, $middle_name, $last_name, $complete_address, $unit_no, $street, $barangay, $city, $province, $zip_code, $phone, $reference_code);
         $stmt->execute();
 
-        // Send confirmation email
+        // Generate the receipt image
+        $receiptData = [
+            'Full Name' => $first_name . ' ' . $middle_name . ' ' . $last_name,
+            'Reference Code' => $reference_code,
+            'Email' => $email,
+            'Selected Date' => $selected_date,
+            'Preferred Time' => $preferred_time,
+            'Service Category' => $service_category_name,
+            'Service' => $service
+        ];
+        $receiptPath = generateReceiptImage($receiptData);
+
+        // Save receipt path to the database
+        $stmt = $conn->prepare("UPDATE appointments SET receipt_image_path = ? WHERE reference_code = ?");
+        $stmt->bind_param("ss", $receiptPath, $reference_code);
+        $stmt->execute();
+
+        // Send confirmation email with the receipt attached
         $mail = new PHPMailer;
         $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com'; 
+        $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'danielzanbaltazar.forwork@gmail.com'; 
-        $mail->Password   = 'nqzk mmww mxin ikve'; 
+        $mail->Username   = 'danielzanbaltazar.forwork@gmail.com'; // Replace with your email
+        $mail->Password   = 'nqzk mmww mxin ikve'; // Replace with your email password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 
@@ -94,13 +155,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $mail->isHTML(true);
         $mail->Subject = 'AV MOTO Booking Confirmation';
         $mail->Body = 'Thank you for your booking. Your reference code is ' . $reference_code;
+        $mail->addAttachment($receiptPath);
 
         if (!$mail->send()) {
             throw new Exception('Message could not be sent. Mailer Error: ' . $mail->ErrorInfo);
         }
 
         $conn->commit();
-        echo 'Reference code sent to your email. Please check your email and enter the reference code to confirm the booking.';
+        echo 'Reference code and receipt sent to your email. Please check your email to confirm the booking.';
 
     } catch (Exception $e) {
         $conn->rollback();

@@ -126,6 +126,8 @@ CREATE TABLE Appointment (
     PRIMARY KEY (user_id),
     FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
 );
+ALTER TABLE appointment ADD receipt_image_path VARCHAR(255);
+
 CREATE TABLE slots (
     id INT AUTO_INCREMENT PRIMARY KEY,
     date DATE NOT NULL,
@@ -154,6 +156,7 @@ CREATE TABLE appointments (
     phone VARCHAR(15) NOT NULL,
     reference_code VARCHAR(6) NOT NULL
 );
+ALTER TABLE appointments ADD receipt_image_path VARCHAR(255);
 
 
 -- NEW ADDED

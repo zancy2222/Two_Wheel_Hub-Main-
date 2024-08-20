@@ -426,7 +426,7 @@ $(document).ready(function() {
 
         function saveBooking(formData) {
             $.ajax({
-                url: 'save_booking_main.php',
+                url: 'Partials/save_booking_main.php',
                 type: 'POST',
                 data: formData,
                 contentType: false,
