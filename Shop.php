@@ -60,23 +60,40 @@
 
 <body>
     <!-- Top Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-        <div class="container d-flex justify-content-between align-items-center">
-            <form class="form-inline mx-4">
-                <div class="input-group">
-                    <input type="text" class="form-control search-input" placeholder="Search for products">
-                    <div class="input-group-append">
-                        <button class="btn btn-search" type="button">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+    <div class="container d-flex justify-content-between align-items-center">
+        <form class="form-inline mx-4">
+            <div class="input-group">
+                <input type="text" class="form-control search-input" placeholder="Search for products">
+                <div class="input-group-append">
+                    <button class="btn btn-search" type="button">
+                        <i class="fa fa-search"></i>
+                    </button>
                 </div>
-            </form>
-            <div class="navbar-icons">
-                <a class="nav-link" href="#"><i class="fa fa-shopping-cart"></i><span class="cart-count">0</span></a>
+            </div>
+        </form>
+        <div class="navbar-icons d-flex align-items-center">
+            <a class="nav-link" href="cart.php">
+                <i class="fa fa-shopping-cart"></i><span class="cart-count">0</span>
+            </a>
+            <div class="nav-item dropdown ml-3">
+                <a class="nav-link" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-user"></i>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="login.php">
+                        <i class="fa fa-sign-in-alt"></i> Login
+                    </a>
+                    <a class="dropdown-item" href="SignUp.php">
+                        <i class="fa fa-user-plus"></i> Register
+                    </a>
+                </div>
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
+
+
     <!-- Bottom Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
@@ -103,9 +120,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="BookingAppointment.php">Booking Appointment</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="Login.php">Log in</a>
-                    </li>
+
                 </ul>
             </div>
         </div>

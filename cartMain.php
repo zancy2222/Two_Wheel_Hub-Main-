@@ -145,22 +145,34 @@ $conn->close();
 <body>
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-        <div class="container d-flex justify-content-between align-items-center">
-            <form class="form-inline mx-4">
-                <div class="input-group">
-                    <input type="text" class="form-control search-input" placeholder="Search for products">
-                    <div class="input-group-append">
-                        <button class="btn btn-search" type="button">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </div>
+    <div class="container d-flex justify-content-between align-items-center">
+        <form class="form-inline mx-4">
+            <div class="input-group">
+                <input type="text" class="form-control search-input" placeholder="Search for products">
+                <div class="input-group-append">
+                    <button class="btn btn-search" type="button">
+                        <i class="fa fa-search"></i>
+                    </button>
                 </div>
-            </form>
-            <div class="navbar-icons">
-                <a class="nav-link" href="#"><i class="fa fa-shopping-cart"></i><span class="cart-count">0</span></a>
+            </div>
+        </form>
+        <div class="navbar-icons d-flex align-items-center">
+            <a class="nav-link" href="cartMain.php">
+                <i class="fa fa-shopping-cart"></i><span class="cart-count">0</span>
+            </a>
+            <div class="nav-item dropdown ml-3">
+                <a class="nav-link" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-user"></i>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="Order_status_main.php"><i class="fa fa-list"></i> Order Status</a>
+                    <a class="dropdown-item" href="Accounts.php"><i class="fa fa-info-circle"></i> Account Info</a>
+                    <a class="dropdown-item text-danger" href="partials/user_logout.php"><i class="fa fa-sign-out-alt"></i> Log out</a>
+                </div>
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
     <!-- Bottom Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
@@ -187,12 +199,7 @@ $conn->close();
                     <li class="nav-item">
                         <a class="nav-link" href="BookingAppointment.php">Booking Appointment</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="Accounts.php">Accounts</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="partials/user_logout.php">Log out</a>
-                    </li>
+
 
                 </ul>
             </div>
