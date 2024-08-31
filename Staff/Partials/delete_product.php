@@ -24,7 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $logStmt->execute();
         $logStmt->close();
 
-        echo "Product deleted successfully!";
+        echo '<script>';
+        
+        echo 'window.location.href = "../Staff.php";';
+        echo '</script>';
     } else {
         echo "Error deleting product: " . $conn->error;
     }

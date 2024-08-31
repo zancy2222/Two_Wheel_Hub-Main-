@@ -282,6 +282,14 @@ $result_appointment = $conn->query($sql_appointment);
         <span class="tooltip">User Accounts</span>
       </li>
       <li>
+        <a href="AdminAcc.php">
+        <i class='bx bx-shield-quarter'></i>
+          <span class="links_name">Add Admin Accounts</span>
+        </a>
+        <span class="tooltip">Add Admin Accounts</span>
+      </li>
+
+      <li>
         <a href="Products.php">
           <i class='bx bx-store-alt'></i>
           <span class="links_name">Products</span>
@@ -343,21 +351,21 @@ $result_appointment = $conn->query($sql_appointment);
     <section class="home-section">
       <div class="text">Appointment</div>
       <div class="search-bar">
-        <input type="text" placeholder="Search appointments...">
+      <input type="text" id="searchInput" placeholder="Search appointments...">
       </div>
       <h2>Guest Appointment</h2>
-      <table id="appointmentTable">
+    <table id="appointmentTable">
         <thead>
-          <tr>
-            <th>ID</th>
-            <th>Reference Code</th>
-            <th>Actions</th>
-          </tr>
+            <tr>
+                <th>ID</th>
+                <th>Reference Code</th>
+                <th>Actions</th>
+            </tr>
         </thead>
         <tbody id="appointmentsBody">
-          <!-- Appointment rows will be inserted here -->
+            <!-- Appointment rows will be inserted here -->
         </tbody>
-      </table>
+    </table>
       <div class="pagination" id="appointmentsPagination">
         <button id="appointmentsPrevBtn">Prev</button>
         <button id="appointmentsNextBtn">Next</button>
@@ -366,16 +374,16 @@ $result_appointment = $conn->query($sql_appointment);
       <h2>Registered Account Appointment</h2>
       <table id="appointmentTable2">
         <thead>
-          <tr>
-            <th>ID</th>
-            <th>Reference Code</th>
-            <th>Actions</th>
-          </tr>
+            <tr>
+                <th>ID</th>
+                <th>Reference Code</th>
+                <th>Actions</th>
+            </tr>
         </thead>
         <tbody id="appointmentBody">
-          <!-- Appointment rows will be inserted here -->
+            <!-- Appointment rows will be inserted here -->
         </tbody>
-      </table>
+    </table>
       <div class="pagination" id="appointmentPagination">
         <button id="appointmentPrevBtn">Prev</button>
         <button id="appointmentNextBtn">Next</button>
@@ -401,119 +409,141 @@ $result_appointment = $conn->query($sql_appointment);
     </section>
     <script src="script.js"></script>
     <script>
-      var modal = document.getElementById("viewModal");
-      var modalContentContainer = document.getElementById("modalContentContainer");
+        var modal = document.getElementById("viewModal");
+        var modalContentContainer = document.getElementById("modalContentContainer");
 
-      // Get the <span> element that closes the modal
-      var span = document.getElementsByClassName("close");
+        // Get the <span> element that closes the modal
+        var spans = document.getElementsByClassName("close");
 
-      // When the user clicks on <span> (x) or the close button, close the modal
-      for (var i = 0; i < span.length; i++) {
-        span[i].onclick = function() {
-          closeModal();
+        // When the user clicks on <span> (x) or the close button, close the modal
+        for (var i = 0; i < spans.length; i++) {
+            spans[i].onclick = function() {
+                closeModal();
+            };
         }
-      }
 
-      // When the user clicks anywhere outside of the modal, close it
-      window.onclick = function(event) {
-        if (event.target == modal) {
-          closeModal();
-        }
-      }
-
-      function viewDetails(id, type) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "Partials/get_appointment_details.php?id=" + id + "&type=" + type, true);
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState == 4 && xhr.status == 200) {
-            document.getElementById("modalContent").innerHTML = xhr.responseText;
-            openModal();
-          }
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
         };
-        xhr.send();
-      }
 
-      function openModal() {
-        modal.style.display = "block";
-        setTimeout(function() {
-          modalContentContainer.classList.add("show");
-        }, 10); // Slight delay for smooth transition
-      }
+        function viewDetails(id, type) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "Partials/get_appointment_details.php?id=" + id + "&type=" + type, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("modalContent").innerHTML = xhr.responseText;
+                    openModal();
+                }
+            };
+            xhr.send();
+        }
 
-      function closeModal() {
-        modalContentContainer.classList.remove("show");
-        setTimeout(function() {
-          modal.style.display = "none";
-        }, 300); // Match the transition duration
-      }
+        function openModal() {
+            modal.style.display = "block";
+            setTimeout(function() {
+                modalContentContainer.classList.add("show");
+            }, 10); // Slight delay for smooth transition
+        }
 
-      var appointmentsPage = 1;
-      var appointmentsRowsPerPage = 5;
-      var appointmentsTotalPages;
+        function closeModal() {
+            modalContentContainer.classList.remove("show");
+            setTimeout(function() {
+                modal.style.display = "none";
+            }, 300); // Match the transition duration
+        }
 
-      var appointmentPage = 1;
-      var appointmentRowsPerPage = 5;
-      var appointmentTotalPages;
+        var appointmentsPage = 1;
+        var appointmentsRowsPerPage = 5;
+        var appointmentsTotalPages;
 
-      function fetchAppointmentsData() {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "Partials/fetch_appointments.php?page=" + appointmentsPage, true);
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState == 4 && xhr.status == 200) {
-            var response = JSON.parse(xhr.responseText);
-            appointmentsTotalPages = response.totalPages;
-            document.getElementById("appointmentsBody").innerHTML = response.rows;
-          }
+        var appointmentPage = 1;
+        var appointmentRowsPerPage = 5;
+        var appointmentTotalPages;
+
+        function fetchAppointmentsData() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "Partials/fetch_appointments.php?page=" + appointmentsPage, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    appointmentsTotalPages = response.totalPages;
+                    document.getElementById("appointmentsBody").innerHTML = response.rows;
+                }
+            };
+            xhr.send();
+        }
+
+        function fetchAppointmentData() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "Partials/fetch_appointment.php?page=" + appointmentPage, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    appointmentTotalPages = response.totalPages;
+                    document.getElementById("appointmentBody").innerHTML = response.rows;
+                }
+            };
+            xhr.send();
+        }
+
+        function searchAppointments() {
+            var filter = document.getElementById('searchInput').value.toLowerCase();
+            filterTable('appointmentsBody', filter);
+            filterTable('appointmentBody', filter);
+        }
+
+        function filterTable(tableId, filter) {
+            var table = document.getElementById(tableId);
+            var rows = table.getElementsByTagName('tr');
+            for (var i = 1; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName('td');
+                var match = false;
+                for (var j = 0; j < cells.length; j++) {
+                    if (cells[j].textContent.toLowerCase().includes(filter)) {
+                        match = true;
+                        break;
+                    }
+                }
+                rows[i].style.display = match ? '' : 'none';
+            }
+        }
+
+        document.getElementById("appointmentsPrevBtn").onclick = function() {
+            if (appointmentsPage > 1) {
+                appointmentsPage--;
+                fetchAppointmentsData();
+            }
         };
-        xhr.send();
-      }
 
-      function fetchAppointmentData() {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "Partials/fetch_appointment.php?page=" + appointmentPage, true);
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState == 4 && xhr.status == 200) {
-            var response = JSON.parse(xhr.responseText);
-            appointmentTotalPages = response.totalPages;
-            document.getElementById("appointmentBody").innerHTML = response.rows;
-          }
+        document.getElementById("appointmentsNextBtn").onclick = function() {
+            if (appointmentsPage < appointmentsTotalPages) {
+                appointmentsPage++;
+                fetchAppointmentsData();
+            }
         };
-        xhr.send();
-      }
 
-      document.getElementById("appointmentsPrevBtn").onclick = function() {
-        if (appointmentsPage > 1) {
-          appointmentsPage--;
-          fetchAppointmentsData();
-        }
-      };
+        document.getElementById("appointmentPrevBtn").onclick = function() {
+            if (appointmentPage > 1) {
+                appointmentPage--;
+                fetchAppointmentData();
+            }
+        };
 
-      document.getElementById("appointmentsNextBtn").onclick = function() {
-        if (appointmentsPage < appointmentsTotalPages) {
-          appointmentsPage++;
-          fetchAppointmentsData();
-        }
-      };
+        document.getElementById("appointmentNextBtn").onclick = function() {
+            if (appointmentPage < appointmentTotalPages) {
+                appointmentPage++;
+                fetchAppointmentData();
+            }
+        };
 
-      document.getElementById("appointmentPrevBtn").onclick = function() {
-        if (appointmentPage > 1) {
-          appointmentPage--;
-          fetchAppointmentData();
-        }
-      };
+        document.getElementById('searchInput').addEventListener('input', searchAppointments);
 
-      document.getElementById("appointmentNextBtn").onclick = function() {
-        if (appointmentPage < appointmentTotalPages) {
-          appointmentPage++;
-          fetchAppointmentData();
-        }
-      };
-
-      fetchAppointmentsData();
-      fetchAppointmentData();
+        fetchAppointmentsData();
+        fetchAppointmentData();
     </script>
-
-
   </body>
 
 </html>

@@ -34,7 +34,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $logStmt->execute();
             $logStmt->close();
 
-            echo "Services added successfully!";
+            echo '<script>';
+        
+            echo 'window.location.href = "../Staff.php";';
+            echo '</script>';
         } else {
             echo "Error: " . $stmt->error;
         }

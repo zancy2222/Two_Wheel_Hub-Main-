@@ -2,26 +2,53 @@
 session_start();
 include 'db_conn.php';
 
-$defaultAdminEmail = 'AVMOTO_Admin@gmail.com';
-$defaultAdminPassword = 'avmotoadminpassword';
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
- 
-    if ($email === $defaultAdminEmail && $password === $defaultAdminPassword) {
-        // Admin login successful
-        $_SESSION['user_id'] = 'admin'; // Set a special session identifier for the admin
 
-        // Log admin login
-        $action = "Admin has been logged in.";
-        $stmt = $conn->prepare("INSERT INTO AdminLogs (action) VALUES (?)");
-        $stmt->bind_param("s", $action);
-        $stmt->execute();
-        $stmt->close();
+    // Check if the user is an admin
+    $stmt = $conn->prepare("SELECT id, full_name, email, password, role FROM admin_users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->store_result();
 
-        header("Location: ../Dashboard/Dashb.php");
-        exit();
+    if ($stmt->num_rows > 0) {
+        // Admin or Staff user found
+        $stmt->bind_result($user_id, $full_name, $email, $hashed_password, $role);
+        $stmt->fetch();
+
+        if (password_verify($password, $hashed_password)) {
+            $_SESSION['user_id'] = $user_id;
+            $_SESSION['user_role'] = $role;
+
+            // Log login
+            if ($role == 'Admin') {
+                $action = "Admin ($full_name) has been logged in.";
+                header("Location: ../Dashboard/Dashb.php");
+            } elseif ($role == 'Staff') {
+                $action = "Staff ($full_name) has been logged in.";
+                header("Location: ../Staff/Staff.php");
+            } else {
+                echo '<script>';
+                echo 'alert("Invalid user role.");';
+                echo 'window.location.href = "../Login.php";';
+                echo '</script>';
+                exit();
+            }
+
+            $stmt_log = $conn->prepare("INSERT INTO AdminLogs (action) VALUES (?)");
+            $stmt_log->bind_param("s", $action);
+            $stmt_log->execute();
+            $stmt_log->close();
+            
+            exit();
+        } else {
+            echo '<script>';
+            echo 'alert("Invalid Email or Password");';
+            echo 'window.location.href = "../Login.php";';
+            echo '</script>';
+            exit();
+        }
     } else {
         // Check for regular user login
         $stmt = $conn->prepare("SELECT id, first_name, last_name, password FROM Users WHERE email = ?");
@@ -38,19 +65,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // Log user login
                 $action = "User ($first_name $last_name) has been logged in.";
-                $stmt = $conn->prepare("INSERT INTO AdminLogs (action) VALUES (?)");
-                $stmt->bind_param("s", $action);
-                $stmt->execute();
-                $stmt->close();
+                $stmt_log = $conn->prepare("INSERT INTO AdminLogs (action) VALUES (?)");
+                $stmt_log->bind_param("s", $action);
+                $stmt_log->execute();
+                $stmt_log->close();
 
                 header("Location: ../ShopMain.php");
                 exit();
             } else {
                 echo '<script>';
-                echo 'alert("Invalid Email and Password");';
+                echo 'alert("Invalid Email or Password");';
                 echo 'window.location.href = "../Login.php";';
                 echo '</script>';
-                exit();            }
+                exit();
+            }
         } else {
             echo '<script>';
             echo 'alert("Please Register First");';

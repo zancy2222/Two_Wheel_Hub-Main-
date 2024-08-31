@@ -185,6 +185,14 @@ body {
         <span class="tooltip">User Accounts</span>
       </li>
       <li>
+        <a href="AdminAcc.php">
+        <i class='bx bx-shield-quarter'></i>
+          <span class="links_name">Add Admin Accounts</span>
+        </a>
+        <span class="tooltip">Add Admin Accounts</span>
+      </li>
+
+      <li>
         <a href="Products.php">
           <i class='bx bx-store-alt'></i>
           <span class="links_name">Products</span>

@@ -304,6 +304,14 @@ $result = $conn->query($sql);
         <span class="tooltip">User Accounts</span>
       </li>
       <li>
+        <a href="AdminAcc.php">
+        <i class='bx bx-shield-quarter'></i>
+          <span class="links_name">Add Admin Accounts</span>
+        </a>
+        <span class="tooltip">Add Admin Accounts</span>
+      </li>
+
+      <li>
         <a href="Products.php">
           <i class='bx bx-store-alt'></i>
           <span class="links_name">Products</span>
@@ -363,8 +371,8 @@ $result = $conn->query($sql);
   <section class="home-section">
     <div class="text">Dashboard</div>
     <div class="search-bar">
-      <input type="text" placeholder="Search users...">
-      <button class="add-button">Add User</button>
+    <input type="text" id="searchInput" placeholder="Search users...">
+    <button class="add-button">Add User</button>
     </div>
     <table id="userTable">
       <thead>
@@ -651,6 +659,30 @@ $result = $conn->query($sql);
     function changePage(page) {
       window.location.href = "?page=" + page;
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const table = document.getElementById('userTable');
+            const tbody = table.querySelector('tbody');
+
+            searchInput.addEventListener('input', function() {
+                const filter = searchInput.value.toLowerCase();
+                const rows = tbody.querySelectorAll('tr');
+
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    let match = false;
+                    
+                    cells.forEach(cell => {
+                        if (cell.textContent.toLowerCase().includes(filter)) {
+                            match = true;
+                        }
+                    });
+
+                    row.style.display = match ? '' : 'none';
+                });
+            });
+          });
   </script>
 
 

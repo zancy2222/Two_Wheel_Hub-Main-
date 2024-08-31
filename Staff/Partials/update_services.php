@@ -41,7 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $logStmt->execute();
     $logStmt->close();
 
-    echo "Success";
+    echo '<script>';
+        
+    echo 'window.location.href = "../Staff.php";';
+    echo '</script>';
 } else {
     echo "Invalid request method.";
 }

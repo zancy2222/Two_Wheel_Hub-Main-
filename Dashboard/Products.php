@@ -252,6 +252,14 @@
                 <span class="tooltip">User Accounts</span>
             </li>
             <li>
+        <a href="AdminAcc.php">
+        <i class='bx bx-shield-quarter'></i>
+          <span class="links_name">Add Admin Accounts</span>
+        </a>
+        <span class="tooltip">Add Admin Accounts</span>
+      </li>
+
+            <li>
                 <a href="Products.php">
                     <i class='bx bx-store-alt'></i>
                     <span class="links_name">Products</span>
@@ -311,7 +319,7 @@
     <section class="home-section">
         <div class="text">Dashboard</div>
         <div class="search-bar">
-            <input type="text" placeholder="Search products...">
+        <input type="text" id="searchInput" placeholder="Search products...">
             <button class="add-button">Add Product</button>
         </div>
         <table id="productTable">
@@ -653,7 +661,26 @@
             window.location.href = "?page=" + page;
         }
     </script>
+ <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', function() {
+                var searchTerm = searchInput.value;
+                fetchProducts(searchTerm);
+            });
 
+            function fetchProducts(searchTerm) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'search.php?search=' + encodeURIComponent(searchTerm), true);
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        document.querySelector('#productTable tbody').innerHTML = xhr.responseText;
+                    }
+                };
+                xhr.send();
+            }
+        });
+    </script>
     <script src="script.js"></script>
 </body>
 
