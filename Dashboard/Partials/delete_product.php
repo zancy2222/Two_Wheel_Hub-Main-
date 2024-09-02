@@ -1,35 +1,34 @@
 <?php
+// Include database connection
 include '../db_conn.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $productId = $_POST['id'];
+// Check if 'id' parameter is provided in the query string
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    if (isset($_GET['id'])) {
+        $productId = $_GET['id'];
 
-    // Fetch product name for logging
-    $stmt = $conn->prepare("SELECT product_name FROM products WHERE id = ?");
-    $stmt->bind_param("i", $productId);
-    $stmt->execute();
-    $stmt->bind_result($productName);
-    $stmt->fetch();
-    $stmt->close();
+        // Prepare SQL statement to delete the product
+        $stmt = $conn->prepare("DELETE FROM products WHERE id = ?");
+        $stmt->bind_param("i", $productId);
 
-    $sql = "DELETE FROM products WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $productId);
+        if ($stmt->execute()) {
+            // If the product is successfully deleted
+            echo json_encode(['success' => true, 'message' => 'Product deleted successfully']);
+        } else {
+            // If there was an error deleting the product
+            echo json_encode(['success' => false, 'message' => 'Error deleting product: ' . $stmt->error]);
+        }
 
-    if ($stmt->execute()) {
-        // Log the admin action
-        $action = "Admin deleted product: " . $productName;
-        $logStmt = $conn->prepare("INSERT INTO AdminLogs (action) VALUES (?)");
-        $logStmt->bind_param("s", $action);
-        $logStmt->execute();
-        $logStmt->close();
-
-        echo "Product deleted successfully!";
+        $stmt->close();
     } else {
-        echo "Error deleting product: " . $conn->error;
+        // If no ID is provided, return an error message
+        echo json_encode(['success' => false, 'message' => 'No product ID provided']);
     }
-
-    $stmt->close();
-    $conn->close();
+} else {
+    // If the request method is not DELETE, return an error message
+    echo json_encode(['success' => false, 'message' => 'Invalid request method']);
 }
+
+// Close database connection
+$conn->close();
 ?>

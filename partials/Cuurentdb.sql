@@ -257,3 +257,27 @@ CREATE TABLE admin_users (
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- NEW ADDED(REPLACED)
+ -- Create or update the products table
+CREATE TABLE IF NOT EXISTS products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    image VARCHAR(255) NOT NULL,
+    category ENUM('Front Suspension', 'Rear Suspension', 'CVT', 'Tires', 'Oil', 'Others') NOT NULL,
+    description TEXT NOT NULL,
+    quantity INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    brand VARCHAR(255),
+    size VARCHAR(50),
+    volume VARCHAR(50),
+    motorcycle VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create or update the product_colors table
+CREATE TABLE IF NOT EXISTS product_colors (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    color VARCHAR(50) NOT NULL,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
