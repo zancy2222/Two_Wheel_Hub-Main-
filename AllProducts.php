@@ -130,51 +130,51 @@ if ($category) {
         .container.mt-5 .btn:hover {
             background-color: var(--secondary-color);
         }
-
         .product-card {
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: none;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 30px;
-        }
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
 
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
 
-        .product-img {
-            height: 200px;
-            object-fit: cover;
-        }
+.product-img {
+    height: 400px;
+    object-fit: cover;
+}
 
-        .product-card-body {
-            padding: 20px;
-            background-color: var(--white-color);
-        }
+.product-card-body {
+    padding: 20px;
+    background-color: var(--white-color);
+}
 
-        .product-card-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
+.product-card-title {
+    font-size: 2rem; /* Increased font size */
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 
-        .product-card-description {
-            font-size: 1rem;
-            margin-bottom: 10px;
-        }
+.product-card-description {
+    font-size: 1.25rem; /* Increased font size */
+    margin-bottom: 10px;
+}
 
-        .product-card-info {
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-        }
+.product-card-info {
+    font-size: 1.1rem; /* Increased font size */
+    margin-bottom: 5px;
+}
 
-        .product-card-price {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
+.product-card-price {
+    font-size: 1.5rem; /* Increased font size */
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
 
         .product-buttons {
             display: flex;
@@ -371,71 +371,30 @@ if ($category) {
 
     <!-- Main Content -->
     <div class="container mt-5">
-        <div class="row">
-            <?php
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    // Fetch variations for each product
-                    $productId = $row["id"];
-                    $variationSql = "SELECT * FROM product_variations WHERE product_id = ?";
-                    $variationStmt = $conn->prepare($variationSql);
-                    $variationStmt->bind_param("i", $productId);
-                    $variationStmt->execute();
-                    $variationResult = $variationStmt->get_result();
-                    $variations = [];
-
-                    while ($variation = $variationResult->fetch_assoc()) {
-                        $variations[] = $variation;
-                    }
-
-                    $variationStmt->close();
-
-                    // Organize variations by color
-                    $colorVariations = [];
-                    foreach ($variations as $variation) {
-                        $color = $variation["color"];
-                        if (!isset($colorVariations[$color])) {
-                            $colorVariations[$color] = [];
-                        }
-                        $colorVariations[$color][] = $variation;
-                    }
-
-                    // Display product details
-                    echo "<div class='col-md-4 mb-4'>
-                    <div class='card product-card'>
-                        <img src='Dashboard/Partials/uploads/" . htmlspecialchars($row["product_image"]) . "' class='card-img-top product-img' alt='" . htmlspecialchars($row["product_name"]) . "'>
-                        <div class='card-body product-card-body'>
-                            <h5 class='card-title product-card-title'>" . htmlspecialchars($row["product_name"]) . "</h5>
-                            <p class='card-text product-card-description'>" . htmlspecialchars($row["description"]) . "</p>
-                            <p class='card-text product-card-info'>Category: " . htmlspecialchars($row["category"]) . "</p>
-                            <p class='card-text product-card-price'>Price: ₱" . htmlspecialchars($row["price"]) . "</p>
-                            <p class='card-text product-card-info'>Color: 
-                                <div class='color-options'>";
-
-                    foreach (array_keys($colorVariations) as $color) {
-                        echo "<span class='color-circle' data-product-id='" . htmlspecialchars($row["id"]) . "' data-color='" . trim($color) . "' style='background-color:" . trim($color) . ";'></span>";
-                    }
-
-                    echo                "</div>
-                            </p>
-                            <div id='sizeQtyContainer-" . htmlspecialchars($row["id"]) . "' class='size-quantity-container'>
-                               
-                            </div>
-                            <div class='product-buttons'>
-                                    <button class='btn btn-add-to-cart' data-product-id='" . htmlspecialchars($row["id"]) . "'>Add to Cart</button>
-                                    <button class='btn btn-buy' data-product-id='" . htmlspecialchars($row["id"]) . "'>Buy Now</button>
-
-                            </div>
+    <div class="row">
+        <?php
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                // Display product details with a link to the product details page
+                echo "<div class='col-md-4 mb-4'>
+                        <div class='card product-card'>
+                            <a href='GuestProducts.php?id=" . htmlspecialchars($row["id"]) . "'>
+                                <img src='Dashboard/Partials/uploads/" . htmlspecialchars($row["image"]) . "' class='card-img-top product-img' alt='" . htmlspecialchars($row["description"]) . "'>
+                                <div class='card-body product-card-body'>
+                                    <h1 class='card-text product-card-description'>" . htmlspecialchars($row["description"]) . "</h1>
+                                    <p class='card-text product-card-category'>" . htmlspecialchars($row["category"]) . "</p>
+                                    <p class='card-text product-card-price'>Price: ₱" . htmlspecialchars($row["price"]) . "</p>
+                                </div>
+                            </a>
                         </div>
-                    </div>
-                  </div>";
-                }
-            } else {
-                echo "<p>No products found in this category.</p>";
+                      </div>";
             }
-            ?>
-        </div>
+        } else {
+            echo "<p>No products found in this category.</p>";
+        }
+        ?>
     </div>
+</div>
 
 
     <!-- Chat Icon -->

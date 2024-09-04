@@ -131,19 +131,19 @@
         <div class="row">
             <div class="col-md-4 mb-4">
                 <div class="card category-card">
-                    <img src="img/Oils.jpg" class="card-img-top category-img" alt="Suspension Oils">
+                    <img src="img/shock.jpg" class="card-img-top category-img" alt="Suspension Oils">
                     <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Suspension Oils</h5>
-                        <a href="AllProducts.php?category=Suspension%20Oils" class="btn category-card-btn">View</a>
+                        <h5 class="card-title category-card-title">Front Suspension</h5>
+                        <a href="AllProducts.php?category=Front%20Suspension" class="btn category-card-btn">View</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
                 <div class="card category-card">
-                    <img src="img/shock.jpg" class="card-img-top category-img" alt="Rear Shock">
+                    <img src="img/FS.jpg" class="card-img-top category-img" alt="Rear Shock">
                     <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Rear Shock</h5>
-                        <a href="AllProducts.php?category=Rear%20Shock" class="btn category-card-btn">View</a>
+                        <h5 class="card-title category-card-title">Rear Suspension</h5>
+                        <a href="AllProducts.php?category=Rear%20Suspension" class="btn category-card-btn">View</a>
                     </div>
                 </div>
             </div>
@@ -151,8 +151,8 @@
                 <div class="card category-card">
                     <img src="img/accsrs.jpg" class="card-img-top category-img" alt="Accessories">
                     <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Accessories</h5>
-                        <a href="AllProducts.php?category=Accessories" class="btn category-card-btn">View</a>
+                        <h5 class="card-title category-card-title">CVT</h5>
+                        <a href="AllProducts.php?category=CVT" class="btn category-card-btn">View</a>
                     </div>
                 </div>
             </div>
@@ -162,6 +162,15 @@
                     <div class="card-body category-card-body">
                         <h5 class="card-title category-card-title">Tires</h5>
                         <a href="AllProducts.php?category=Tires" class="btn category-card-btn">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card category-card">
+                    <img src="img/Oils.jpg" class="card-img-top category-img" alt="Tires">
+                    <div class="card-body category-card-body">
+                        <h5 class="card-title category-card-title">Oil</h5>
+                        <a href="AllProducts.php?category=Oil" class="btn category-card-btn">View</a>
                     </div>
                 </div>
             </div>

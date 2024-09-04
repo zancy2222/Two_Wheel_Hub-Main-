@@ -1,28 +1,25 @@
 <?php
-session_start();
 include 'partials/db_conn.php';
+$product_id = $_GET['id']; // Get the product ID from the URL or request
+$query = "SELECT * FROM products WHERE id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $product_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$product = $result->fetch_assoc();
 
-if (!isset($_SESSION['guest_id'])) {
-    echo "No products in cart.";
-    exit();
+// Fetch colors for the product if applicable
+$colors = [];
+if ($product['category'] === 'Rear Suspension' || $product['category'] === 'Tires') {
+    $color_query = "SELECT color FROM product_colors WHERE product_id = ?";
+    $color_stmt = $conn->prepare($color_query);
+    $color_stmt->bind_param("i", $product_id);
+    $color_stmt->execute();
+    $color_result = $color_stmt->get_result();
+    while ($color_row = $color_result->fetch_assoc()) {
+        $colors[] = $color_row['color'];
+    }
 }
-
-$session_id = $_SESSION['guest_id'];
-
-// Fetch cart products along with their prices
-$query_cart = "SELECT p.image, p.description, g.quantity, p.price, g.color, g.id AS g_id
-               FROM GuestCartOrder g
-               JOIN products p ON g.product_id = p.id
-               WHERE g.session_id = ?";
-
-$stmt_cart = $conn->prepare($query_cart);
-$stmt_cart->bind_param("s", $session_id);
-$stmt_cart->execute();
-$result_cart = $stmt_cart->get_result();
-$cart_products = $result_cart->fetch_all(MYSQLI_ASSOC);
-
-$total = 0;
-$subtotal = 0;
 ?>
 
 <!DOCTYPE html>
@@ -39,201 +36,223 @@ $subtotal = 0;
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="chat.css">
     <style>
-body {
-    font-family: 'League Spartan', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
+ body {
+            font-family: 'League Spartan', sans-serif;
+        }
 
-.cart-container {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #ffffff;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-}
+        .container {
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping for smaller screens */
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-h1 {
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-align: center;
-}
+        .product-images {
+            flex: 1;
+            display: flex;
+            justify-content: center; /* Center align images */
+            margin-bottom: 20px; /* Space below for smaller screens */
+        }
 
-.cart-item {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #ddd;
-    padding: 20px 0;
-}
+        .product-images img {
+            max-width: 100%;
+            height: 500px;
+            border-radius: 10px;
+        }
 
-.item-image img {
-    width: 100px;
-    height: auto;
-    border-radius: 10px;
-}
+        .product-details {
+            flex: 1;
+            margin-left: 40px;
+        }
 
-.item-details {
-    flex: 2;
-    margin-left: 20px;
-}
+        .product-details h1 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
 
-.item-details h2 {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
+        .price {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
 
-.item-details p {
-    margin-bottom: 5px;
-}
+        .color-options {
+            margin-bottom: 20px;
+        }
 
-.price {
-    color: #C82333;
-    font-weight: bold;
-}
+        .color-options label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
 
-.item-quantity {
-    display: flex;
-    align-items: center;
-    margin-left: 20px;
-}
+        .color-options .colors {
+            display: flex;
+            gap: 10px;
+        }
 
-.item-quantity button {
-    background: none;
-    border: 1px solid #ddd;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 5px;
-}
+        .color-options .color-item {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: border 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.item-quantity input {
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin: 0 10px;
-}
+        .color-options .color-item.default {
+            border-color: #000;
+            font-size: 20px;
+            color: #000;
+        }
 
-.item-total {
-    flex: 1;
-    text-align: right;
-    margin-left: 20px;
-}
+        .color-options .color-item.selected {
+            border-color: #000;
+        }
 
-.item-actions {
-    margin-left: 20px;
-}
+        .actions {
+            display: flex;
+            flex-direction: column; /* Stack buttons on smaller screens */
+            gap: 10px;
+            margin-bottom: 20px;
+        }
 
-.btn-remove {
-    background-color: #C82333;
-    color: #fff;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-}
+        .quantity {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
 
-.btn-remove:hover {
-    background-color: #A71B2C;
-}
+        .quantity input {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 0 10px;
+        }
 
-.cart-summary {
-    text-align: right;
-    margin-top: 20px;
-}
+        .quantity button {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+        }
 
-.cart-summary h2 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
+        .actions button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            transition: background 0.3s;
+        }
 
-.cart-summary p {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
+        .btn-add-to-cart {
+            background-color: #fff;
+            color: #000;
+            border-color: #000;
+        }
 
-.btn-checkout {
-    background-color: #C82333;
-    color: #fff;
-    border: none;
-    padding: 15px 30px;
-    cursor: pointer;
-    font-size: 18px;
-    border-radius: 5px;
-}
+        .btn-buy-now {
+            background-color: #C82333;
+            color: #fff;
+            border-color: #C82333;
+        }
 
-.btn-checkout:hover {
-    background-color: #A71B2C;
-}
+        .btn-buy-now:hover {
+            background-color: #A71B2C;
+        }
 
-/* Media Queries for Responsiveness */
-@media (max-width: 768px) {
-    .cart-item {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 10px 0;
-    }
+        .pickup, .shipping {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
 
-    .item-image img {
-        width: 80px;
-    }
+        .pickup span {
+            color: #009DDF;
+            font-weight: bold;
+        }
 
-    .item-details {
-        margin-left: 0;
-        margin-top: 10px;
-    }
+        .shipping img {
+            max-width: 250px;
+            height: 200px;
+        }
 
-    .item-quantity {
-        margin-left: 0;
-        margin-top: 10px;
-    }
+        /* Media Queries for responsive design */
+        @media (max-width: 768px) {
+            .product-details {
+                margin-left: 0;
+                margin-top: 20px; /* Add top margin for stacking */
+            }
 
-    .item-total {
-        margin-left: 0;
-        margin-top: 10px;
-        text-align: left;
-    }
+            .product-images, .product-details {
+                flex: 1 1 100%; /* Full width on small screens */
+                margin: 0;
+            }
 
-    .item-actions {
-        margin-left: 0;
-        margin-top: 10px;
-    }
+            .actions {
+                flex-direction: column;
+            }
 
-    .cart-summary {
-        text-align: center;
-        margin-top: 30px;
-    }
+            .actions button {
+                width: 100%; /* Full width buttons */
+            }
 
-    .btn-checkout {
-        width: 100%;
-        padding: 15px 0;
-    }
-}
+            .btn-add-to-cart {
+            background-color: #fff;
+            color: #000;
+            border-color: #000;
+            margin-bottom: 4%;
+        }
 
-@media (max-width: 576px) {
-    h1 {
-        font-size: 24px;
-    }
+        .btn-buy-now {
+            background-color: #C82333;
+            color: #fff;
+            border-color: #C82333;
+        }
+            .color-options .colors {
+                flex-wrap: wrap; /* Wrap color options */
+            }
 
-    .cart-summary h2 {
-        font-size: 20px;
-    }
+            .color-options .color-item {
+                width: 30px; /* Smaller color circles */
+                height: 30px;
+            }
+            .product-images img {
+            max-width: 100%;
+            height: 350px;
+            border-radius: 10px;
+        }
+        .shipping img {
+        display: none; 
+        }
+        }
 
-    .cart-summary p {
-        font-size: 16px;
-    }
+        @media (max-width: 576px) {
+            .product-details h1 {
+                font-size: 24px; /* Smaller font size for titles */
+            }
 
-    .btn-checkout {
-        font-size: 16px;
-    }
-}
+            .price {
+                font-size: 20px; /* Smaller font size for price */
+            }
 
+            .color-options .color-item {
+                width: 25px; /* Even smaller color circles */
+                height: 25px;
+            }
+
+            .actions button {
+                font-size: 14px; /* Smaller button text */
+                padding: 8px; /* Adjust padding */
+            }
+        }
     </style>
 </head>
 
@@ -304,49 +323,50 @@ h1 {
             </div>
         </div>
     </nav>
-    <div class="cart-container">
-    <h1>Your Cart</h1>
+    <div class="container">
+        <div class="product-images">
+            <img src="Dashboard/Partials/uploads/<?php echo htmlspecialchars($product['image']); ?>" alt="Product Image" id="mainImage">
+        </div>
 
-    <?php foreach ($cart_products as $product) { 
-        $item_total = $product['price'] * $product['quantity'];
-        $subtotal += $item_total;
-    ?>
-    <div class="cart-item" data-price="<?php echo $product['price']; ?>">
-        <div class="item-image">
-            <img src="Dashboard/Partials/uploads/<?php echo htmlspecialchars($product['image']); ?>" alt="Product Image">
-        </div>
-        <div class="item-details">
-            <h2><?php echo htmlspecialchars($product['description']); ?></h2>
-            <p>Color: <span><?php echo htmlspecialchars($product['color']); ?></span></p>
-            <p class="price">₱<?php echo number_format($product['price'], 2); ?></p>
-        </div>
-        <!-- <div class="item-quantity">
-            <button type="button" onclick="changeQuantity(this, -1)">-</button>
-            <input type="text" value="<?php echo htmlspecialchars($product['quantity']); ?>" id="quantity" name="quantity" readonly>
-            <button type="button" onclick="changeQuantity(this, 1)">+</button>
-        </div> -->
-        <div class="item-total">
-            <p>Total: ₱<span><?php echo number_format($item_total, 2); ?></span></p>
-        </div>
-        <div class="item-actions">
-            <form method="POST" action="Partials/remove_item_cart.php" style="display:inline;">
-                <input type="hidden" name="item_id" value="<?php echo htmlspecialchars($product['g_id']); ?>">
-                <button type="submit" class="btn-remove">Remove</button>
-            </form>
+        <div class="product-details">
+            <h1><?php echo htmlspecialchars($product['description']); ?></h1>
+            <div class="price">₱<?php echo htmlspecialchars($product['price']); ?></div>
+
+            <?php if (!empty($colors)) { ?>
+                <div class="color-options">
+                    <label for="color">Color: <span id="selectedColor">DEFAULT</span></label>
+                    <div class="colors">
+                        <div class="color-item default selected" data-color="DEFAULT">✖</div>
+                        <?php foreach ($colors as $color) { ?>
+                            <div class="color-item" data-color="<?php echo htmlspecialchars($color); ?>" style="background-color: <?php echo htmlspecialchars($color); ?>;"></div>
+                        <?php } ?>
+                    </div>
+                </div>
+            <?php } else { ?>
+                <div class="color-options">
+                    <label for="color">Color: <span id="selectedColor">DEFAULT</span></label>
+                </div>
+            <?php } ?>
+
+            <div class="actions">
+                <div class="quantity">
+                    <button type="button" onclick="changeQuantity(-1)">-</button>
+                    <input type="text" value="1" id="quantity" name="quantity">
+                    <button type="button" onclick="changeQuantity(1)">+</button>
+                </div>
+                <form method="POST" action="Partials/buy_now_guest.php">
+                    <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                    <input type="hidden" name="quantity" id="hiddenQuantity" value="1">
+                    <input type="hidden" name="color" id="hiddenColor" value="DEFAULT">
+                    <button type="submit" name="action" value="add_to_cart" class="btn-add-to-cart">Add to cart</button>
+                    <button type="submit" name="action" value="buy_now" class="btn-buy-now">Buy it now</button>
+                </form>
+            </div>
+
+            <div class="pickup">Pickup available at <span>AV MOTO Philippines</span></div>
+            <div class="shipping"><img src="img/AV Moto Logo Outline.png" alt="Free Shipping"></div>
         </div>
     </div>
-    <?php } ?>
-
-    <div class="cart-summary">
-        <h2>Order Summary</h2>
-        <p>Subtotal: ₱<span id="subtotal"><?php echo number_format($subtotal, 2); ?></span></p>
-        <p>Total: ₱<span id="total"><?php echo number_format($subtotal, 2); ?></span></p>
-        <form method="POST" action="Partials/cart_buy_now_guest.php">
-            <button type="submit" class="btn-checkout">Proceed to Checkout</button>
-        </form>
-    </div>
-</div>
-
 
     <!-- Chat Icon -->
     <div class="chat-icon" onclick="toggleChat()">
@@ -473,36 +493,7 @@ document.querySelectorAll('.color-item').forEach(item => {
     document.getElementById('hiddenQuantity').value = newValue;
 }
     </script>
-<script>
-function changeQuantity(button, change) {
-    var cartItem = button.closest('.cart-item');
-    var quantityInput = cartItem.querySelector('input[name="quantity"]');
-    var currentQuantity = parseInt(quantityInput.value);
-    var newQuantity = currentQuantity + change;
 
-    if (newQuantity < 1) return; // Prevent quantity from going below 1
-
-    quantityInput.value = newQuantity;
-
-    var price = parseFloat(cartItem.getAttribute('data-price'));
-    var newItemTotal = price * newQuantity;
-    
-    cartItem.querySelector('.item-total span').innerText = newItemTotal.toFixed(2);
-
-    updateSubtotal();
-}
-
-function updateSubtotal() {
-    var subtotal = 0;
-    document.querySelectorAll('.cart-item').forEach(function(cartItem) {
-        var itemTotal = parseFloat(cartItem.querySelector('.item-total span').innerText);
-        subtotal += itemTotal;
-    });
-
-    document.getElementById('subtotal').innerText = subtotal.toFixed(2);
-    document.getElementById('total').innerText = subtotal.toFixed(2);
-}
-</script>
 </body>
 
 </html>

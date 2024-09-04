@@ -9,22 +9,35 @@ if (!isset($_SESSION['guest_id'])) {
 
 $session_id = $_SESSION['guest_id'];
 
-// Fetch cart products along with their prices
-$query_cart = "SELECT p.image, p.description, g.quantity, p.price, g.color, g.id AS g_id
+// Fetch bought products
+$query_bought = "SELECT p.image, p.description, g.quantity, g.price, g.id AS g_id, 'bought' AS source
+                 FROM GuestBuyedProducts g
+                 JOIN products p ON g.product_id = p.id
+                 WHERE g.session_id = ?";
+
+// Fetch cart products (no price in cart products)
+$query_cart = "SELECT p.image, p.description, g.quantity, p.price AS price, g.id AS g_id, 'cart' AS source
                FROM GuestCartOrder g
                JOIN products p ON g.product_id = p.id
                WHERE g.session_id = ?";
+
+$stmt_bought = $conn->prepare($query_bought);
+$stmt_bought->bind_param("s", $session_id);
+$stmt_bought->execute();
+$result_bought = $stmt_bought->get_result();
 
 $stmt_cart = $conn->prepare($query_cart);
 $stmt_cart->bind_param("s", $session_id);
 $stmt_cart->execute();
 $result_cart = $stmt_cart->get_result();
-$cart_products = $result_cart->fetch_all(MYSQLI_ASSOC);
+
+$products = array_merge(
+    $result_bought->fetch_all(MYSQLI_ASSOC),
+    $result_cart->fetch_all(MYSQLI_ASSOC)
+);
 
 $total = 0;
-$subtotal = 0;
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,201 +52,129 @@ $subtotal = 0;
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="chat.css">
     <style>
-body {
-    font-family: 'League Spartan', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-
-.cart-container {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #ffffff;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-}
-
-h1 {
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.cart-item {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #ddd;
-    padding: 20px 0;
-}
-
-.item-image img {
-    width: 100px;
-    height: auto;
-    border-radius: 10px;
-}
-
-.item-details {
-    flex: 2;
-    margin-left: 20px;
-}
-
-.item-details h2 {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.item-details p {
-    margin-bottom: 5px;
-}
-
-.price {
-    color: #C82333;
-    font-weight: bold;
-}
-
-.item-quantity {
-    display: flex;
-    align-items: center;
-    margin-left: 20px;
-}
-
-.item-quantity button {
-    background: none;
-    border: 1px solid #ddd;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 5px;
-}
-
-.item-quantity input {
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin: 0 10px;
-}
-
-.item-total {
-    flex: 1;
-    text-align: right;
-    margin-left: 20px;
-}
-
-.item-actions {
-    margin-left: 20px;
-}
-
-.btn-remove {
-    background-color: #C82333;
-    color: #fff;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.btn-remove:hover {
-    background-color: #A71B2C;
-}
-
-.cart-summary {
-    text-align: right;
-    margin-top: 20px;
-}
-
-.cart-summary h2 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.cart-summary p {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-.btn-checkout {
-    background-color: #C82333;
-    color: #fff;
-    border: none;
-    padding: 15px 30px;
-    cursor: pointer;
-    font-size: 18px;
-    border-radius: 5px;
-}
-
-.btn-checkout:hover {
-    background-color: #A71B2C;
-}
-
-/* Media Queries for Responsiveness */
-@media (max-width: 768px) {
-    .cart-item {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 10px 0;
+          body {
+        font-family: 'League Spartan', sans-serif;
     }
 
-    .item-image img {
+    .checkout-container {
+        margin: 20px auto;
+        max-width: 1200px;
+        padding: 0 15px;
+    }
+
+    .order-summary img {
         width: 80px;
+        height: auto;
+        object-fit: contain;
+        margin-right: 10px;
     }
 
-    .item-details {
-        margin-left: 0;
-        margin-top: 10px;
+    .order-summary h6 {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 5px;
     }
 
-    .item-quantity {
-        margin-left: 0;
-        margin-top: 10px;
+    .order-summary .item-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        justify-content: space-between;
     }
 
-    .item-total {
-        margin-left: 0;
-        margin-top: 10px;
-        text-align: left;
+    .order-summary .item-info div {
+        flex-grow: 1;
+        margin-right: 10px;
     }
 
-    .item-actions {
-        margin-left: 0;
-        margin-top: 10px;
+    .order-summary .item-info span:last-child {
+        font-weight: 700;
+        font-size: 16px;
     }
 
-    .cart-summary {
+    .order-summary {
+        border: 1px solid #ddd;
+        padding: 20px;
+        background-color: #f9f9f9;
+    }
+
+    .order-summary .total-section {
+        display: flex;
+        justify-content: space-between;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .checkout-container .pay-now-btn {
+        background-color: #007bff;
+        color: #fff;
+        font-weight: 700;
+        border-radius: 5px;
+        padding: 10px 15px;
         text-align: center;
-        margin-top: 30px;
+        display: inline-block;
     }
 
-    .btn-checkout {
-        width: 100%;
-        padding: 15px 0;
-    }
-}
-
-@media (max-width: 576px) {
-    h1 {
-        font-size: 24px;
+    .pay-now-btn:hover {
+        background-color: #0056b3;
     }
 
-    .cart-summary h2 {
-        font-size: 20px;
+    .payment-options img {
+        width: 50px;
+        margin-left: 10px;
     }
 
-    .cart-summary p {
-        font-size: 16px;
+    .btn-remove {
+        background-color: #f44336;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 14px;
+        border-radius: 4px;
     }
 
-    .btn-checkout {
-        font-size: 16px;
+    .btn-remove:hover {
+        background-color: #d32f2f;
     }
-}
 
+    @media (max-width: 768px) {
+        .order-summary img {
+            width: 60px;
+        }
+
+        .order-summary h6 {
+            font-size: 16px;
+        }
+
+        .order-summary .item-info {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .order-summary .item-info span:last-child {
+            margin-top: 5px;
+        }
+
+        .checkout-container {
+            padding: 0 10px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .order-summary h6 {
+            font-size: 14px;
+        }
+
+        .order-summary img {
+            width: 50px;
+        }
+
+        .checkout-container .pay-now-btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
     </style>
 </head>
 
@@ -304,50 +245,105 @@ h1 {
             </div>
         </div>
     </nav>
-    <div class="cart-container">
-    <h1>Your Cart</h1>
 
-    <?php foreach ($cart_products as $product) { 
-        $item_total = $product['price'] * $product['quantity'];
-        $subtotal += $item_total;
-    ?>
-    <div class="cart-item" data-price="<?php echo $product['price']; ?>">
-        <div class="item-image">
-            <img src="Dashboard/Partials/uploads/<?php echo htmlspecialchars($product['image']); ?>" alt="Product Image">
-        </div>
-        <div class="item-details">
-            <h2><?php echo htmlspecialchars($product['description']); ?></h2>
-            <p>Color: <span><?php echo htmlspecialchars($product['color']); ?></span></p>
-            <p class="price">₱<?php echo number_format($product['price'], 2); ?></p>
-        </div>
-        <!-- <div class="item-quantity">
-            <button type="button" onclick="changeQuantity(this, -1)">-</button>
-            <input type="text" value="<?php echo htmlspecialchars($product['quantity']); ?>" id="quantity" name="quantity" readonly>
-            <button type="button" onclick="changeQuantity(this, 1)">+</button>
-        </div> -->
-        <div class="item-total">
-            <p>Total: ₱<span><?php echo number_format($item_total, 2); ?></span></p>
-        </div>
-        <div class="item-actions">
-            <form method="POST" action="Partials/remove_item_cart.php" style="display:inline;">
-                <input type="hidden" name="item_id" value="<?php echo htmlspecialchars($product['g_id']); ?>">
-                <button type="submit" class="btn-remove">Remove</button>
-            </form>
-        </div>
-    </div>
-    <?php } ?>
+<div class="checkout-container">
+    <div class="row">
+        <div class="col-md-7">
+            <!-- Delivery Information -->
+            <div class="delivery-info">
+                <h5>Contact</h5>
+                <input type="email" class="form-control" placeholder="Email" required>
 
-    <div class="cart-summary">
-        <h2>Order Summary</h2>
-        <p>Subtotal: ₱<span id="subtotal"><?php echo number_format($subtotal, 2); ?></span></p>
-        <p>Total: ₱<span id="total"><?php echo number_format($subtotal, 2); ?></span></p>
-        <form method="POST" action="Partials/cart_buy_now_guest.php">
-            <button type="submit" class="btn-checkout">Proceed to Checkout</button>
-        </form>
+                <h5 class="mt-4">Delivery</h5>
+                <div class="form-group">
+                    <label for="country">Country/Region</label>
+                    <select id="country" class="form-control">
+                        <option>Philippines</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="firstName">First name</label>
+                        <input type="text" class="form-control" id="firstName" placeholder="First name">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="lastName">Last name</label>
+                        <input type="text" class="form-control" id="lastName" placeholder="Last name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" class="form-control" id="address" placeholder="Address">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="city">City</label>
+                        <input type="text" class="form-control" id="city" placeholder="City">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="postalCode">Postal code</label>
+                        <input type="text" class="form-control" id="postalCode" placeholder="Postal code">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="region">Region</label>
+                        <input type="text" class="form-control" id="region" placeholder="Region">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="phone">Phone</label>
+                        <input type="text" class="form-control" id="phone" placeholder="Phone">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Options -->
+            <div class="payment-info mt-4">
+                <h5>Payment</h5>
+                <div class="payment-options d-flex align-items-center">
+                    <input type="radio" name="payment" id="paypal" checked>
+                    <img src="img/paypal.png" alt="PayPal">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <h5>Order Summary</h5>
+                
+                <?php foreach ($products as $product) {
+                    $total += $product['price'] * $product['quantity'];
+                ?>
+                <!-- Product -->
+                <div class="item-info">
+                    <img src="Dashboard/Partials/uploads/<?php echo htmlspecialchars($product['image']); ?>" alt="Product Image">
+                    <div>
+                        <h6><?php echo htmlspecialchars($product['description']); ?></h6>
+                        <span>Qty: <?php echo htmlspecialchars($product['quantity']); ?></span>
+                    </div>
+                    <span>₱<?php echo number_format($product['price'], 2); ?></span>
+                    <form method="POST" action="Partials/remove_item.php" style="display:inline;">
+                        <input type="hidden" name="item_id" value="<?php echo htmlspecialchars($product['g_id']); ?>">
+                        <input type="hidden" name="source" value="<?php echo htmlspecialchars($product['source']); ?>">
+                        <button type="submit" class="btn-remove">Remove</button>
+                    </form>
+                </div>
+                <?php } ?>
+
+                <div class="total-section">
+                    <span>Total</span>
+                    <span>₱<?php echo number_format($total, 2); ?></span>
+                </div>
+            </div>
+
+            <!-- Pay Now Button -->
+            <div class="text-right mt-4">
+                <a href="#" class="pay-now-btn">Pay now</a>
+            </div>
+        </div>
     </div>
 </div>
-
-
     <!-- Chat Icon -->
     <div class="chat-icon" onclick="toggleChat()">
         <i class="fas fa-comments"></i>
@@ -442,67 +438,9 @@ h1 {
 
 
         });
-        const colorItems = document.querySelectorAll('.color-item');
-    const selectedColorLabel = document.getElementById('selectedColor');
 
-    colorItems.forEach(item => {
-        item.addEventListener('click', function () {
-            colorItems.forEach(i => i.classList.remove('selected'));
-            this.classList.add('selected');
-            selectedColorLabel.textContent = this.getAttribute('data-color');
-        });
-    });
-    function changeColor(color) {
-    document.getElementById('hiddenColor').value = color;
-}
-
-document.querySelectorAll('.color-item').forEach(item => {
-    item.addEventListener('click', () => {
-        changeColor(item.getAttribute('data-color'));
-        document.getElementById('selectedColor').textContent = item.getAttribute('data-color');
-    });
-});
-    function changeQuantity(amount) {
-    const quantityInput = document.getElementById('quantity');
-    let currentValue = parseInt(quantityInput.value);
-    let newValue = currentValue + amount;
-    if (newValue < 1) {
-        newValue = 1;
-    }
-    quantityInput.value = newValue;
-    document.getElementById('hiddenQuantity').value = newValue;
-}
     </script>
-<script>
-function changeQuantity(button, change) {
-    var cartItem = button.closest('.cart-item');
-    var quantityInput = cartItem.querySelector('input[name="quantity"]');
-    var currentQuantity = parseInt(quantityInput.value);
-    var newQuantity = currentQuantity + change;
 
-    if (newQuantity < 1) return; // Prevent quantity from going below 1
-
-    quantityInput.value = newQuantity;
-
-    var price = parseFloat(cartItem.getAttribute('data-price'));
-    var newItemTotal = price * newQuantity;
-    
-    cartItem.querySelector('.item-total span').innerText = newItemTotal.toFixed(2);
-
-    updateSubtotal();
-}
-
-function updateSubtotal() {
-    var subtotal = 0;
-    document.querySelectorAll('.cart-item').forEach(function(cartItem) {
-        var itemTotal = parseFloat(cartItem.querySelector('.item-total span').innerText);
-        subtotal += itemTotal;
-    });
-
-    document.getElementById('subtotal').innerText = subtotal.toFixed(2);
-    document.getElementById('total').innerText = subtotal.toFixed(2);
-}
-</script>
 </body>
 
 </html>
