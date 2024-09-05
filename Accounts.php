@@ -16,18 +16,6 @@ $query->execute();
 $result = $query->get_result();
 $user = $result->fetch_assoc();
 
-// Fetch orders for the logged-in user
-$queryOrders = $conn->prepare("
-    SELECT rbp.id AS order_id, rbp.reference_code, rbp.status, p.product_name, rpi.color, rpi.quantity, rpi.price
-    FROM RegisteredBuyedProducts rbp
-    JOIN RegisteredBuyedProductItems rpi ON rbp.id = rpi.buyed_product_id
-    JOIN products p ON rpi.product_id = p.id
-    WHERE rbp.user_id = ?
-    ORDER BY rbp.purchased_at DESC
-");
-$queryOrders->bind_param("i", $user_id);
-$queryOrders->execute();
-$resultOrders = $queryOrders->get_result();
 ?>
 <!DOCTYPE html>
 <html lang="en">

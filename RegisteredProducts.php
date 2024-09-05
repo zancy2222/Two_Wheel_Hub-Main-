@@ -1,18 +1,27 @@
+
 <?php
 include 'partials/db_conn.php';
 include 'partials/session.php'; // Include session management script to get user ID
 
-$category = isset($_GET['category']) ? $_GET['category'] : '';
+$product_id = $_GET['id']; // Get the product ID from the URL or request
+$query = "SELECT * FROM products WHERE id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $product_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$product = $result->fetch_assoc();
 
-if ($category) {
-    $sql = "SELECT * FROM products WHERE category = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $category);
-    $stmt->execute();
-    $result = $stmt->get_result();
-} else {
-    $sql = "SELECT * FROM products";
-    $result = $conn->query($sql);
+// Fetch colors for the product if applicable
+$colors = [];
+if ($product['category'] === 'Rear Suspension' || $product['category'] === 'Tires') {
+    $color_query = "SELECT color FROM product_colors WHERE product_id = ?";
+    $color_stmt = $conn->prepare($color_query);
+    $color_stmt->bind_param("i", $product_id);
+    $color_stmt->execute();
+    $color_result = $color_stmt->get_result();
+    while ($color_row = $color_result->fetch_assoc()) {
+        $colors[] = $color_row['color'];
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -128,84 +137,219 @@ if ($category) {
             width: 100%;
         }
 
-        .container.mt-5 .btn:hover {
-            background-color: var(--secondary-color);
-        }
 
-        .product-card {
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: none;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 30px;
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .product-img {
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .product-card-body {
-            padding: 20px;
-            background-color: var(--white-color);
-        }
-
-        .product-card-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .product-card-description {
-            font-size: 1rem;
-            margin-bottom: 10px;
-        }
-
-        .product-card-info {
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-        }
-
-        .product-card-price {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        .product-buttons {
+        .container {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
+            flex-wrap: wrap; /* Allow wrapping for smaller screens */
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        .btn-add-to-cart,
-        .btn-buy {
-            width: calc(50% - 5px);
-            padding: 10px;
-            border: none;
-            color: var(--white-color);
-            border-radius: 5px;
+        .product-images {
+            flex: 1;
+            display: flex;
+            justify-content: center; /* Center align images */
+            margin-bottom: 20px; /* Space below for smaller screens */
+        }
+
+        .product-images img {
+            max-width: 100%;
+            height: 500px;
+            border-radius: 10px;
+        }
+
+        .product-details {
+            flex: 1;
+            margin-left: 40px;
+        }
+
+        .product-details h1 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .color-options {
+            margin-bottom: 20px;
+        }
+
+        .color-options label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .color-options .colors {
+            display: flex;
+            gap: 10px;
+        }
+
+        .color-options .color-item {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
             cursor: pointer;
-            transition: background-color var(--transition-speed);
+            transition: border 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .color-options .color-item.default {
+            border-color: #000;
+            font-size: 20px;
+            color: #000;
+        }
+
+        .color-options .color-item.selected {
+            border-color: #000;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column; /* Stack buttons on smaller screens */
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .quantity {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .quantity input {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 0 10px;
+        }
+
+        .quantity button {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .actions button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            transition: background 0.3s;
         }
 
         .btn-add-to-cart {
-            background-color: var(--primary-color);
+            background-color: #fff;
+            color: #000;
+            border-color: #000;
         }
 
-        .btn-buy {
-            background-color: var(--secondary-color);
+        .btn-buy-now {
+            background-color: #C82333;
+            color: #fff;
+            border-color: #C82333;
         }
 
-        .btn-add-to-cart:hover,
-        .btn-buy:hover {
-            opacity: 0.9;
+        .btn-buy-now:hover {
+            background-color: #A71B2C;
+        }
+
+        .pickup, .shipping {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .pickup span {
+            color: #009DDF;
+            font-weight: bold;
+        }
+
+        .shipping img {
+            max-width: 250px;
+            height: 200px;
+        }
+
+        /* Media Queries for responsive design */
+        @media (max-width: 768px) {
+            .product-details {
+                margin-left: 0;
+                margin-top: 20px; /* Add top margin for stacking */
+            }
+
+            .product-images, .product-details {
+                flex: 1 1 100%; /* Full width on small screens */
+                margin: 0;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .actions button {
+                width: 100%; /* Full width buttons */
+            }
+
+            .btn-add-to-cart {
+            background-color: #fff;
+            color: #000;
+            border-color: #000;
+            margin-bottom: 4%;
+        }
+
+        .btn-buy-now {
+            background-color: #C82333;
+            color: #fff;
+            border-color: #C82333;
+        }
+            .color-options .colors {
+                flex-wrap: wrap; /* Wrap color options */
+            }
+
+            .color-options .color-item {
+                width: 30px; /* Smaller color circles */
+                height: 30px;
+            }
+            .product-images img {
+            max-width: 100%;
+            height: 350px;
+            border-radius: 10px;
+        }
+        .shipping img {
+        display: none; 
+        }
+        }
+
+        @media (max-width: 576px) {
+            .product-details h1 {
+                font-size: 24px; /* Smaller font size for titles */
+            }
+
+            .price {
+                font-size: 20px; /* Smaller font size for price */
+            }
+
+            .color-options .color-item {
+                width: 25px; /* Even smaller color circles */
+                height: 25px;
+            }
+
+            .actions button {
+                font-size: 14px; /* Smaller button text */
+                padding: 8px; /* Adjust padding */
+            }
         }
 
         .footer {
@@ -367,33 +511,50 @@ if ($category) {
     </nav>
 
     <!-- Main Content -->
-    <div class="container mt-5">
-    <div class="row">
-        <?php
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                // Display product details with a link to the product details page
-                echo "<div class='col-md-4 mb-4'>
-                        <div class='card product-card'>
-                            <a href='RegisteredProducts.php?id=" . htmlspecialchars($row["id"]) . "'>
-                                <img src='Dashboard/Partials/uploads/" . htmlspecialchars($row["image"]) . "' class='card-img-top product-img' alt='" . htmlspecialchars($row["description"]) . "'>
-                                <div class='card-body product-card-body'>
-                                    <h1 class='card-text product-card-description'>" . htmlspecialchars($row["description"]) . "</h1>
-                                    <p class='card-text product-card-category'>" . htmlspecialchars($row["category"]) . "</p>
-                                    <p class='card-text product-card-price'>Price: ₱" . htmlspecialchars($row["price"]) . "</p>
-                                </div>
-                            </a>
-                        </div>
-                      </div>";
-            }
-        } else {
-            echo "<p>No products found in this category.</p>";
-        }
-        ?>
+    <div class="container">
+        <div class="product-images">
+            <img src="Dashboard/Partials/uploads/<?php echo htmlspecialchars($product['image']); ?>" alt="Product Image" id="mainImage">
+        </div>
+
+        <div class="product-details">
+            <h1><?php echo htmlspecialchars($product['description']); ?></h1>
+            <div class="price">₱<?php echo htmlspecialchars($product['price']); ?></div>
+
+            <?php if (!empty($colors)) { ?>
+                <div class="color-options">
+                    <label for="color">Color: <span id="selectedColor">DEFAULT</span></label>
+                    <div class="colors">
+                        <div class="color-item default selected" data-color="DEFAULT">✖</div>
+                        <?php foreach ($colors as $color) { ?>
+                            <div class="color-item" data-color="<?php echo htmlspecialchars($color); ?>" style="background-color: <?php echo htmlspecialchars($color); ?>;"></div>
+                        <?php } ?>
+                    </div>
+                </div>
+            <?php } else { ?>
+                <div class="color-options">
+                    <label for="color">Color: <span id="selectedColor">DEFAULT</span></label>
+                </div>
+            <?php } ?>
+
+            <div class="actions">
+                <div class="quantity">
+                    <button type="button" onclick="changeQuantity(-1)">-</button>
+                    <input type="text" value="1" id="quantity" name="quantity">
+                    <button type="button" onclick="changeQuantity(1)">+</button>
+                </div>
+                <form method="POST" action="Partials/buy_now_registered.php">
+                    <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                    <input type="hidden" name="quantity" id="hiddenQuantity" value="1">
+                    <input type="hidden" name="color" id="hiddenColor" value="DEFAULT">
+                    <button type="submit" name="action" value="add_to_cart" class="btn-add-to-cart">Add to cart</button>
+                    <button type="submit" name="action" value="buy_now" class="btn-buy-now">Buy it now</button>
+                </form>
+            </div>
+
+            <div class="pickup">Pickup available at <span>AV MOTO Philippines</span></div>
+            <div class="shipping"><img src="img/AV Moto Logo Outline.png" alt="Free Shipping"></div>
+        </div>
     </div>
-</div>
-
-
 
     <!-- Chat Icon -->
     <div class="chat-icon" onclick="toggleChat()">
@@ -467,15 +628,16 @@ if ($category) {
 
 
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="script.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // Function to update the cart count
             function updateCartCount() {
-                fetch('Partials/Main_get_cart_count.php')
+                fetch('Partials/get_cart_count.php')
                     .then(response => response.json())
                     .then(data => {
                         if (data.cart_count !== undefined) {
@@ -485,105 +647,41 @@ if ($category) {
                     .catch(error => console.error('Error fetching cart count:', error));
             }
 
+            // Update cart count initially
             updateCartCount();
 
-            var colorCircles = document.querySelectorAll(".color-circle");
-
-            colorCircles.forEach(function(circle) {
-                circle.addEventListener("click", function() {
-                    colorCircles.forEach(function(c) {
-                        c.classList.remove("selected");
-                    });
-
-                    this.classList.add("selected");
-
-                    var selectedColor = this.getAttribute("data-color");
-                    var productId = this.getAttribute("data-product-id");
-
-                    fetch(`get_variations.php?product_id=${productId}&color=${encodeURIComponent(selectedColor)}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            var container = document.getElementById(`sizeQtyContainer-${productId}`);
-                            container.innerHTML = '';
-
-                            data.forEach(variation => {
-                                var sizeInfo = document.createElement("div");
-                                sizeInfo.className = "size-info";
-                                sizeInfo.innerHTML = `<p>Size: ${variation.size}</p><p>Pieces available: ${variation.quantity}</p>`;
-                                container.appendChild(sizeInfo);
-                            });
-                        })
-                        .catch(error => console.error('Error fetching variations:', error));
-                });
-            });
-
-            var addToCartButtons = document.querySelectorAll('.btn-add-to-cart');
-            addToCartButtons.forEach(function(button) {
-                button.addEventListener('click', function() {
-                    var productId = this.getAttribute('data-product-id');
-                    var selectedColorCircle = document.querySelector(`.color-circle[data-product-id='${productId}'].selected`);
-
-                    if (!selectedColorCircle) {
-                        alert('Please select a color.');
-                        return;
-                    }
-
-                    var selectedColor = selectedColorCircle.getAttribute('data-color');
-
-                    fetch('Partials/Main_add_to_cart.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded'
-                            },
-                            body: `product_id=${productId}&color=${encodeURIComponent(selectedColor)}&user_id=<?php echo $_SESSION['user_id']; ?>`
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.cart_count !== undefined) {
-                                document.querySelector('.cart-count').textContent = data.cart_count;
-                            } else {
-                                console.error('Error adding to cart:', data.error);
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
-                });
-            });
-
-
-            var buyButtons = document.querySelectorAll('.btn-buy');
-            buyButtons.forEach(function(button) {
-                button.addEventListener('click', function() {
-                    var productId = this.getAttribute('data-product-id');
-                    var selectedColorCircle = document.querySelector(`.color-circle[data-product-id='${productId}'].selected`);
-
-                    if (!selectedColorCircle) {
-                        alert('Please select a color.');
-                        return;
-                    }
-
-                    var selectedColor = selectedColorCircle.getAttribute('data-color');
-
-                    fetch('Partials/Main_buy_now.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded'
-                            },
-                            body: `product_id=${productId}&color=${encodeURIComponent(selectedColor)}`
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-
-                                window.location.href = 'buyitemsMain.php';
-                            } else {
-                                console.error('Error buying now:', data.error);
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
-                });
-            });
 
         });
+        const colorItems = document.querySelectorAll('.color-item');
+    const selectedColorLabel = document.getElementById('selectedColor');
+
+    colorItems.forEach(item => {
+        item.addEventListener('click', function () {
+            colorItems.forEach(i => i.classList.remove('selected'));
+            this.classList.add('selected');
+            selectedColorLabel.textContent = this.getAttribute('data-color');
+        });
+    });
+    function changeColor(color) {
+    document.getElementById('hiddenColor').value = color;
+}
+
+document.querySelectorAll('.color-item').forEach(item => {
+    item.addEventListener('click', () => {
+        changeColor(item.getAttribute('data-color'));
+        document.getElementById('selectedColor').textContent = item.getAttribute('data-color');
+    });
+});
+    function changeQuantity(amount) {
+    const quantityInput = document.getElementById('quantity');
+    let currentValue = parseInt(quantityInput.value);
+    let newValue = currentValue + amount;
+    if (newValue < 1) {
+        newValue = 1;
+    }
+    quantityInput.value = newValue;
+    document.getElementById('hiddenQuantity').value = newValue;
+}
     </script>
 
 </body>

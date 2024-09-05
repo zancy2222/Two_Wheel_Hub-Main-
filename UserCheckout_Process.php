@@ -1,6 +1,44 @@
 <?php
 include 'partials/session.php';
+include 'partials/db_conn.php';
+
+if (!isset($_SESSION['user_id'])) {
+    echo "Please log in to view your orders and cart.";
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+
+// Fetch bought products
+$query_bought = "SELECT p.image, p.description, u.quantity, u.price, u.id AS u_id, 'bought' AS source
+                 FROM UserBuyedProducts u
+                 JOIN products p ON u.product_id = p.id
+                 WHERE u.user_id = ?";
+
+// Fetch cart products
+$query_cart = "SELECT p.image, p.description, u.quantity, p.price AS price, u.id AS u_id, 'cart' AS source
+               FROM UserCartOrder u
+               JOIN products p ON u.product_id = p.id
+               WHERE u.user_id = ?";
+
+$stmt_bought = $conn->prepare($query_bought);
+$stmt_bought->bind_param("i", $user_id);
+$stmt_bought->execute();
+$result_bought = $stmt_bought->get_result();
+
+$stmt_cart = $conn->prepare($query_cart);
+$stmt_cart->bind_param("i", $user_id);
+$stmt_cart->execute();
+$result_cart = $stmt_cart->get_result();
+
+$products = array_merge(
+    $result_bought->fetch_all(MYSQLI_ASSOC),
+    $result_cart->fetch_all(MYSQLI_ASSOC)
+);
+
+$total = 0;
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,49 +53,129 @@ include 'partials/session.php';
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="chat.css">
     <style>
-        body {
-            font-family: 'League Spartan', sans-serif;
+       body {
+        font-family: 'League Spartan', sans-serif;
+    }
+
+    .checkout-container {
+        margin: 20px auto;
+        max-width: 1200px;
+        padding: 0 15px;
+    }
+
+    .order-summary img {
+        width: 80px;
+        height: auto;
+        object-fit: contain;
+        margin-right: 10px;
+    }
+
+    .order-summary h6 {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .order-summary .item-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        justify-content: space-between;
+    }
+
+    .order-summary .item-info div {
+        flex-grow: 1;
+        margin-right: 10px;
+    }
+
+    .order-summary .item-info span:last-child {
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    .order-summary {
+        border: 1px solid #ddd;
+        padding: 20px;
+        background-color: #f9f9f9;
+    }
+
+    .order-summary .total-section {
+        display: flex;
+        justify-content: space-between;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .checkout-container .pay-now-btn {
+        background-color: #007bff;
+        color: #fff;
+        font-weight: 700;
+        border-radius: 5px;
+        padding: 10px 15px;
+        text-align: center;
+        display: inline-block;
+    }
+
+    .pay-now-btn:hover {
+        background-color: #0056b3;
+    }
+
+    .payment-options img {
+        width: 50px;
+        margin-left: 10px;
+    }
+
+    .btn-remove {
+        background-color: #f44336;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 14px;
+        border-radius: 4px;
+    }
+
+    .btn-remove:hover {
+        background-color: #d32f2f;
+    }
+
+    @media (max-width: 768px) {
+        .order-summary img {
+            width: 60px;
         }
 
-        .category-card {
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: none;
-            border-radius: 10px;
-            overflow: hidden;
+        .order-summary h6 {
+            font-size: 16px;
         }
 
-        .category-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        .order-summary .item-info {
+            flex-direction: column;
+            align-items: flex-start;
         }
 
-        .category-img {
-            height: 250px;
-            object-fit: cover;
+        .order-summary .item-info span:last-child {
+            margin-top: 5px;
         }
 
-        .category-card-body {
-            padding: 20px;
-            background-color: var(--white-color);
+        .checkout-container {
+            padding: 0 10px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .order-summary h6 {
+            font-size: 14px;
         }
 
-        .category-card-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 15px;
+        .order-summary img {
+            width: 50px;
         }
 
-        .category-card-btn {
-            background-color: var(--primary-color);
-            color: var(--white-color);
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: background-color var(--transition-speed);
+        .checkout-container .pay-now-btn {
+            width: 100%;
+            text-align: center;
         }
-
-        .category-card-btn:hover {
-            background-color: var(--secondary-color);
-        }
+    }
     </style>
 </head>
 
@@ -125,65 +243,105 @@ include 'partials/session.php';
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="img/shock.jpg" class="card-img-top category-img" alt="Suspension Oils">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Front Suspension</h5>
-                        <a href="MainProducts.php?category=Front%20Suspension" class="btn category-card-btn">View</a>
+<!-- Main Content -->
+<div class="checkout-container">
+    <div class="row">
+        <div class="col-md-7">
+            <!-- Delivery Information -->
+            <div class="delivery-info">
+                <h5>Contact</h5>
+                <input type="email" class="form-control" placeholder="Email" required>
+
+                <h5 class="mt-4">Delivery</h5>
+                <div class="form-group">
+                    <label for="country">Country/Region</label>
+                    <select id="country" class="form-control">
+                        <option>Philippines</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="firstName">First name</label>
+                        <input type="text" class="form-control" id="firstName" placeholder="First name">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="lastName">Last name</label>
+                        <input type="text" class="form-control" id="lastName" placeholder="Last name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" class="form-control" id="address" placeholder="Address">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="city">City</label>
+                        <input type="text" class="form-control" id="city" placeholder="City">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="postalCode">Postal code</label>
+                        <input type="text" class="form-control" id="postalCode" placeholder="Postal code">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="region">Region</label>
+                        <input type="text" class="form-control" id="region" placeholder="Region">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="phone">Phone</label>
+                        <input type="text" class="form-control" id="phone" placeholder="Phone">
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="img/FS.jpg" class="card-img-top category-img" alt="Rear Shock">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Rear Suspension</h5>
-                        <a href="MainProducts.php?category=Rear%20Suspension" class="btn category-card-btn">View</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="img/accsrs.jpg" class="card-img-top category-img" alt="Accessories">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">CVT</h5>
-                        <a href="MainProducts.php?category=CVT" class="btn category-card-btn">View</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="img/tires.jpg" class="card-img-top category-img" alt="Tires">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Tires</h5>
-                        <a href="MainProducts.php?category=Tires" class="btn category-card-btn">View</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="img/Oils.jpg" class="card-img-top category-img" alt="Tires">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Oil</h5>
-                        <a href="MainProducts.php?category=Oil" class="btn category-card-btn">View</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="img/others.jpg" class="card-img-top category-img" alt="Others">
-                    <div class="card-body category-card-body">
-                        <h5 class="card-title category-card-title">Others</h5>
-                        <a href="MainProducts.php?category=Others" class="btn category-card-btn">View</a>
-                    </div>
+
+            <!-- Payment Options -->
+            <div class="payment-info mt-4">
+                <h5>Payment</h5>
+                <div class="payment-options d-flex align-items-center">
+                    <input type="radio" name="payment" id="paypal" checked>
+                    <img src="img/paypal.png" alt="PayPal">
                 </div>
             </div>
         </div>
+
+        <div class="col-md-5">
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <h5>Order Summary</h5>
+                
+                <?php foreach ($products as $product) {
+                    $total += $product['price'] * $product['quantity'];
+                ?>
+                <!-- Product -->
+                <div class="item-info">
+                    <img src="Dashboard/Partials/uploads/<?php echo htmlspecialchars($product['image']); ?>" alt="Product Image">
+                    <div>
+                        <h6><?php echo htmlspecialchars($product['description']); ?></h6>
+                        <span>Qty: <?php echo htmlspecialchars($product['quantity']); ?></span>
+                    </div>
+                    <span>₱<?php echo number_format($product['price'], 2); ?></span>
+                    <form method="POST" action="Partials/remove_users_buyed_cart.php" style="display:inline;">
+                        <input type="hidden" name="item_id" value="<?php echo htmlspecialchars($product['u_id']); ?>">
+                        <input type="hidden" name="source" value="<?php echo htmlspecialchars($product['source']); ?>">
+                        <button type="submit" class="btn-remove">Remove</button>
+                    </form>
+                </div>
+                <?php } ?>
+
+                <div class="total-section">
+                    <span>Total</span>
+                    <span>₱<?php echo number_format($total, 2); ?></span>
+                </div>
+            </div>
+
+            <!-- Pay Now Button -->
+            <div class="text-right mt-4">
+                <a href="#" class="pay-now-btn">Pay now</a>
+            </div>
+        </div>
     </div>
+</div>
     <!-- Chat Icon -->
     <div class="chat-icon" onclick="toggleChat()">
         <i class="fas fa-comments"></i>
