@@ -31,185 +31,358 @@
       opacity: 0.8;
       /* Add transparency effect */
     }
+ 
+    /* Styling for the New Arrival Section */
+ .new-arrival-header {
+            background-color: #c40404;
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 5px 5px 0 0;
+        }
 
-    /* New Arrival Section */
-    .new-arrival {
-      padding: 60px 0;
-      background-color: var(--white-color);
-      border-top: 1px solid #ddd;
-      border-bottom: 1px solid #ddd;
-    }
+        .new-arrival-header a {
+            color: white;
+            text-decoration: none;
+            font-weight: normal;
+        }
 
-    .new-arrival-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
+        .new-arrival-section {
+            border: 1px solid #c40404;
+            border-top: none;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 0 0 5px 5px;
+        }
 
-    .new-arrival h2 {
-      font-size: 2rem;
-      color: var(--primary-color);
-    }
+        .product-section {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px 0;
+            scrollbar-width: thin;
+            gap: 15px;
+        }
 
-    .view-all {
-      font-size: 1rem;
-      color: var(--primary-color);
-      text-decoration: none;
-    }
+        .product-section::-webkit-scrollbar {
+            height: 8px;
+        }
 
-    .promo-section {
-      background-color: var(--white-color);
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      transition: transform var(--transition-speed), box-shadow var(--transition-speed);
-      position: relative;
-    }
+        .product-section::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 10px;
+        }
 
-    .promo-section img {
-      width: 100%;
-      height: auto;
-    }
+        .product-card {
+            flex: 0 0 auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 200px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
 
-    .promo-text {
-      padding: 15px;
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .product-card .product-title {
+            font-size: 14px;
+            font-weight: bold;
+            padding: 10px 5px;
+        }
+
+        .product-card .price {
+            font-size: 16px;
+            color: #000;
+            padding-bottom: 10px;
+        }
+
+        .product-card .rating {
+            color: #FFD700;
+            padding-bottom: 10px;
+        }
+
+
+        /* Oxford Collection Section */
+.oxford-collection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            background-color: #222;
+            color: white;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .oxford-collection img {
+            width: 120px;
+            margin-bottom: 15px;
+        }
+
+        .oxford-collection h5 {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .oxford-collection p {
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .view-collection-btn {
+            background-color: #c40404;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            margin-top: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .view-collection-btn:hover {
+            background-color: #a20303;
+        }
+
+        /* Responsive Adjustments */
+        @media (min-width: 768px) {
+            .new-arrival-section .d-flex {
+                flex-direction: row;
+            }
+
+            .oxford-collection {
+                width: 300px;
+                margin-right: 20px;
+                margin-bottom: 0;
+            }
+
+            .horizontal-scroll {
+                flex: 1;
+            }
+        }
+
+        /* GIVI Box & Brackets */
+        .givi-header {
+            border-bottom: 3px solid #c40404;
+            padding-bottom: 10px;
+        }
+        
+        .card {
+            border: 1px solid #ddd;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            border-radius: 8px; /* Add rounded corners */
+            overflow: hidden; /* Ensure images don't overflow */
+        }
+        
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow effect */
+        }
+        
+        .card-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 0.5rem; /* Space between title and text */
+        }
+        
+        .card-text {
+            font-size: 16px;
+            margin-bottom: 0.5rem; /* Space between price and rating */
+        }
+        
+        .rating {
+            font-size: 14px;
+            color: #FFD700;
+        }
+        
+        .card-img-top {
+            object-fit: cover; /* Ensure image covers the container */
+            height: 200px; /* Fixed height for images */
+        }
+        
+        .card-body {
+            padding: 1rem; /* Padding inside card */
+        }
+        
+        .row-gap {
+            margin-bottom: 2rem; /* Adjust spacing between rows */
+        }
+        
+        
+          /* General Container */
+.freshen-up-container {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Image Placeholders */
+  .placeholder-image, .placeholder-small-image, .placeholder-video {
+    width: 100%;
+    background-color: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #888;
+    font-size: 24px;
+    text-align: center;
+  }
+  
+  .placeholder-image {
+    height: 300px;
+  }
+  
+  .placeholder-small-image {
+    height: 150px;
+  }
+  
+  .placeholder-video {
+    height: 250px;
+  }
+  
+  /* Visors Styling */
+  .visors {
+    margin-top: 20px;
+  }
+  
+  .visor-item h6 {
+    font-size: 14px;
+    font-weight: normal;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    color: #555;
+  }
+  
+  /* Ad Box */
+  .ad-box {
+    background-color: #fff;
+    text-align: center;
+  }
+  
+  .ad-box img {
+    max-width: 100%;
+  }
+  
+  /* Video Section */
+  .video-container {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .freshen-up-container,
+    .ad-box,
+    .video-container {
       text-align: center;
     }
+  
+    .visors {
+      justify-content: center;
+    }
+  }
+/* General Container */
+/* General Container */
+.partner-logo {
+    background: linear-gradient(135deg, #f1f9ff 0%, #dfefff 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #dde7f3;
+    position: relative;
+    height: 200px; /* Increased height */
+    width: 100%;
+}
 
-    .promo-text h4 {
-      font-size: 1.5rem;
-      color: var(--black-color);
-      margin-bottom: 10px;
+/* Image Styling */
+.partner-logo img {
+    max-width: 90%; /* Increased image size */
+    max-height: 90%; /* Increased image size */
+    object-fit: contain;
+    filter: grayscale(100%); /* Modern look by default */
+    transition: filter 0.3s ease;
+}
+
+/* Hover Effect */
+.partner-logo:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+}
+
+.partner-logo:hover img {
+    filter: grayscale(0%); /* Removes grayscale effect on hover */
+}
+
+/* Gradient Overlay for Logos */
+.partner-logo:before {
+    content: "";
+    background: rgba(255, 255, 255, 0.1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+}
+
+.partner-logo:hover:before {
+    opacity: 0;
+}
+
+/* Heading Styling */
+h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 2rem; /* Increased margin-bottom */
+    position: relative;
+}
+
+h2:after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: #009DDF;
+    margin: 0.5rem auto;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    .partner-logo {
+        height: 180px; /* Adjusted height for medium screens */
+    }
+}
+
+@media (max-width: 576px) {
+    .partner-logo {
+        height: 150px; /* Adjusted height for small screens */
     }
 
-    .promo-text p {
-      font-size: 1rem;
-      color: var(--grey-color);
-      margin-bottom: 15px;
+    h2 {
+        font-size: 2rem;
     }
+}
 
-    .promo-text .btn {
-      background-color: var(--danger-color);
-      border: none;
-      color: var(--white-color);
-      transition: background-color var(--transition-speed);
-    }
-
-    .promo-text .btn:hover {
-      background-color: darken(var(--danger-color), 10%);
-    }
-
-    .product-scroll-container {
-      display: flex;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 15px;
-    }
-
-    .product-card {
-      flex: 0 0 auto;
-      width: 300px;
-      margin-right: 15px;
-      border: none;
-      background: var(--white-color);
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      transition: transform var(--transition-speed), box-shadow var(--transition-speed);
-      position: relative;
-    }
-
-    .product-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
-
-    .product-card img {
-      width: 100%;
-      height: auto;
-      transition: transform var(--transition-speed);
-    }
-
-    .product-card:hover img {
-      transform: scale(1.05);
-    }
-
-    .product-card .card-body {
-      padding: 1rem;
-      text-align: center;
-    }
-
-    .product-card .card-title {
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: var(--black-color);
-      margin-bottom: 0.5rem;
-    }
-
-    .product-card .price {
-      font-size: 1.2rem;
-      color: var(--primary-color);
-      margin-bottom: 0.5rem;
-      text-decoration: line-through;
-    }
-
-    .product-card .discounted-price {
-      font-size: 1.5rem;
-      color: var(--danger-color);
-      margin-left: 10px;
-      text-decoration: none;
-    }
-
-    .product-card .badge {
-      font-size: 0.8rem;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-    }
-
-    .product-card .review {
-      font-size: 0.875rem;
-      color: var(--grey-color);
-      margin-bottom: 1rem;
-    }
-
-    .product-card .btn {
-      background-color: var(--primary-color);
-      border: none;
-      color: var(--white-color);
-      transition: background-color var(--transition-speed);
-    }
-
-    .product-card .btn:hover {
-      background-color: var(--secondary-color);
-    }
-
-
-
-    /* img section */
-    .new-section {
-      background-color: var(--secondary-color);
-
-    }
-
-    .new-section-item {
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 8px rgba(95, 243, 248, 0.1);
-      transition: transform var(--transition-speed), box-shadow var(--transition-speed);
-    }
-
-    .new-section-item img {
-      width: 100%;
-      height: 100%;
-      transition: transform var(--transition-speed);
-    }
-
-    .new-section-item:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
   </style>
 </head>
 
@@ -330,343 +503,345 @@
     </a>
   </div>
 
-  <!-- New Arrival Section -->
-  <div class="container new-arrival">
-    <div class="row">
-      <div class="col-12">
-        <div class="new-arrival-header">
-          <h2 class="text-left">RACEPOWER COLLECTION</h2>
-          <a href="#" class="view-all">View all</a>
+
+  <div class="container my-5">
+    <!-- New Arrival Header -->
+    <div class="new-arrival-header">
+        <span>New Arrival</span>
+        <a href="#">View all</a>
+    </div>
+
+    <!-- New Arrival Section -->
+    <div class="new-arrival-section">
+        <div class="d-flex flex-column flex-md-row">
+            <!-- Oxford Collection (Left Section) -->
+            <div class="oxford-collection mb-4 mb-md-0">
+                <img src="https://via.placeholder.com/120" alt="Oxford Atlas" />
+                <h5>OXFORD Collection</h5>
+                <p>The best luggage allows you to explore wherever, whenever. Our range-topping ATLAS modular luggage range can take you to the shops or around the globe.</p>
+                <button class="view-collection-btn">View Collection</button>
+            </div>
+
+            <!-- Horizontal Scrollable Product Cards -->
+            <div class="horizontal-scroll product-section">
+                <!-- Product Card 1 -->
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/200x200" alt="Product Image">
+                    <div class="product-title">OXFORD OX743 STRAPS 2</div>
+                    <div class="price">₱1,500.00</div>
+                    <div class="rating"><i class="fas fa-star"></i> 0 (0 Review)</div>
+                </div>
+
+                <!-- Product Card 2 -->
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/200x200" alt="Product Image">
+                    <div class="product-title">OXFORD OX743 STRAPS 2</div>
+                    <div class="price">₱1,500.00</div>
+                    <div class="rating"><i class="fas fa-star"></i> 0 (0 Review)</div>
+                </div>
+
+                <!-- Product Card 3 -->
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/200x200" alt="Product Image">
+                    <div class="product-title">OXFORD OX745 CAM STRAPS</div>
+                    <div class="price">₱590.00</div>
+                    <div class="rating"><i class="fas fa-star"></i> 0 (0 Review)</div>
+                </div>
+
+                <!-- Product Card 4 -->
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/200x200" alt="Product Image">
+                    <div class="product-title">OXFORD OX744 RATCHET HOOK STRAPS</div>
+                    <div class="price">₱1,790.00</div>
+                    <div class="rating"><i class="fas fa-star"></i> 0 (0 Review)</div>
+                </div>
+
+                <!-- Additional Product Cards (Optional) -->
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/200x200" alt="Product Image">
+                    <div class="product-title">OXFORD OX746 STRAPS</div>
+                    <div class="price">₱1,200.00</div>
+                    <div class="rating"><i class="fas fa-star"></i> 0 (0 Review)</div>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/200x200" alt="Product Image">
+                    <div class="product-title">OXFORD OX747 STRAPS</div>
+                    <div class="price">₱2,000.00</div>
+                    <div class="rating"><i class="fas fa-star"></i> 0 (0 Review)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container my-5">
+    <!-- GIVI Box & Brackets Header -->
+    <div class="givi-header d-flex justify-content-between align-items-center">
+      <h3 class="text-danger fw-bold">GIVI™ Box & Brackets</h3>
+      <a href="#" class="text-dark">View all</a>
+    </div>
+  
+    <!-- GIVI Products Section -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mt-3 row-gap">
+      <!-- Product Card 1 -->
+      <div class="col">
+        <div class="card h-100">
+          <img src="https://via.placeholder.com/200x200" class="card-img-top" alt="GIVI MTB45B">
+          <div class="card-body">
+            <h5 class="card-title">GIVI MTB45B MONTE BIANCO TOP CASE - BLACK (45L)</h5>
+            <p class="card-text text-danger">₱15,990.00</p>
+            <div class="rating">★ ★ ★ ★ ★ (0 Reviews)</div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Product Card 2 -->
+      <div class="col">
+        <div class="card h-100">
+          <img src="https://via.placeholder.com/200x200" class="card-img-top" alt="GIVI DLM46B">
+          <div class="card-body">
+            <h5 class="card-title">GIVI DLM46B TREKKER DOLOMITI MK TOP CASE(46L)</h5>
+            <p class="card-text text-danger">₱25,990.00</p>
+            <div class="rating">★ ★ ★ ★ ★ (0 Reviews)</div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Product Card 3 -->
+      <div class="col">
+        <div class="card h-100">
+          <img src="https://via.placeholder.com/200x200" class="card-img-top" alt="GIVI B42N">
+          <div class="card-body">
+            <h5 class="card-title">GIVI B42N ANTARTICA TOP CASE (42L)</h5>
+            <p class="card-text text-danger">₱6,990.00</p>
+            <div class="rating">★★★★★ (2 Reviews)</div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Product Card 4 -->
+      <div class="col">
+        <div class="card h-100">
+          <img src="https://via.placeholder.com/200x200" class="card-img-top" alt="GIVI B42N">
+          <div class="card-body">
+            <h5 class="card-title">GIVI B42N ANTARTICA TOP CASE (42L)</h5>
+            <p class="card-text text-danger">₱6,990.00</p>
+            <div class="rating">★★★★★ (2 Reviews)</div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="row">
-      <!-- Promotional Section -->
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="promo-section">
-          <img src="Products/1.png" alt="TAICHI Collection" class="img-fluid">
-          <div class="promo-text">
-            <h4>RACEPOWER Collection</h4>
-            <p>RACEPOWER goes above and beyond other manufacturers by developing protective gear based on the standards of "CE marking".</p>
-            <a href="#" class="btn btn-danger">View Collection</a>
+
+    <!-- Add more products with additional spacing -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 row-gap">
+      <!-- Product Card 5 -->
+      <div class="col">
+        <div class="card h-100">
+          <img src="https://via.placeholder.com/200x200" class="card-img-top" alt="GIVI XYZ123">
+          <div class="card-body">
+            <h5 class="card-title">GIVI XYZ123 NEW TOP CASE (50L)</h5>
+            <p class="card-text text-danger">₱17,990.00</p>
+            <div class="rating">★★★☆☆ (5 Reviews)</div>
           </div>
         </div>
       </div>
-      <!-- Horizontal Scroll for Product Cards -->
-      <div class="col-lg-9 col-md-12 mb-4">
-        <div class="product-scroll-container">
-          <div class="product-card">
-            <img src="Products/10.png" class="card-img-top" alt="TAICHI Collection">
-            <div class="card-body">
-              <h5 class="card-title">RACEPOWER PCX PREMIUM R PLUS</h5>
-              <p class="price">₱5,600 <span class="discounted-price">₱5,600</span></p>
+  
+      <!-- Product Card 6 -->
+      <div class="col">
+        <div class="card h-100">
+          <img src="https://via.placeholder.com/200x200" class="card-img-top" alt="GIVI ABC456">
+          <div class="card-body">
+            <h5 class="card-title">GIVI ABC456 SPECIAL EDITION (30L)</h5>
+            <p class="card-text text-danger">₱12,990.00</p>
+            <div class="rating">★★★★☆ (3 Reviews)</div>
+          </div>
+        </div>
+      </div>
 
+      <!-- Product Card 7 -->
+      <div class="col">
+        <div class="card h-100">
+          <img src="https://via.placeholder.com/200x200" class="card-img-top" alt="GIVI DEF789">
+          <div class="card-body">
+            <h5 class="card-title">GIVI DEF789 ADVANCED TOP CASE (55L)</h5>
+            <p class="card-text text-danger">₱19,990.00</p>
+            <div class="rating">★★☆☆☆ (8 Reviews)</div>
+          </div>
+        </div>
+      </div>
 
-              <p class="review">0 (0 Reviews)</p>
-              <a href="#" class="btn btn-primary btn-block">Add to Cart</a>
+      <!-- Product Card 8 -->
+      <div class="col">
+        <div class="card h-100">
+          <img src="https://via.placeholder.com/200x200" class="card-img-top" alt="GIVI GHI101">
+          <div class="card-body">
+            <h5 class="card-title">GIVI GHI101 CLASSIC TOP CASE (40L)</h5>
+            <p class="card-text text-danger">₱13,990.00</p>
+            <div class="rating">★★★★★ (7 Reviews)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+  <div class="container my-5">
+    <!-- Row 1: Main FRESHEN UP Section -->
+    <div class="row">
+      <div class="col-md-8">
+        <div class="freshen-up-container p-4 border shadow-sm">
+          <div class="placeholder-image mb-3">Image Placeholder</div> <!-- Placeholder for main image -->
+          <div class="freshen-up-content mt-3">
+            <h2 class="text-danger fw-bold">FRESHEN UP YOUR HELMET</h2>
+            <h5 class="text-uppercase text-muted mb-3">Helmet Spare Parts Available Online</h5>
+            <div class="visors d-flex flex-wrap">
+              <div class="visor-item me-4">
+                <h6>FULL FACE VISOR</h6>
+              </div>
+              <div class="visor-item me-4">
+                <h6>HALF FACE VISOR</h6>
+              </div>
+              <div class="visor-item me-4">
+                <h6>SUN VISOR</h6>
+              </div>
+              <div class="visor-item me-4">
+                <h6>MECHANISM</h6>
+              </div>
+              <div class="visor-item me-4">
+                <h6>CHEEKPADS</h6>
+              </div>
             </div>
           </div>
-          <div class="product-card">
-            <img src="Products/10.png" class="card-img-top" alt="TAICHI Collection">
-            <div class="card-body">
-              <h5 class="card-title">RACEPOWER PCX PREMIUM R PLUS</h5>
-              <p class="price">₱5,600 <span class="discounted-price">₱5,600</span></p>
-
-              <p class="review">0 (0 Reviews)</p>
-              <a href="#" class="btn btn-primary btn-block">Add to Cart</a>
-            </div>
+        </div>
+      </div>
+  
+      <!-- Row 1: Small Ad Boxes (LS2 Electron Visors and Custom Fit Cheek Pads) -->
+      <div class="col-md-4">
+        <div class="ad-box border p-3 mb-4 shadow-sm">
+          <div class="placeholder-small-image mb-2">Ad Image 1 Placeholder</div> <!-- Placeholder for Ad image -->
+        </div>
+        <div class="ad-box border p-3 shadow-sm">
+          <div class="placeholder-small-image mb-2">Ad Image 2 Placeholder</div> <!-- Placeholder for Ad image -->
+        </div>
+      </div>
+    </div>
+  
+    <!-- Row 2: Video Section -->
+    <div class="row mt-5">
+      <div class="col">
+        <div class="video-container border p-4 shadow-sm">
+          <div class="placeholder-video mb-3">Video Placeholder</div> <!-- Placeholder for video -->
+          <div class="mt-3 text-center">
+            <h4 class="fw-bold">INTUITIVE CUBE COLLECTION</h4>
           </div>
-          <div class="product-card">
-            <img src="Products/10.png" class="card-img-top" alt="TAICHI Collection">
-            <div class="card-body">
-              <h5 class="card-title">RACEPOWER PCX PREMIUM R PLUS</h5>
-              <p class="price">₱5,600 <span class="discounted-price">₱5,600</span></p>
-
-              <p class="review">0 (0 Reviews)</p>
-              <a href="#" class="btn btn-primary btn-block">Add to Cart</a>
-            </div>
-          </div>
-          <div class="product-card">
-            <img src="Products/10.png" class="card-img-top" alt="TAICHI Collection">
-            <div class="card-body">
-              <h5 class="card-title">RACEPOWER PCX PREMIUM R PLUS</h5>
-              <p class="price">₱5,600 <span class="discounted-price">₱5,600</span></p>
-
-              <p class="review">0 (0 Reviews)</p>
-              <a href="#" class="btn btn-primary btn-block">Add to Cart</a>
-            </div>
-          </div>
-          <div class="product-card">
-            <img src="Products/10.png" class="card-img-top" alt="TAICHI Collection">
-            <div class="card-body">
-              <h5 class="card-title">RACEPOWER PCX PREMIUM R PLUS</h5>
-              <p class="price">₱5,600 <span class="discounted-price">₱5,600</span></p>
-
-              <p class="review">0 (0 Reviews)</p>
-              <a href="#" class="btn btn-primary btn-block">Add to Cart</a>
-            </div>
-          </div>
-          <!-- Add more product cards as needed -->
         </div>
       </div>
     </div>
   </div>
-
-
-  <div class="container new-section">
-    <div class="row">
-      <div class="col-12">
-        <h2 class="text-center mb-4"></h2>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color:#009DDF">
-          <img src="Bg/Price.jpg" alt="Image 1">
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color: #009DDF">
-          <img src="Bg/Price2.jpg" alt="Image 2">
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color: #009DDF">
-          <img src="Bg/Price3.jpg" alt="Image 3">
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <div class="container new-arrival">
-    <div class="row">
-      <div class="col-12">
-        <div class="new-arrival-header">
-          <h2 class="text-left">PROFENDER</h2>
-          <a href="#" class="view-all">View all</a>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="product-scroll-container">
-        <!-- LS2 FF902 Scope Modular Helmet -->
-        <div class="product-card">
-          <img src="Products/17.png" alt="LS2 FF902 Scope Modular Helmet">
-          <div class="card-body">
-            <h5 class="card-title">Flash Earox 285 MM</h5>
-            <p class="price">₱10,850</p>
-            <p class="review">★★★★★ (2 Reviews)</p>
-            <a href="#" class="btn btn-primary btn-block">Add to Cart</a>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <img src="Products/17.png" alt="LS2 FF902 Scope Modular Helmet">
-          <div class="card-body">
-            <h5 class="card-title">Flash Earox 285 MM</h5>
-            <p class="price">₱10,850</p>
-            <p class="review">★★★★★ (2 Reviews)</p>
-            <a href="#" class="btn btn-primary btn-block">Add to Cart</a>
-          </div>
-        </div>
-
-
-        <div class="product-card">
-          <img src="Products/17.png" alt="LS2 FF902 Scope Modular Helmet">
-          <div class="card-body">
-            <h5 class="card-title">Flash Earox 285 MM</h5>
-            <p class="price">₱10,850</p>
-            <p class="review">★★★★★ (2 Reviews)</p>
-            <a href="#" class="btn btn-primary btn-block">Add to Cart</a>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <img src="Products/17.png" alt="LS2 FF902 Scope Modular Helmet">
-          <div class="card-body">
-            <h5 class="card-title">Flash Earox 285 MM</h5>
-            <p class="price">₱10,850</p>
-            <p class="review">★★★★★ (2 Reviews)</p>
-            <a href="#" class="btn btn-primary btn-block">Add to Cart</a>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <img src="Products/17.png" alt="LS2 FF902 Scope Modular Helmet">
-          <div class="card-body">
-            <h5 class="card-title">Flash Earox 285 MM</h5>
-            <p class="price">₱10,850</p>
-            <p class="review">★★★★★ (2 Reviews)</p>
-            <a href="#" class="btn btn-primary btn-block">Add to Cart</a>
-          </div>
-        </div>
-
-
-      </div>
-    </div>
-  </div>
-
-  <div class="container new-arrival">
-    <div class="row">
-      <div class="col-12">
-        <div class="new-arrival-header">
-          <h2 class="text-left">OHLINS</h2>
-          <a href="#" class="view-all">View all</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="product-scroll-container">
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="promo-section">
-            <img src="Products/22.png" alt="TAICHI Collection" class="img-fluid">
-            <div class="promo-text">
-              <h4>OHLINS Collection</h4>
-              <p>OHLINS goes above and beyond other manufacturers by developing protective gear based on the standards of "CE marking".</p>
-              <a href="#" class="btn btn-danger">View Collection</a>
+  
+<!-- Partnership Section -->
+<div class="container my-5">
+    <h2 class="text-center mb-5">Our Trusted Partners</h2>
+    <div class="row g-4">
+        <!-- Partner 3 -->
+        <div class="col-md-4">
+            <div class="partner-logo shadow-sm">
+                <img src="Products/1.png" alt="Partner 3" class="img-fluid">
             </div>
-          </div>
         </div>
-        <!-- LS2 FF902 Scope Modular Helmet -->
-        <div class="product-card">
-          <img src="Products/23.png" alt="LS2 FF902 Scope Modular Helmet">
-          <div class="card-body">
-            <h5 class="card-title">Blackline Vespa Sprint / Primavera</h5>
-            <p class="price">₱31,000</p>
-            <p class="review">★★★★★ (2 Reviews)</p>
-            <a href="#" class="btn btn-primary btn-block">Add to Cart</a>
-          </div>
+        <!-- Partner 4 -->
+        <div class="col-md-4">
+            <div class="partner-logo shadow-sm">
+                <img src="Products/16.png" alt="Partner 4" class="img-fluid">
+            </div>
+        </div>
+        <!-- Partner 5 -->
+        <div class="col-md-4">
+            <div class="partner-logo shadow-sm">
+                <img src="Products/22.png" alt="Partner 5" class="img-fluid">
+            </div>
+        </div>
+        <!-- Partner 6 -->
+        <div class="col-md-4">
+            <div class="partner-logo shadow-sm">
+                <img src="Products/26.png" alt="Partner 6" class="img-fluid">
+            </div>
+        </div>
+        <!-- Partner 7 -->
+        <div class="col-md-4">
+            <div class="partner-logo shadow-sm">
+                <img src="Products/64.png" alt="Partner 7" class="img-fluid">
+            </div>
+        </div>
+        <!-- Partner 8 -->
+        <div class="col-md-4">
+            <div class="partner-logo shadow-sm">
+                <img src="Products/82.png" alt="Partner 8" class="img-fluid">
+            </div>
+        </div>
+        <!-- Partner 9 -->
+        <div class="col-md-4">
+            <div class="partner-logo shadow-sm">
+                <img src="Products/93.png" alt="Partner 9" class="img-fluid">
+            </div>
+        </div>
+        <!-- Partner 10 -->
+        <div class="col-md-4">
+            <div class="partner-logo shadow-sm">
+                <img src="Products/106.png" alt="Partner 10" class="img-fluid">
+            </div>
+        </div>
+        <!-- Partner 11 -->
+        <div class="col-md-4">
+            <div class="partner-logo shadow-sm">
+                <img src="Products/118.png" alt="Partner 11" class="img-fluid">
+            </div>
         </div>
 
-        <div class="product-card">
-          <img src="Products/23.png" alt="LS2 FF902 Scope Modular Helmet">
-          <div class="card-body">
-            <h5 class="card-title">Blackline Vespa Sprint / Primavera</h5>
-            <p class="price">₱31,000</p>
-            <p class="review">★★★★★ (2 Reviews)</p>
-            <a href="#" class="btn btn-primary btn-block">Add to Cart</a>
-          </div>
+        <!-- Partner 13 -->
+        <div class="col-md-4">
+            <div class="partner-logo shadow-sm">
+                <img src="Products/132.png" alt="Partner 13" class="img-fluid">
+            </div>
         </div>
-
-
-        <div class="product-card">
-          <img src="Products/23.png" alt="LS2 FF902 Scope Modular Helmet">
-          <div class="card-body">
-            <h5 class="card-title">Blackline Vespa Sprint / Primavera</h5>
-            <p class="price">₱31,000</p>
-            <p class="review">★★★★★ (2 Reviews)</p>
-            <a href="#" class="btn btn-primary btn-block">Add to Cart</a>
-          </div>
+        <!-- Partner 14 -->
+        <div class="col-md-4">
+            <div class="partner-logo shadow-sm">
+                <img src="Products/141.png" alt="Partner 14" class="img-fluid">
+            </div>
         </div>
-
-      </div>
+        <!-- Partner 15 -->
+        <div class="col-md-4">
+            <div class="partner-logo shadow-sm">
+                <img src="Products/144.png" alt="Partner 15" class="img-fluid">
+            </div>
+        </div>
+        <!-- Partner 16 -->
+        <div class="col-md-4">
+            <div class="partner-logo shadow-sm">
+                <img src="Products/150.png" alt="Partner 16" class="img-fluid">
+            </div>
+        </div>
+        <!-- Partner 17 -->
+        <div class="col-md-4">
+            <div class="partner-logo shadow-sm">
+                <img src="Products/152.png" alt="Partner 17" class="img-fluid">
+            </div>
+        </div>
+        <!-- Partner 18 -->
+        <div class="col-md-4">
+            <div class="partner-logo shadow-sm">
+                <img src="Products/22.png" alt="Partner 17" class="img-fluid">
+            </div>
+        </div>
     </div>
-  </div>
-
-  <div class="container new-section mt-3 mb-3">
-    <div class="row">
-      <div class="col-12">
-        <h2 class="text-center mb-4 mt-4">OFFICIAL NATIONWIDE DISTRUBUTOR</h2>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color: #009DDF">
-          <img src="img/AV Moto Rebrand Outline.png" alt="Image 3">
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color: #009DDF">
-          <img src="img/AV Moto Logo Outline.png" alt="Image 3">
-        </div>
-      </div>
-
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color:#009DDF">
-          <img src="Products/1.png" alt="Image 1">
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color: #009DDF">
-          <img src="Products/16.png" alt="Image 2">
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color: #009DDF">
-          <img src="Products/22.png" alt="Image 3">
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color: #009DDF">
-          <img src="Products/26.png" alt="Image 3">
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color:#009DDF">
-          <img src="Products/64.png" alt="Image 1">
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color: #009DDF">
-          <img src="Products/82.png" alt="Image 2">
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color: #009DDF">
-          <img src="Products/93.png" alt="Image 3">
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color: #009DDF">
-          <img src="Products/106.png" alt="Image 3">
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color:#009DDF">
-          <img src="Products/118.png" alt="Image 1">
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color: #009DDF">
-          <img src="Products/129.png" alt="Image 2">
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color: #009DDF">
-          <img src="Products/132.png" alt="Image 3">
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color: #009DDF">
-          <img src="Products/141.png" alt="Image 3">
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color:#009DDF">
-          <img src="Products/144.png" alt="Image 1">
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color: #009DDF">
-          <img src="Products/150.png" alt="Image 2">
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color: #009DDF">
-          <img src="Products/152.png" alt="Image 3">
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="new-section-item" style="background-color: #009DDF">
-          <img src="Products/22.png" alt="Image 3">
-        </div>
-      </div>
-    </div>
-  </div>
+</div>
 
   <!-- Chat Icon -->
-  <div class="chat-icon" onclick="toggleChat()">
+<!-- Chat Icon -->
+<div class="chat-icon" onclick="toggleChat()">
     <i class="fas fa-comments"></i>
   </div>
-
+  
   <!-- Chat Window -->
   <div class="chat-window" id="chat-window">
     <div class="chat-header">Chat with us</div>
@@ -684,6 +859,7 @@
       <button onclick="sendMessage()">Send</button>
     </div>
   </div>
+  
 
   <footer class="footer">
     <div class="container">
